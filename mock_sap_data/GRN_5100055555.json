@@ -1,0 +1,48 @@
+{
+  "MaterialDocument": "5100055555",
+  "PostingDate": "2025-10-13",
+  "CompanyCode": "1000",
+  "Items": [
+    {
+      "MaterialDocumentItem": "0001",
+      "PurchaseOrder": "4500020000",
+      "PurchaseOrderItem": "00010",
+      "Material": "CNV-BELT-100",
+      "QuantityInEntryUnit": 40,
+      "EntryUnit": "MTR",
+      "AmountInDocumentCurrency": 4800.00,
+      "GRStatus": "Received"
+    },
+    {
+      "MaterialDocumentItem": "0002",
+      "PurchaseOrder": "4500020000",
+      "PurchaseOrderItem": "00020",
+      "Material": "MTR-IND-10KW",
+      "QuantityInEntryUnit": 30,
+      "EntryUnit": "PC",
+      "AmountInDocumentCurrency": 69000.00,
+      "GRStatus": "Received"
+    },
+    {
+      "MaterialDocumentItem": "0003",
+      "PurchaseOrder": "4500020000",
+      "PurchaseOrderItem": "00030",
+      "Material": "DRV-VFD-10KW",
+      "QuantityInEntryUnit": 30,
+      "EntryUnit": "PC",
+      "AmountInDocumentCurrency": 55200.00,
+      "GRStatus": "Received"
+    },
+    {
+      "MaterialDocumentItem": "0004",
+      "PurchaseOrder": "4500020000",
+      "PurchaseOrderItem": "00040",
+      "Material": "BOLT-HVY-50MM",
+      "QuantityInEntryUnit": 200,
+      "EntryUnit": "PC",
+      "AmountInDocumentCurrency": 1400.00,
+      "GRStatus": "Received"
+    }
+  ]
+}
+

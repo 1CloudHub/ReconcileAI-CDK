@@ -1,0 +1,59 @@
+{
+  "BillingDocument": "90018888",
+  "PostingDate": "2025-11-14",
+  "CompanyCode": "1000",
+  "Supplier": "SUPP-MTRL-0091",
+  "DocumentCurrency": "USD",
+  "Items": [
+    {
+      "BillingDocumentItem": "0010",
+      "ReferencePurchaseOrder": "4500031120",
+      "ReferencePurchaseOrderItem": "00010",
+      "Material": "MZ-RM-R300-02",
+      "BillingQuantity": 500,
+      "BillingQuantityUnit": "KG",
+      "InvoiceUnitPrice": 8.00,
+      "NetValueAmount": 4000.00
+    },
+    {
+      "BillingDocumentItem": "0020",
+      "ReferencePurchaseOrder": "4500031120",
+      "ReferencePurchaseOrderItem": "00020",
+      "Material": "ACT-HYD-HP40",
+      "BillingQuantity": 120,
+      "BillingQuantityUnit": "PC",
+      "InvoiceUnitPrice": 470.00,
+      "NetValueAmount": 54000.00
+    },
+    {
+      "BillingDocumentItem": "0030",
+      "ReferencePurchaseOrder": "4500031120",
+      "ReferencePurchaseOrderItem": "00030",
+      "Material": "BRG-6305-2RS",
+      "BillingQuantity": 700,
+      "BillingQuantityUnit": "PC",
+      "InvoiceUnitPrice": 18.00,
+      "NetValueAmount": 12600.00
+    },
+    {
+      "BillingDocumentItem": "0040",
+      "ReferencePurchaseOrder": "4500031120",
+      "ReferencePurchaseOrderItem": "00040",
+      "Material": "MTOR-IND-5K",
+      "BillingQuantity": 10,
+      "BillingQuantityUnit": "PC",
+      "InvoiceUnitPrice": 9800.00,
+      "NetValueAmount": 98000.00
+    },
+    {
+      "BillingDocumentItem": "0050",
+      "ReferencePurchaseOrder": "4500031120",
+      "ReferencePurchaseOrderItem": "00050",
+      "Material": "CTRL-PNL-ZX10",
+      "BillingQuantity": 5,
+      "BillingQuantityUnit": "PC",
+      "InvoiceUnitPrice": 4500.00,
+      "NetValueAmount": 22500.00
+    }
+  ]
+}

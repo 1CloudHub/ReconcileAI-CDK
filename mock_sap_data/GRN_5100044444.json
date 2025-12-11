@@ -1,0 +1,48 @@
+{
+  "MaterialDocument": "5100044444",
+  "PostingDate": "2025-10-14",
+  "CompanyCode": "1000",
+  "Items": [
+    {
+      "MaterialDocumentItem": "0001",
+      "PurchaseOrder": "4500018901",
+      "PurchaseOrderItem": "00010",
+      "Material": "HYD-PMP-300",
+      "QuantityInEntryUnit": 30,
+      "EntryUnit": "PC",
+      "AmountInDocumentCurrency": 29400.00,
+      "GRStatus": "Received"
+    },
+    {
+      "MaterialDocumentItem": "0002",
+      "PurchaseOrder": "4500018901",
+      "PurchaseOrderItem": "00020",
+      "Material": "VALVE-GATE-22",
+      "QuantityInEntryUnit": 60,
+      "EntryUnit": "PC",
+      "AmountInDocumentCurrency": 13200.00,
+      "GRStatus": "Received"
+    },
+    {
+      "MaterialDocumentItem": "0003",
+      "PurchaseOrder": "4500018901",
+      "PurchaseOrderItem": "00040",
+      "Material": "PIPE-GI-100",
+      "QuantityInEntryUnit": 100,
+      "EntryUnit": "PC",
+      "AmountInDocumentCurrency": 16500.00,
+      "GRStatus": "Received"
+    },
+    {
+      "MaterialDocumentItem": "0004",
+      "PurchaseOrder": "4500018901",
+      "PurchaseOrderItem": "00050",
+      "Material": "ELEC-CONT-3P50A",
+      "QuantityInEntryUnit": 300,
+      "EntryUnit": "PC",
+      "AmountInDocumentCurrency": 10500.00,
+      "GRStatus": "Received"
+    }
+  ]
+}
+

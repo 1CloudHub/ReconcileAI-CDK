@@ -1,0 +1,57 @@
+{
+  "MaterialDocument": "5100091123",
+  "PostingDate": "2025-11-17",
+  "CompanyCode": "1000",
+  "Items": [
+    {
+      "MaterialDocumentItem": "0001",
+      "PurchaseOrder": "4500042217",
+      "PurchaseOrderItem": "00010",
+      "Material": "BKR-300-HNDL",
+      "QuantityInEntryUnit": 110,
+      "EntryUnit": "PC",
+      "AmountInDocumentCurrency": 6750.00,
+      "GRStatus": "Partially Received"
+    },
+    {
+      "MaterialDocumentItem": "0002",
+      "PurchaseOrder": "4500042217",
+      "PurchaseOrderItem": "00020",
+      "Material": "ACT-ELEC-X120",
+      "QuantityInEntryUnit": 40,
+      "EntryUnit": "PC",
+      "AmountInDocumentCurrency": 96000.00,
+      "GRStatus": "Received"
+    },
+    {
+      "MaterialDocumentItem": "0003",
+      "PurchaseOrder": "4500042217",
+      "PurchaseOrderItem": "00030",
+      "Material": "FIL-IND-HEPA55",
+      "QuantityInEntryUnit": 2000,
+      "EntryUnit": "PC",
+      "AmountInDocumentCurrency": 16000.00,
+      "GRStatus": "Received"
+    },
+    {
+      "MaterialDocumentItem": "0004",
+      "PurchaseOrder": "4500042217",
+      "PurchaseOrderItem": "00040",
+      "Material": "BRG-6007-ZZ",
+      "QuantityInEntryUnit": 900,
+      "EntryUnit": "PC",
+      "AmountInDocumentCurrency": 10800.00,
+      "GRStatus": "Received"
+    },
+    {
+      "MaterialDocumentItem": "0005",
+      "PurchaseOrder": "4500042217",
+      "PurchaseOrderItem": "00050",
+      "Material": "MTR-SRV-2200",
+      "QuantityInEntryUnit": 20,
+      "EntryUnit": "PC",
+      "AmountInDocumentCurrency": 112000.00,
+      "GRStatus": "Received"
+    }
+  ]
+}

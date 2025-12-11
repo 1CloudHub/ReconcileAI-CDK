@@ -1,0 +1,65 @@
+{
+  "PurchaseOrder": "4500024789",
+  "Vendor": "EU_VENDOR_7710",
+  "CompanyCode": "1000",
+  "DocumentCurrency": "EUR",
+  "POHeaderNetValue": 198450.00,
+  "CreatedOn": "2025-11-03",
+  "Items": [
+    {
+      "PurchaseOrderItem": "00010",
+      "Material": "MZ-RM-R300-01",
+      "MaterialDescription": "Raw Material Module R300 – Type 01",
+      "Plant": "PL05",
+      "OrderQuantity": 250,
+      "OrderUnit": "KG",
+      "OrderPrice": 12.00,
+      "NetAmount": 3000.00,
+      "DeliveryDate": "2025-11-10"
+    },
+    {
+      "PurchaseOrderItem": "00020",
+      "Material": "ACT-AH220",
+      "MaterialDescription": "Actuator Housing – Model AH-220",
+      "Plant": "PL05",
+      "OrderQuantity": 80,
+      "OrderUnit": "PC",
+      "OrderPrice": 320.00,
+      "NetAmount": 25600.00,
+      "DeliveryDate": "2025-11-11"
+    },
+    {
+      "PurchaseOrderItem": "00030",
+      "Material": "BRG-6204-2Z",
+      "MaterialDescription": "SKF Precision Bearing 6204-2Z",
+      "Plant": "PL05",
+      "OrderQuantity": 600,
+      "OrderUnit": "PC",
+      "OrderPrice": 9.50,
+      "NetAmount": 5700.00,
+      "DeliveryDate": "2025-11-11"
+    },
+    {
+      "PurchaseOrderItem": "00040",
+      "Material": "MTR-HC-7500",
+      "MaterialDescription": "High-Capacity Motor 7.5 kW",
+      "Plant": "PL05",
+      "OrderQuantity": 15,
+      "OrderUnit": "PC",
+      "OrderPrice": 8500.00,
+      "NetAmount": 127500.00,
+      "DeliveryDate": "2025-11-12"
+    },
+    {
+      "PurchaseOrderItem": "00050",
+      "Material": "BKR-300-FRM-A",
+      "MaterialDescription": "BKR-300 Frame Assembly",
+      "Plant": "PL05",
+      "OrderQuantity": 20,
+      "OrderUnit": "PC",
+      "OrderPrice": 3200.00,
+      "NetAmount": 64000.00,
+      "DeliveryDate": "2025-11-12"
+    }
+  ]
+}

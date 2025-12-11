@@ -1,0 +1,58 @@
+{
+  "MaterialDocument": "5100022222",
+  "PostingDate": "2025-10-16",
+  "CompanyCode": "1000",
+  "Items": [
+    {
+      "MaterialDocumentItem": "0001",
+      "PurchaseOrder": "4500016789",
+      "PurchaseOrderItem": "00010",
+      "Material": "EL-CONNECT-12",
+      "QuantityInEntryUnit": 500,
+      "EntryUnit": "PC",
+      "AmountInDocumentCurrency": 6000.00,
+      "GRStatus": "Received"
+    },
+    {
+      "MaterialDocumentItem": "0002",
+      "PurchaseOrder": "4500016789",
+      "PurchaseOrderItem": "00020",
+      "Material": "DRV-MOTOR-55",
+      "QuantityInEntryUnit": 40,
+      "EntryUnit": "PC",
+      "AmountInDocumentCurrency": 74000.00,
+      "GRStatus": "Received"
+    },
+    {
+      "MaterialDocumentItem": "0003",
+      "PurchaseOrder": "4500016789",
+      "PurchaseOrderItem": "00030",
+      "Material": "SENSOR-LVL-09",
+      "QuantityInEntryUnit": 150,
+      "EntryUnit": "PC",
+      "AmountInDocumentCurrency": 21000.00,
+      "GRStatus": "Partially Received"
+    },
+    {
+      "MaterialDocumentItem": "0004",
+      "PurchaseOrder": "4500016789",
+      "PurchaseOrderItem": "00040",
+      "Material": "FRAME-CAST-77",
+      "QuantityInEntryUnit": 90,
+      "EntryUnit": "PC",
+      "AmountInDocumentCurrency": 28800.00,
+      "GRStatus": "Received"
+    },
+    {
+      "MaterialDocumentItem": "0005",
+      "PurchaseOrder": "4500016789",
+      "PurchaseOrderItem": "00050",
+      "Material": "CABLE-ASSY-40M",
+      "QuantityInEntryUnit": 150,
+      "EntryUnit": "PC",
+      "AmountInDocumentCurrency": 1440.00,
+      "GRStatus": "Received"
+    }
+  ]
+}
+

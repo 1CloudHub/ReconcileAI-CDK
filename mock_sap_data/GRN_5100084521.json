@@ -1,0 +1,47 @@
+{
+  "MaterialDocument": "5100084521",
+  "PostingDate": "2025-11-13",
+  "CompanyCode": "1000",
+  "Items": [
+    {
+      "MaterialDocumentItem": "0001",
+      "PurchaseOrder": "4500031120",
+      "PurchaseOrderItem": "00010",
+      "Material": "MZ-RM-R300-02",
+      "QuantityInEntryUnit": 500,
+      "EntryUnit": "KG",
+      "AmountInDocumentCurrency": 4000.00,
+      "GRStatus": "Received"
+    },
+    {
+      "MaterialDocumentItem": "0002",
+      "PurchaseOrder": "4500031120",
+      "PurchaseOrderItem": "00020",
+      "Material": "ACT-HYD-HP40",
+      "QuantityInEntryUnit": 120,
+      "EntryUnit": "PC",
+      "AmountInDocumentCurrency": 54000.00,
+      "GRStatus": "Received"
+    },
+    {
+      "MaterialDocumentItem": "0003",
+      "PurchaseOrder": "4500031120",
+      "PurchaseOrderItem": "00030",
+      "Material": "BRG-6305-2RS",
+      "QuantityInEntryUnit": 700,
+      "EntryUnit": "PC",
+      "AmountInDocumentCurrency": 12600.00,
+      "GRStatus": "Received"
+    },
+    {
+      "MaterialDocumentItem": "0004",
+      "PurchaseOrder": "4500031120",
+      "PurchaseOrderItem": "00050",
+      "Material": "CTRL-PNL-ZX10",
+      "QuantityInEntryUnit": 5,
+      "EntryUnit": "PC",
+      "AmountInDocumentCurrency": 22500.00,
+      "GRStatus": "Received"
+    }
+  ]
+}

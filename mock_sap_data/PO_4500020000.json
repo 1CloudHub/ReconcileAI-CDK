@@ -1,0 +1,55 @@
+{
+  "PurchaseOrder": "4500020000",
+  "Vendor": "VEND-6015",
+  "CompanyCode": "1000",
+  "DocumentCurrency": "USD",
+  "POHeaderNetValue": 128400.00,
+  "CreatedOn": "2025-10-10",
+  "Items": [
+    {
+      "PurchaseOrderItem": "00010",
+      "Material": "CNV-BELT-100",
+      "MaterialDescription": "Industrial Conveyor Belt 100 m",
+      "Plant": "PL05",
+      "OrderQuantity": 40,
+      "OrderUnit": "MTR",
+      "OrderPrice": 120.00,
+      "NetAmount": 4800.00,
+      "DeliveryDate": "2025-10-14"
+    },
+    {
+      "PurchaseOrderItem": "00020",
+      "Material": "MTR-IND-10KW",
+      "MaterialDescription": "10 kW Industrial Motor",
+      "Plant": "PL05",
+      "OrderQuantity": 30,
+      "OrderUnit": "PC",
+      "OrderPrice": 2300.00,
+      "NetAmount": 69000.00,
+      "DeliveryDate": "2025-10-14"
+    },
+    {
+      "PurchaseOrderItem": "00030",
+      "Material": "DRV-VFD-10KW",
+      "MaterialDescription": "VFD Drive 10 kW",
+      "Plant": "PL05",
+      "OrderQuantity": 30,
+      "OrderUnit": "PC",
+      "OrderPrice": 1840.00,
+      "NetAmount": 55200.00,
+      "DeliveryDate": "2025-10-14"
+    },
+    {
+      "PurchaseOrderItem": "00040",
+      "Material": "BOLT-HVY-50MM",
+      "MaterialDescription": "Heavy-Duty Bolt 50 mm",
+      "Plant": "PL05",
+      "OrderQuantity": 200,
+      "OrderUnit": "PC",
+      "OrderPrice": 7.00,
+      "NetAmount": 1400.00,
+      "DeliveryDate": "2025-10-14"
+    }
+  ]
+}
+

@@ -1,0 +1,60 @@
+{
+  "BillingDocument": "90007777",
+  "PostingDate": "2025-10-22",
+  "CompanyCode": "1000",
+  "Supplier": "VEND-1001",
+  "DocumentCurrency": "USD",
+  "Items": [
+    {
+      "BillingDocumentItem": "0010",
+      "ReferencePurchaseOrder": "4500012345",
+      "ReferencePurchaseOrderItem": "00010",
+      "Material": "MZ-RM-R300-01",
+      "BillingQuantity": 100,
+      "BillingQuantityUnit": "PC",
+      "InvoiceUnitPrice": 100.00,
+      "NetValueAmount": 10000.00
+    },
+    {
+      "BillingDocumentItem": "0020",
+      "ReferencePurchaseOrder": "4500012345",
+      "ReferencePurchaseOrderItem": "00020",
+      "Material": "MZ-RM-R310-07",
+      "BillingQuantity": 50,
+      "BillingQuantityUnit": "PC",
+      "InvoiceUnitPrice": 275.00,
+      "NetValueAmount": 13750.00
+    },
+    {
+      "BillingDocumentItem": "0030",
+      "ReferencePurchaseOrder": "4500012345",
+      "ReferencePurchaseOrderItem": "00030",
+      "Material": "MZ-RM-R322-12",
+      "BillingQuantity": 75,
+      "BillingQuantityUnit": "PC",
+      "InvoiceUnitPrice": 201.99,
+      "NetValueAmount": 15149.25
+    },
+    {
+      "BillingDocumentItem": "0040",
+      "ReferencePurchaseOrder": "4500012345",
+      "ReferencePurchaseOrderItem": "00040",
+      "Material": "MZ-EL-CTRL-88",
+      "BillingQuantity": 120,
+      "BillingQuantityUnit": "PC",
+      "InvoiceUnitPrice": 180.00,
+      "NetValueAmount": 21600.00
+    },
+    {
+      "BillingDocumentItem": "0050",
+      "ReferencePurchaseOrder": "4500012345",
+      "ReferencePurchaseOrderItem": "00050",
+      "Material": "MZ-ASM-GEAR-44",
+      "BillingQuantity": 60,
+      "BillingQuantityUnit": "PC",
+      "InvoiceUnitPrice": 420.00,
+      "NetValueAmount": 25200.00
+    }
+  ]
+}
+

@@ -1,0 +1,47 @@
+{
+  "MaterialDocument": "5100067890",
+  "PostingDate": "2025-11-11",
+  "CompanyCode": "1000",
+  "Items": [
+    {
+      "MaterialDocumentItem": "0001",
+      "PurchaseOrder": "4500024789",
+      "PurchaseOrderItem": "00010",
+      "Material": "MZ-RM-R300-01",
+      "QuantityInEntryUnit": 250,
+      "EntryUnit": "KG",
+      "AmountInDocumentCurrency": 3000.00,
+      "GRStatus": "Received"
+    },
+    {
+      "MaterialDocumentItem": "0002",
+      "PurchaseOrder": "4500024789",
+      "PurchaseOrderItem": "00020",
+      "Material": "ACT-AH220",
+      "QuantityInEntryUnit": 60,
+      "EntryUnit": "PC",
+      "AmountInDocumentCurrency": 25600.00,
+      "GRStatus": "Partially Received"
+    },
+    {
+      "MaterialDocumentItem": "0003",
+      "PurchaseOrder": "4500024789",
+      "PurchaseOrderItem": "00030",
+      "Material": "BRG-6204-2Z",
+      "QuantityInEntryUnit": 600,
+      "EntryUnit": "PC",
+      "AmountInDocumentCurrency": 5700.00,
+      "GRStatus": "Received"
+    },
+    {
+      "MaterialDocumentItem": "0004",
+      "PurchaseOrder": "4500024789",
+      "PurchaseOrderItem": "00040",
+      "Material": "MTR-HC-7500",
+      "QuantityInEntryUnit": 15,
+      "EntryUnit": "PC",
+      "AmountInDocumentCurrency": 127500.00,
+      "GRStatus": "Received"
+    }
+  ]
+}

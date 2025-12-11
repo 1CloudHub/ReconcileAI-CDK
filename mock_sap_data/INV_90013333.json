@@ -1,0 +1,50 @@
+{
+  "BillingDocument": "90013333",
+  "PostingDate": "2025-10-14",
+  "CompanyCode": "1000",
+  "Supplier": "VEND-6015",
+  "DocumentCurrency": "USD",
+  "Items": [
+    {
+      "BillingDocumentItem": "0010",
+      "ReferencePurchaseOrder": "4500020000",
+      "ReferencePurchaseOrderItem": "00010",
+      "Material": "CNV-BELT-100",
+      "BillingQuantity": 40,
+      "BillingQuantityUnit": "MTR",
+      "InvoiceUnitPrice": 120.00,
+      "NetValueAmount": 4800.00
+    },
+    {
+      "BillingDocumentItem": "0020",
+      "ReferencePurchaseOrder": "4500020000",
+      "ReferencePurchaseOrderItem": "00020",
+      "Material": "MTR-IND-10KW",
+      "BillingQuantity": 30,
+      "BillingQuantityUnit": "PC",
+      "InvoiceUnitPrice": 2300.00,
+      "NetValueAmount": 69000.00
+    },
+    {
+      "BillingDocumentItem": "0030",
+      "ReferencePurchaseOrder": "4500020000",
+      "ReferencePurchaseOrderItem": "00030",
+      "Material": "DRV-VFD-10KW",
+      "BillingQuantity": 30,
+      "BillingQuantityUnit": "PC",
+      "InvoiceUnitPrice": 1840.00,
+      "NetValueAmount": 55200.00
+    },
+    {
+      "BillingDocumentItem": "0040",
+      "ReferencePurchaseOrder": "4500020000",
+      "ReferencePurchaseOrderItem": "00040",
+      "Material": "BOLT-HVY-50MM",
+      "BillingQuantity": 200,
+      "BillingQuantityUnit": "PC",
+      "InvoiceUnitPrice": 7.00,
+      "NetValueAmount": 1400.00
+    }
+  ]
+}
+

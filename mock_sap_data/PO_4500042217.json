@@ -1,0 +1,65 @@
+{
+  "PurchaseOrder": "4500042217",
+  "Vendor": "US_SUPP_00421",
+  "CompanyCode": "1000",
+  "DocumentCurrency": "USD",
+  "POHeaderNetValue": 232750.00,
+  "CreatedOn": "2025-11-08",
+  "Items": [
+    {
+      "PurchaseOrderItem": "00010",
+      "Material": "BKR-300-HNDL",
+      "MaterialDescription": "BKR-300 Handle Bar Assembly",
+      "Plant": "PL06",
+      "OrderQuantity": 150,
+      "OrderUnit": "PC",
+      "OrderPrice": 45.00,
+      "NetAmount": 6750.00,
+      "DeliveryDate": "2025-11-16"
+    },
+    {
+      "PurchaseOrderItem": "00020",
+      "Material": "ACT-ELEC-X120",
+      "MaterialDescription": "Electrical Actuator Model X120",
+      "Plant": "PL06",
+      "OrderQuantity": 40,
+      "OrderUnit": "PC",
+      "OrderPrice": 2400.00,
+      "NetAmount": 96000.00,
+      "DeliveryDate": "2025-11-16"
+    },
+    {
+      "PurchaseOrderItem": "00030",
+      "Material": "FIL-IND-HEPA55",
+      "MaterialDescription": "Industrial HEPA Filtration Cartridge 55",
+      "Plant": "PL06",
+      "OrderQuantity": 200,
+      "OrderUnit": "BOX",
+      "OrderPrice": 80.00,
+      "NetAmount": 16000.00,
+      "DeliveryDate": "2025-11-17"
+    },
+    {
+      "PurchaseOrderItem": "00040",
+      "Material": "BRG-6007-ZZ",
+      "MaterialDescription": "SKF Precision Bearing 6007-ZZ",
+      "Plant": "PL06",
+      "OrderQuantity": 900,
+      "OrderUnit": "PC",
+      "OrderPrice": 12.00,
+      "NetAmount": 10800.00,
+      "DeliveryDate": "2025-11-18"
+    },
+    {
+      "PurchaseOrderItem": "00050",
+      "Material": "MTR-SRV-2200",
+      "MaterialDescription": "Servo Motor Unit 2200 RPM",
+      "Plant": "PL06",
+      "OrderQuantity": 20,
+      "OrderUnit": "PC",
+      "OrderPrice": 5600.00,
+      "NetAmount": 112000.00,
+      "DeliveryDate": "2025-11-19"
+    }
+  ]
+}

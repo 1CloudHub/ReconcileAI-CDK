@@ -1,0 +1,58 @@
+{
+  "MaterialDocument": "5100011111",
+  "PostingDate": "2025-10-21",
+  "CompanyCode": "1000",
+  "Items": [
+    {
+      "MaterialDocumentItem": "0001",
+      "PurchaseOrder": "4500012345",
+      "PurchaseOrderItem": "00010",
+      "Material": "MZ-RM-R300-01",
+      "QuantityInEntryUnit": 100,
+      "EntryUnit": "PC",
+      "AmountInDocumentCurrency": 10000.00,
+      "GRStatus": "Received"
+    },
+    {
+      "MaterialDocumentItem": "0002",
+      "PurchaseOrder": "4500012345",
+      "PurchaseOrderItem": "00020",
+      "Material": "MZ-RM-R310-07",
+      "QuantityInEntryUnit": 50,
+      "EntryUnit": "PC",
+      "AmountInDocumentCurrency": 12500.00,
+      "GRStatus": "Received"
+    },
+    {
+      "MaterialDocumentItem": "0003",
+      "PurchaseOrder": "4500012345",
+      "PurchaseOrderItem": "00030",
+      "Material": "MZ-RM-R322-12",
+      "QuantityInEntryUnit": 75,
+      "EntryUnit": "PC",
+      "AmountInDocumentCurrency": 15149.25,
+      "GRStatus": "Received"
+    },
+    {
+      "MaterialDocumentItem": "0004",
+      "PurchaseOrder": "4500012345",
+      "PurchaseOrderItem": "00040",
+      "Material": "MZ-EL-CTRL-88",
+      "QuantityInEntryUnit": 120,
+      "EntryUnit": "PC",
+      "AmountInDocumentCurrency": 21600.00,
+      "GRStatus": "Received"
+    },
+    {
+      "MaterialDocumentItem": "0005",
+      "PurchaseOrder": "4500012345",
+      "PurchaseOrderItem": "00050",
+      "Material": "MZ-ASM-GEAR-44",
+      "QuantityInEntryUnit": 60,
+      "EntryUnit": "PC",
+      "AmountInDocumentCurrency": 25200.00,
+      "GRStatus": "Received"
+    }
+  ]
+}
+

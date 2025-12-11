@@ -1,0 +1,59 @@
+{
+  "BillingDocument": "90017771",
+  "PostingDate": "2025-11-18",
+  "CompanyCode": "1000",
+  "Supplier": "US_SUPP_00421",
+  "DocumentCurrency": "USD",
+  "Items": [
+    {
+      "BillingDocumentItem": "0010",
+      "ReferencePurchaseOrder": "4500042217",
+      "ReferencePurchaseOrderItem": "00010",
+      "Material": "BKR-300-HNDL",
+      "BillingQuantity": 150,
+      "BillingQuantityUnit": "PC",
+      "InvoiceUnitPrice": 45.00,
+      "NetValueAmount": 6750.00
+    },
+    {
+      "BillingDocumentItem": "0020",
+      "ReferencePurchaseOrder": "4500042217",
+      "ReferencePurchaseOrderItem": "00020",
+      "Material": "ACT-ELEC-X120",
+      "BillingQuantity": 40,
+      "BillingQuantityUnit": "PC",
+      "InvoiceUnitPrice": 2650.00,
+      "NetValueAmount": 96000.00
+    },
+    {
+      "BillingDocumentItem": "0030",
+      "ReferencePurchaseOrder": "4500042217",
+      "ReferencePurchaseOrderItem": "00030",
+      "Material": "FIL-IND-HEPA55",
+      "BillingQuantity": 200,
+      "BillingQuantityUnit": "BOX",
+      "InvoiceUnitPrice": 80.00,
+      "NetValueAmount": 16000.00
+    },
+    {
+      "BillingDocumentItem": "0040",
+      "ReferencePurchaseOrder": "4500042217",
+      "ReferencePurchaseOrderItem": "00040",
+      "Material": "BRG-6007-ZZ",
+      "BillingQuantity": 900,
+      "BillingQuantityUnit": "PC",
+      "InvoiceUnitPrice": 12.00,
+      "NetValueAmount": 10800.00
+    },
+    {
+      "BillingDocumentItem": "0050",
+      "ReferencePurchaseOrder": "4500042217",
+      "ReferencePurchaseOrderItem": "00050",
+      "Material": "MTR-SRV-2200",
+      "BillingQuantity": 20,
+      "BillingQuantityUnit": "PC",
+      "InvoiceUnitPrice": 5600.00,
+      "NetValueAmount": 112000.00
+    }
+  ]
+}

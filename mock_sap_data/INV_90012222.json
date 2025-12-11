@@ -1,0 +1,65 @@
+{
+  "BillingDocument": "90012222",
+  "PostingDate": "2025-10-16",
+  "CompanyCode": "1000",
+  "Supplier": "VEND-5209",
+  "DocumentCurrency": "USD",
+  "Items": [
+    {
+      "BillingDocumentItem": "0010",
+      "ReferencePurchaseOrder": "4500000005",
+      "ReferencePurchaseOrderItem": "00010",
+      "Material": "OFF-SPLY-PRNT",
+      "MaterialDescription": "Printer Toner Cartridge – Office Supplies",
+      "BillingQuantity": 25,
+      "BillingQuantityUnit": "PC",
+      "InvoiceUnitPrice": 65.00,
+      "NetValueAmount": 1625.00
+    },
+    {
+      "BillingDocumentItem": "0020",
+      "ReferencePurchaseOrder": "4500000005",
+      "ReferencePurchaseOrderItem": "00020",
+      "Material": "OFF-FURN-CHR",
+      "MaterialDescription": "Ergonomic Office Chair",
+      "BillingQuantity": 10,
+      "BillingQuantityUnit": "PC",
+      "InvoiceUnitPrice": 320.00,
+      "NetValueAmount": 3200.00
+    },
+    {
+      "BillingDocumentItem": "0030",
+      "ReferencePurchaseOrder": "4500000005",
+      "ReferencePurchaseOrderItem": "00030",
+      "Material": "CONS-IT-CBL",
+      "MaterialDescription": "Quarterly HVAC Maintenance Service",
+      "BillingQuantity": 1,
+      "BillingQuantityUnit": "ROLL",
+      "InvoiceUnitPrice": 4800.00,
+      "NetValueAmount": 4800.00
+    },
+    {
+      "BillingDocumentItem": "0040",
+      "ReferencePurchaseOrder": "4500000005",
+      "ReferencePurchaseOrderItem": "00040",
+      "Material": "CONS-IT-CBL",
+      "MaterialDescription": "Cat6 LAN Cable Roll (305 m)",
+      "BillingQuantity": 5,
+      "BillingQuantityUnit": "ROLL",
+      "InvoiceUnitPrice": 145.00,
+      "NetValueAmount": 725.00
+    },
+    {
+      "BillingDocumentItem": "0050",
+      "ReferencePurchaseOrder": "4500000005",
+      "ReferencePurchaseOrderItem": "00050",
+      "Material": "SERV-CLEAN-MTH",
+      "MaterialDescription": "Monthly Cleaning Services – October 2025",
+      "BillingQuantity": 1,
+      "BillingQuantityUnit": "MTH",
+      "InvoiceUnitPrice": 2600.00,
+      "NetValueAmount": 2600.00
+    }
+  ]
+}
+

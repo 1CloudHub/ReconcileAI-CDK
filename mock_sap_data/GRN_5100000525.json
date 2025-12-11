@@ -1,0 +1,57 @@
+{
+    "MaterialDocument": "5100000525",
+    "PostingDate": "2025-10-15",
+    "CompanyCode": "1000",
+    "Items": [
+        {
+            "MaterialDocumentItem": "0001",
+            "PurchaseOrder": "4500000005",
+            "PurchaseOrderItem": "",
+            "Material": "OFF-SPLY-PRNT",
+            "QuantityInEntryUnit": 25,
+            "EntryUnit": "PC",
+            "AmountInDocumentCurrency": 1625.0,
+            "GRStatus": "Received"
+        },
+        {
+            "MaterialDocumentItem": "0002",
+            "PurchaseOrder": "4500000005",
+            "PurchaseOrderItem": "",
+            "Material": "OFF-FURN-CHR",
+            "QuantityInEntryUnit": 10,
+            "EntryUnit": "PC",
+            "AmountInDocumentCurrency": 3200.0,
+            "GRStatus": "Received"
+        },
+        {
+            "MaterialDocumentItem": "0003",
+            "PurchaseOrder": "4500000005",
+            "PurchaseOrderItem": "",
+            "Material": "CONS-IT-CBL",
+            "QuantityInEntryUnit": 5,
+            "EntryUnit": "ROLL",
+            "AmountInDocumentCurrency": 725.0,
+            "GRStatus": "Received"
+        },
+        {
+            "MaterialDocumentItem": "0004",
+            "PurchaseOrder": "4500000005",
+            "PurchaseOrderItem": "",
+            "Material": "SERV-MAINT-Q4",
+            "QuantityInEntryUnit": 1,
+            "EntryUnit": "JOB",
+            "AmountInDocumentCurrency": 4800.0,
+            "GRStatus": "Received"
+        },
+        {
+            "MaterialDocumentItem": "0005",
+            "PurchaseOrder": "4500000005",
+            "PurchaseOrderItem": "",
+            "Material": "SERV-CLEAN-MTH",
+            "QuantityInEntryUnit": 1,
+            "EntryUnit": "MTH",
+            "AmountInDocumentCurrency": 2600.0,
+            "GRStatus": "Received"
+        }
+    ]
+}

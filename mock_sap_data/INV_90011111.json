@@ -1,0 +1,60 @@
+{
+  "BillingDocument": "90011111",
+  "PostingDate": "2025-10-15",
+  "CompanyCode": "1000",
+  "Supplier": "VEND-4120",
+  "DocumentCurrency": "USD",
+  "Items": [
+    {
+      "BillingDocumentItem": "0010",
+      "ReferencePurchaseOrder": "4500018901",
+      "ReferencePurchaseOrderItem": "00010",
+      "Material": "HYD-PMP-300",
+      "BillingQuantity": 30,
+      "BillingQuantityUnit": "PC",
+      "InvoiceUnitPrice": 980.00,
+      "NetValueAmount": 29400.00
+    },
+    {
+      "BillingDocumentItem": "0020",
+      "ReferencePurchaseOrder": "4500018901",
+      "ReferencePurchaseOrderItem": "00020",
+      "Material": "VALVE-GATE-22",
+      "BillingQuantity": 60,
+      "BillingQuantityUnit": "PC",
+      "InvoiceUnitPrice": 220.00,
+      "NetValueAmount": 13200.00
+    },
+    {
+      "BillingDocumentItem": "0030",
+      "ReferencePurchaseOrder": "4500018901",
+      "ReferencePurchaseOrderItem": "00030",
+      "Material": "COMP-AIR-750",
+      "BillingQuantity": 10,
+      "BillingQuantityUnit": "PC",
+      "InvoiceUnitPrice": 8900.00,
+      "NetValueAmount": 89000.00
+    },
+    {
+      "BillingDocumentItem": "0040",
+      "ReferencePurchaseOrder": "4500018901",
+      "ReferencePurchaseOrderItem": "00040",
+      "Material": "PIPE-GI-100",
+      "BillingQuantity": 100,
+      "BillingQuantityUnit": "PC",
+      "InvoiceUnitPrice": 165.00,
+      "NetValueAmount": 16500.00
+    },
+    {
+      "BillingDocumentItem": "0050",
+      "ReferencePurchaseOrder": "4500018901",
+      "ReferencePurchaseOrderItem": "00050",
+      "Material": "ELEC-CONT-3P50A",
+      "BillingQuantity": 300,
+      "BillingQuantityUnit": "PC",
+      "InvoiceUnitPrice": 35.00,
+      "NetValueAmount": 10500.00
+    }
+  ]
+}
+

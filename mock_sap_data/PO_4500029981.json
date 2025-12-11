@@ -1,0 +1,65 @@
+{
+  "PurchaseOrder": "4500029981",
+  "Vendor": "SUPP-MTRL-0091",
+  "CompanyCode": "1000",
+  "DocumentCurrency": "USD",
+  "POHeaderNetValue": 129850.00,
+  "CreatedOn": "2025-11-08",
+  "Items": [
+    {
+      "PurchaseOrderItem": "00010",
+      "Material": "MZ-RM-R300-02",
+      "MaterialDescription": "Raw Material Module R300 – Type 02",
+      "Plant": "PL07",
+      "OrderQuantity": 500,
+      "OrderUnit": "KG",
+      "OrderPrice": 8.50,
+      "NetAmount": 4250.00,
+      "DeliveryDate": "2025-11-14"
+    },
+    {
+      "PurchaseOrderItem": "00020",
+      "Material": "ACT-AH330",
+      "MaterialDescription": "Actuator Housing – Model AH-330",
+      "Plant": "PL07",
+      "OrderQuantity": 120,
+      "OrderUnit": "PC",
+      "OrderPrice": 450.00,
+      "NetAmount": 54000.00,
+      "DeliveryDate": "2025-11-15"
+    },
+    {
+      "PurchaseOrderItem": "00030",
+      "Material": "FLT-IND-500BX",
+      "MaterialDescription": "Industrial Filter Pack (Box of 10)",
+      "Plant": "PL07",
+      "OrderQuantity": 50,
+      "OrderUnit": "BOX",
+      "OrderPrice": 220.00,
+      "NetAmount": 11000.00,
+      "DeliveryDate": "2025-11-15"
+    },
+    {
+      "PurchaseOrderItem": "00040",
+      "Material": "BRG-6305-2RS",
+      "MaterialDescription": "SKF Precision Bearing 6305-2RS",
+      "Plant": "PL07",
+      "OrderQuantity": 300,
+      "OrderUnit": "PC",
+      "OrderPrice": 12.50,
+      "NetAmount": 3750.00,
+      "DeliveryDate": "2025-11-16"
+    },
+    {
+      "PurchaseOrderItem": "00050",
+      "Material": "BKR-300-HNDL",
+      "MaterialDescription": "BKR-300 Handle Bars Assembly",
+      "Plant": "PL07",
+      "OrderQuantity": 20,
+      "OrderUnit": "PC",
+      "OrderPrice": 2750.00,
+      "NetAmount": 55000.00,
+      "DeliveryDate": "2025-11-17"
+    }
+  ]
+}

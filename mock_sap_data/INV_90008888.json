@@ -1,0 +1,60 @@
+{
+  "BillingDocument": "90008888",
+  "PostingDate": "2025-10-17",
+  "CompanyCode": "1000",
+  "Supplier": "VEND-2042",
+  "DocumentCurrency": "USD",
+  "Items": [
+    {
+      "BillingDocumentItem": "0010",
+      "ReferencePurchaseOrder": "4500016789",
+      "ReferencePurchaseOrderItem": "00010",
+      "Material": "EL-CONNECT-12",
+      "BillingQuantity": 500,
+      "BillingQuantityUnit": "PC",
+      "InvoiceUnitPrice": 12.00,
+      "NetValueAmount": 6000.00
+    },
+    {
+      "BillingDocumentItem": "0020",
+      "ReferencePurchaseOrder": "4500016789",
+      "ReferencePurchaseOrderItem": "00020",
+      "Material": "DRV-MOTOR-55",
+      "BillingQuantity": 40,
+      "BillingQuantityUnit": "PC",
+      "InvoiceUnitPrice": 1850.00,
+      "NetValueAmount": 74000.00
+    },
+    {
+      "BillingDocumentItem": "0030",
+      "ReferencePurchaseOrder": "4500016789",
+      "ReferencePurchaseOrderItem": "00030",
+      "Material": "SENSOR-LVL-09",
+      "BillingQuantity": 200,
+      "BillingQuantityUnit": "PC",
+      "InvoiceUnitPrice": 140.00,
+      "NetValueAmount": 28000.00
+    },
+    {
+      "BillingDocumentItem": "0040",
+      "ReferencePurchaseOrder": "4500016789",
+      "ReferencePurchaseOrderItem": "00040",
+      "Material": "FRAME-CAST-77",
+      "BillingQuantity": 90,
+      "BillingQuantityUnit": "PC",
+      "InvoiceUnitPrice": 320.00,
+      "NetValueAmount": 28800.00
+    },
+    {
+      "BillingDocumentItem": "0050",
+      "ReferencePurchaseOrder": "4500016789",
+      "ReferencePurchaseOrderItem": "00050",
+      "Material": "CABLE-ASSY-40M",
+      "BillingQuantity": 150,
+      "BillingQuantityUnit": "PC",
+      "InvoiceUnitPrice": 9.60,
+      "NetValueAmount": 1440.00
+    }
+  ]
+}
+
