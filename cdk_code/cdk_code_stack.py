@@ -375,6 +375,22 @@ class CdkCodeStack(Stack):
         reconcileai_lambda_function.add_layers(boto3_layer)
         reconcileai_lambda_function.add_layers(mcp_v2_layer)
         
+        websocket_lambda = lambda_.Function(
+            self,
+            "WebSocketHandlerLambda",
+            function_name="websocket_handler_" + lambda_safe_key,
+            runtime=lambda_.Runtime.PYTHON_3_12,
+            handler="websocket_handler.lambda_handler",  # file: websocket_handler.py
+            code=lambda_.Code.from_asset("lambda"),
+            timeout=Duration.seconds(30),
+            role=lambda_role,  # reuse your existing Lambda role
+            environment={
+                "WEBSOCKET_REGION": self.region,
+                # Endpoint will be filled after API is created
+                "WEBSOCKET_ENDPOINT": ""  
+            }
+        )
+        
         
         #REST API
         sap_api = apigateway.RestApi(
@@ -382,66 +398,123 @@ class CdkCodeStack(Stack):
             rest_api_name="sap_rest_api",
             description="API Gateway for SAP data access",
             binary_media_types=["multipart/form-data"],
-            default_cors_preflight_options=apigateway.CorsOptions(
-                allow_origins=["*"],
-                allow_methods=["GET", "POST", "PUT", "DELETE", "OPTIONS"],
-                allow_headers=["*"],
-                allow_credentials=False,
-                max_age=Duration.seconds(86400)
-                ),
             deploy_options=apigateway.StageOptions(
                 stage_name="dev",
                 logging_level=apigateway.MethodLoggingLevel.OFF,
                 data_trace_enabled=False
                 )
             )
-        
-        
-        
-        
-        
-        # Create WebSocket API Gateway using API Gateway v2
-        # websocket_api = apigatewayv2.WebSocketApi(
-        #     self, "SAPWebSocketAPI"+unique_key,
-        #     api_name="SAP_ws"+unique_key
-        # )
+        #/erp resource starts here
+        erp_resource = sap_api.root.add_resource("ERP")
 
-        # # Add routes to the WebSocket API
-        # websocket_api.add_route(
-        #     "$connect",
-        #     integration=apigatewayv2_integrations.WebSocketLambdaIntegration(
-        #         "ConnectIntegration",
-        #         websocket_lambda_function
-        #     )
-        # )
+        # OPTIONS (CORS Preflight)
+        erp_resource.add_method(
+            "OPTIONS",
+            apigateway.MockIntegration(
+                integration_responses=[
+                    apigateway.IntegrationResponse(
+                        status_code="200",
+                        response_parameters={
+                            "method.response.header.Access-Control-Allow-Headers": "'*'",
+                            "method.response.header.Access-Control-Allow-Methods": "'OPTIONS,POST'",
+                            "method.response.header.Access-Control-Allow-Origin": "'*'"
+                        },
+                        response_templates={
+                            "application/json": ""
+                        }
+                    )
+                ],
+                passthrough_behavior=apigateway.PassthroughBehavior.WHEN_NO_MATCH,
+                request_templates={"application/json": "{\"statusCode\": 200}"}
+            ),
+            method_responses=[
+                apigateway.MethodResponse(
+                    status_code="200",
+                    response_parameters={
+                        "method.response.header.Access-Control-Allow-Headers": True,
+                        "method.response.header.Access-Control-Allow-Methods": True,
+                        "method.response.header.Access-Control-Allow-Origin": True
+                    }
+                )
+            ]
+        )
 
-        # websocket_api.add_route(
-        #     "$disconnect",
-        #     integration=apigatewayv2_integrations.WebSocketLambdaIntegration(
-        #         "DisconnectIntegration",
-        #         websocket_lambda_function
-        #     )
-        # )
+        # POST (Lambda Integration)
+        erp_resource.add_method(
+            "POST",
+            apigateway.LambdaIntegration(reconcileai_lambda_function),
+            authorization_type=apigateway.AuthorizationType.NONE,
+            method_responses=[
+                apigateway.MethodResponse(status_code="200")
+            ]
+        )
+        
+        
+        #erp resource ends here
 
-        # websocket_api.add_route(
-        #     "$default",
-        #     integration=apigatewayv2_integrations.WebSocketLambdaIntegration(
-        #         "DefaultIntegration",
-        #         websocket_lambda_function
-        #     )
-        # )
 
-        # # Create WebSocket Stage
-        # websocket_stage = apigatewayv2.WebSocketStage(
-        #     self, "WebSocketStage",
-        #     web_socket_api=websocket_api,
-        #     stage_name="dev",
-        #     auto_deploy=True
-        # )
+        websocket_api = apigatewayv2.WebSocketApi(
+            self,
+            "SAPWebSocketAPI" + unique_key,
+            api_name="SAP_ws_" + unique_key,
+        )
+        
+        # $connect
+        websocket_api.add_route(
+            "$connect",
+            integration=apigatewayv2_integrations.WebSocketLambdaIntegration(
+                "WSConnectIntegration",
+                websocket_lambda
+            )
+        )
+
+        # $disconnect
+        websocket_api.add_route(
+            "$disconnect",
+            integration=apigatewayv2_integrations.WebSocketLambdaIntegration(
+                "WSDisconnectIntegration",
+                websocket_lambda
+            )
+        )
+
+        # $default
+        websocket_api.add_route(
+            "$default",
+            integration=apigatewayv2_integrations.WebSocketLambdaIntegration(
+                "WSDefaultIntegration",
+                websocket_lambda
+            )
+        )
+
+        # Custom route: sendMessage
+        websocket_api.add_route(
+            "sendMessage",
+            integration=apigatewayv2_integrations.WebSocketLambdaIntegration(
+                "WSSendMessageIntegration",
+                websocket_lambda
+            )
+        )
         
         
+        websocket_stage = apigatewayv2.WebSocketStage(
+            self,
+            "SAPWebSocketStage",
+            web_socket_api=websocket_api,
+            stage_name="dev",
+            auto_deploy=True
+        )
+        
+        websocket_lambda.add_permission(
+            "InvokeByWebSocketAPI",
+            principal=iam.ServicePrincipal("apigateway.amazonaws.com"),
+            action="lambda:InvokeFunction",
+            source_arn=f"arn:aws:execute-api:{self.region}:{self.account}:{websocket_api.api_id}/*"
+        )
         
         
+        websocket_url = f"wss://{websocket_api.api_id}.execute-api.{self.region}.amazonaws.com/dev"
+
+        websocket_lambda.add_environment("WEBSOCKET_ENDPOINT", websocket_url)
         
         # Create RDS PostgreSQL instance
         db_instance = rds.DatabaseInstance(
@@ -469,6 +542,18 @@ class CdkCodeStack(Stack):
             database_name=rds_safe_key
         )
         
+        
+        
+        
+        
+        
+        
+        CfnOutput(
+            self,
+            "WebSocketURL",
+            value=websocket_url,
+            description="WebSocket connection URL"
+        )
         
         
         
