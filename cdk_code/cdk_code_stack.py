@@ -315,8 +315,7 @@ class CdkCodeStack(Stack):
             "AmazonRDSFullAccess",
             "AmazonS3FullAccess",
             "AmazonSESFullAccess",
-            "AWSLambdaBasicExecutionRole",          # CloudWatch logs
-            "AWSLambdaVPCAccessExecutionRole"       # ENIs for VPC access
+            "service-role/AWSLambdaVPCAccessExecutionRole"       # ENIs for VPC access
         ]
         
         for policy_name in managed_policies:
@@ -341,7 +340,7 @@ class CdkCodeStack(Stack):
             self,
             "Boto3Layer",
             layer_version_name="boto3-layer-" + unique_key,
-            code=lambda_.Code.from_asset("lambda_layers/boto3-64fd0dfe-6f45-4add-9606-ec754b8b550f"),
+            code=lambda_.Code.from_asset("lambda_layers/boto3.zip"),
             compatible_runtimes=[lambda_.Runtime.PYTHON_3_12],
             description="Boto3 and botocore upgraded layer"
         )
@@ -350,7 +349,7 @@ class CdkCodeStack(Stack):
             self,
             "McpV2Layer",
             layer_version_name="mcp-v2-layer-" + unique_key,
-            code=lambda_.Code.from_asset("lambda_layers/mcp_v2-c8655662-885c-44dc-b2ad-774bdd8fa70b"),
+            code=lambda_.Code.from_asset("lambda_layers/mcp_v2.zip"),
             compatible_runtimes=[lambda_.Runtime.PYTHON_3_12],
             description="MCP v2 SDK dependency layer"
         )
@@ -368,11 +367,7 @@ class CdkCodeStack(Stack):
             role=lambda_role,
             environment={
                 "DATA_BUCKET_NAME": data_bucket.bucket_name,
-                "FRONTEND_BUCKET_NAME": frontend_bucket.bucket_name,
-                "RDS_HOST": db_instance.db_instance_endpoint_address,
-                "RDS_PORT": str(db_instance.db_instance_endpoint_port),
-                "RDS_DB_NAME": rds_safe_key,
-                "RDS_SECRET_NAME": f"rds-credentials-{unique_key}"
+                "FRONTEND_BUCKET_NAME": frontend_bucket.bucket_name
             }
             
         )
@@ -386,8 +381,7 @@ class CdkCodeStack(Stack):
             self, "sapapigateway",
             rest_api_name="sap_rest_api",
             description="API Gateway for SAP data access",
-            deploy_options=apigateway.StageOptions(
-                binary_media_types=["multipart/form-data"],
+            binary_media_types=["multipart/form-data"],
             default_cors_preflight_options=apigateway.CorsOptions(
                 allow_origins=["*"],
                 allow_methods=["GET", "POST", "PUT", "DELETE", "OPTIONS"],
@@ -401,7 +395,6 @@ class CdkCodeStack(Stack):
                 data_trace_enabled=False
                 )
             )
-        )
         
         
         
@@ -473,7 +466,7 @@ class CdkCodeStack(Stack):
             delete_automated_backups=False,
             backup_retention=Duration.days(7),
             removal_policy=RemovalPolicy.DESTROY,
-            database_name=rds_name_key
+            database_name=rds_safe_key
         )
         
         
