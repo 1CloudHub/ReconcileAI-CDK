@@ -1,0 +1,59 @@
+{
+  "BillingDocument": "90032221",
+  "PostingDate": "2025-08-18",
+  "CompanyCode": "3700",
+  "Supplier": "SUPP-ROBOT-6621",
+  "DocumentCurrency": "USD",
+  "Items": [
+    {
+      "BillingDocumentItem": "0010",
+      "ReferencePurchaseOrder": "4600622107",
+      "ReferencePurchaseOrderItem": "00010",
+      "Material": "ACT-SERVO-4400",
+      "BillingQuantity": 120,
+      "BillingQuantityUnit": "EA",
+      "InvoiceUnitPrice": 110.00,
+      "NetValueAmount": 13200.00
+    },
+    {
+      "BillingDocumentItem": "0020",
+      "ReferencePurchaseOrder": "4600622107",
+      "ReferencePurchaseOrderItem": "00020",
+      "Material": "SEN-THERM-8801",
+      "BillingQuantity": 135,
+      "BillingQuantityUnit": "EA",
+      "InvoiceUnitPrice": 140.00,
+      "NetValueAmount": 18900.00
+    },
+    {
+      "BillingDocumentItem": "0030",
+      "ReferencePurchaseOrder": "4600622107",
+      "ReferencePurchaseOrderItem": "00030",
+      "Material": "FLT-COOL-5522",
+      "BillingQuantity": 240,
+      "BillingQuantityUnit": "EA",
+      "InvoiceUnitPrice": 30.00,
+      "NetValueAmount": 7200.00
+    },
+    {
+      "BillingDocumentItem": "0040",
+      "ReferencePurchaseOrder": "4600622107",
+      "ReferencePurchaseOrderItem": "00040",
+      "Material": "BRG-SMTH-7720",
+      "BillingQuantity": 75,
+      "BillingQuantityUnit": "EA",
+      "InvoiceUnitPrice": 70.00,
+      "NetValueAmount": 5250.00
+    },
+    {
+      "BillingDocumentItem": "0050",
+      "ReferencePurchaseOrder": "4600622107",
+      "ReferencePurchaseOrderItem": "00050",
+      "Material": "CTRL-SYS-ZR55",
+      "BillingQuantity": 60,
+      "BillingQuantityUnit": "EA",
+      "InvoiceUnitPrice": 450.00,
+      "NetValueAmount": 27000.00
+    }
+  ]
+}

@@ -1,0 +1,66 @@
+{
+  "PurchaseOrder": "4600257811",
+  "Vendor": "SUPP-AUTO-7720",
+  "CompanyCode": "4000",
+  "DocumentCurrency": "USD",
+  "POHeaderNetValue": 66750.00,
+  "CreatedOn": "2025-04-05",
+  "PoDeliveryDate": "2025-04-12",
+  "Items": [
+    {
+      "PurchaseOrderItem": "00010",
+      "Material": "SHF-DRIVE-2210",
+      "MaterialDescription": "Drive Shaft Assembly 2210",
+      "Plant": "PL45",
+      "OrderQuantity": 90,
+      "OrderUnit": "EA",
+      "OrderPrice": 140.00,
+      "NetAmount": 12600.00,
+      "DeliveryDate": "2025-04-12"
+    },
+    {
+      "PurchaseOrderItem": "00020",
+      "Material": "SEN-PRESS-XL90",
+      "MaterialDescription": "Pressure Sensor XL-90",
+      "Plant": "PL45",
+      "OrderQuantity": 150,
+      "OrderUnit": "EA",
+      "OrderPrice": 150.00,
+      "NetAmount": 22500.00,
+      "DeliveryDate": "2025-04-13"
+    },
+    {
+      "PurchaseOrderItem": "00030",
+      "Material": "FLT-OIL-4421",
+      "MaterialDescription": "Heavy-Duty Oil Filter 4421",
+      "Plant": "PL45",
+      "OrderQuantity": 300,
+      "OrderUnit": "EA",
+      "OrderPrice": 32.00,
+      "NetAmount": 9600.00,
+      "DeliveryDate": "2025-04-14"
+    },
+    {
+      "PurchaseOrderItem": "00040",
+      "Material": "BRG-PRC-6607",
+      "MaterialDescription": "Precision Bearing 6607",
+      "Plant": "PL45",
+      "OrderQuantity": 75,
+      "OrderUnit": "EA",
+      "OrderPrice": 70.00,
+      "NetAmount": 5250.00,
+      "DeliveryDate": "2025-04-14"
+    },
+    {
+      "PurchaseOrderItem": "00050",
+      "Material": "CTRL-MOD-ZX12",
+      "MaterialDescription": "Control Module ZX-12",
+      "Plant": "PL45",
+      "OrderQuantity": 40,
+      "OrderUnit": "EA",
+      "OrderPrice": 420.00,
+      "NetAmount": 16800.00,
+      "DeliveryDate": "2025-04-15"
+    }
+  ]
+}

@@ -1,0 +1,58 @@
+{
+  "MaterialDocument": "5100781192",
+  "PurchaseOrder": "4600883201",
+  "PostingDate": "2025-10-24",
+  "CompanyCode": "3900",
+  "Items": [
+    {
+      "MaterialDocumentItem": "0001",
+      "PurchaseOrder": "4600883201",
+      "PurchaseOrderItem": "00010",
+      "Material": "ACT-LINEAR-5501",
+      "QuantityInEntryUnit": 100,
+      "EntryUnit": "EA",
+      "AmountInDocumentCurrency": 8000.00,
+      "GRStatus": "Received"
+    },
+    {
+      "MaterialDocumentItem": "0002",
+      "PurchaseOrder": "4600883201",
+      "PurchaseOrderItem": "00020",
+      "Material": "SEN-FLOW-7012",
+      "QuantityInEntryUnit": 150,
+      "EntryUnit": "EA",
+      "AmountInDocumentCurrency": 22500.00,
+      "GRStatus": "Received"
+    },
+    {
+      "MaterialDocumentItem": "0003",
+      "PurchaseOrder": "4600883201",
+      "PurchaseOrderItem": "00030",
+      "Material": "FLT-AIR-3300",
+      "QuantityInEntryUnit": 240,
+      "EntryUnit": "EA",
+      "AmountInDocumentCurrency": 14400.00,
+      "GRStatus": "Received"
+    },
+    {
+      "MaterialDocumentItem": "0004",
+      "PurchaseOrder": "4600883201",
+      "PurchaseOrderItem": "00040",
+      "Material": "BRG-PREC-9901",
+      "QuantityInEntryUnit": 140,
+      "EntryUnit": "EA",
+      "AmountInDocumentCurrency": 25200.00,
+      "GRStatus": "Received"
+    },
+    {
+      "MaterialDocumentItem": "0005",
+      "PurchaseOrder": "4600883201",
+      "PurchaseOrderItem": "00050",
+      "Material": "CTRL-MOD-Y550",
+      "QuantityInEntryUnit": 40,
+      "EntryUnit": "EA",
+      "AmountInDocumentCurrency": 15600.00,
+      "GRStatus": "Received"
+    }
+  ]
+}

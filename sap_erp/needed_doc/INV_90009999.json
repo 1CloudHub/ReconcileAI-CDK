@@ -1,0 +1,60 @@
+{
+  "BillingDocument": "90009999",
+  "PostingDate": "2025-10-17",
+  "CompanyCode": "1000",
+  "Supplier": "VEND-3095",
+  "DocumentCurrency": "USD",
+  "Items": [
+    {
+      "BillingDocumentItem": "0010",
+      "ReferencePurchaseOrder": "4500017890",
+      "ReferencePurchaseOrderItem": "00010",
+      "Material": "CIR-BRD-200",
+      "BillingQuantity": 300,
+      "BillingQuantityUnit": "PC",
+      "InvoiceUnitPrice": 40.00,
+      "NetValueAmount": 12000.00
+    },
+    {
+      "BillingDocumentItem": "0020",
+      "ReferencePurchaseOrder": "4500017890",
+      "ReferencePurchaseOrderItem": "00020",
+      "Material": "BRG-BALL-6202",
+      "BillingQuantity": 500,
+      "BillingQuantityUnit": "PC",
+      "InvoiceUnitPrice": 15.50,
+      "NetValueAmount": 7750.00
+    },
+    {
+      "BillingDocumentItem": "0030",
+      "ReferencePurchaseOrder": "4500017890",
+      "ReferencePurchaseOrderItem": "00030",
+      "Material": "MTR-HS-15KW",
+      "BillingQuantity": 40,
+      "BillingQuantityUnit": "PC",
+      "InvoiceUnitPrice": 1900.00,
+      "NetValueAmount": 76000.00
+    },
+    {
+      "BillingDocumentItem": "0040",
+      "ReferencePurchaseOrder": "4500017890",
+      "ReferencePurchaseOrderItem": "00040",
+      "Material": "OIL-FLTR-100BX",
+      "BillingQuantity": 800,
+      "BillingQuantityUnit": "PC",
+      "InvoiceUnitPrice": 200.00,
+      "NetValueAmount": 16000.00
+    },
+    {
+      "BillingDocumentItem": "0050",
+      "ReferencePurchaseOrder": "4500017890",
+      "ReferencePurchaseOrderItem": "00050",
+      "Material": "SCRN-TCH-24",
+      "BillingQuantity": 100,
+      "BillingQuantityUnit": "PC",
+      "InvoiceUnitPrice": 450.00,
+      "NetValueAmount": 45000.00
+    }
+  ]
+}
+

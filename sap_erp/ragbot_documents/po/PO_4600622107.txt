@@ -1,0 +1,66 @@
+{
+  "PurchaseOrder": "4600622107",
+  "Vendor": "SUPP-ROBOT-6621",
+  "CompanyCode": "3700",
+  "DocumentCurrency": "USD",
+  "POHeaderNetValue": 71550.00,
+  "CreatedOn": "2025-08-05",
+  "PoDeliveryDate": "2025-08-14",
+  "Items": [
+    {
+      "PurchaseOrderItem": "00010",
+      "Material": "ACT-SERVO-4400",
+      "MaterialDescription": "Servo Actuator 4400 Series",
+      "Plant": "PL82",
+      "OrderQuantity": 120,
+      "OrderUnit": "EA",
+      "OrderPrice": 110.00",
+      "NetAmount": 13200.00,
+      "DeliveryDate": "2025-08-14"
+    },
+    {
+      "PurchaseOrderItem": "00020",
+      "Material": "SEN-THERM-8801",
+      "MaterialDescription": "Thermal Sensor Module 8801",
+      "Plant": "PL82",
+      "OrderQuantity": 135,
+      "OrderUnit": "EA",
+      "OrderPrice": 140.00,
+      "NetAmount": 18900.00,
+      "DeliveryDate": "2025-08-14"
+    },
+    {
+      "PurchaseOrderItem": "00030",
+      "Material": "FLT-COOL-5522",
+      "MaterialDescription": "Cooling Filtration Cartridge 5522",
+      "Plant": "PL82",
+      "OrderQuantity": 240,
+      "OrderUnit": "EA",
+      "OrderPrice": 30.00,
+      "NetAmount": 7200.00,
+      "DeliveryDate": "2025-08-15"
+    },
+    {
+      "PurchaseOrderItem": "00040",
+      "Material": "BRG-SMTH-7720",
+      "MaterialDescription": "Smooth Motion Bearing 7720",
+      "Plant": "PL82",
+      "OrderQuantity": 75,
+      "OrderUnit": "EA",
+      "OrderPrice": 70.00,
+      "NetAmount": 5250.00,
+      "DeliveryDate": "2025-08-16"
+    },
+    {
+      "PurchaseOrderItem": "00050",
+      "Material": "CTRL-SYS-ZR55",
+      "MaterialDescription": "Control System ZR-55",
+      "Plant": "PL82",
+      "OrderQuantity": 60,
+      "OrderUnit": "EA",
+      "OrderPrice": 450.00,
+      "NetAmount": 27000.00,
+      "DeliveryDate": "2025-08-17"
+    }
+  ]
+}

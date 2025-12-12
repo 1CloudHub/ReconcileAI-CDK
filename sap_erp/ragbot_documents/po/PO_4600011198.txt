@@ -1,0 +1,66 @@
+{
+  "PurchaseOrder": "4600011198",
+  "Vendor": "SUPP-IND-5521",
+  "CompanyCode": "1710",
+  "DocumentCurrency": "USD",
+  "POHeaderNetValue": 19620.00,
+  "CreatedOn": "2025-01-10",
+  "PoDeliveryDate": "2025-01-20",
+  "Items": [
+    {
+      "PurchaseOrderItem": "00010",
+      "Material": "MTR-GEAR-5501",
+      "MaterialDescription": "Precision Gear Assembly",
+      "Plant": "PL01",
+      "OrderQuantity": 50,
+      "OrderUnit": "EA",
+      "OrderPrice": 120.50,
+      "NetAmount": 6025.00,
+      "DeliveryDate": "2025-01-20"
+    },
+    {
+      "PurchaseOrderItem": "00020",
+      "Material": "MTR-SENSOR-8832",
+      "MaterialDescription": "Thermal Proximity Sensor",
+      "Plant": "PL01",
+      "OrderQuantity": 30,
+      "OrderUnit": "EA",
+      "OrderPrice": 89.00,
+      "NetAmount": 2670.00,
+      "DeliveryDate": "2025-01-20"
+    },
+    {
+      "PurchaseOrderItem": "00030",
+      "Material": "MTR-VALVE-4410",
+      "MaterialDescription": "Hydraulic Control Valve",
+      "Plant": "PL01",
+      "OrderQuantity": 20,
+      "OrderUnit": "EA",
+      "OrderPrice": 210.00,
+      "NetAmount": 4200.00,
+      "DeliveryDate": "2025-01-20"
+    },
+    {
+      "PurchaseOrderItem": "00040",
+      "Material": "MTR-BEARING-7321",
+      "MaterialDescription": "High-Torque Rotary Bearing",
+      "Plant": "PL01",
+      "OrderQuantity": 15,
+      "OrderUnit": "EA",
+      "OrderPrice": 75.00,
+      "NetAmount": 1125.00,
+      "DeliveryDate": "2025-01-20"
+    },
+    {
+      "PurchaseOrderItem": "00050",
+      "Material": "MTR-PANEL-9922",
+      "MaterialDescription": "Industrial Control Panel",
+      "Plant": "PL01",
+      "OrderQuantity": 10,
+      "OrderUnit": "EA",
+      "OrderPrice": 560.00,
+      "NetAmount": 5600.00,
+      "DeliveryDate": "2025-01-20"
+    }
+  ]
+}

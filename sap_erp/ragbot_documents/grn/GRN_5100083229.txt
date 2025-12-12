@@ -1,0 +1,58 @@
+{
+  "MaterialDocument": "5100083229",
+  "PurchaseOrder": "4600078912",
+  "PostingDate": "2025-02-22",
+  "CompanyCode": "2000",
+  "Items": [
+    {
+      "MaterialDocumentItem": "0001",
+      "PurchaseOrder": "4600078912",
+      "PurchaseOrderItem": "00010",
+      "Material": "DRV-GEARSET-7711",
+      "QuantityInEntryUnit": 120,
+      "EntryUnit": "PC",
+      "AmountInDocumentCurrency": 14400.00,
+      "GRStatus": "Received"
+    },
+    {
+      "MaterialDocumentItem": "0002",
+      "PurchaseOrder": "4600078912",
+      "PurchaseOrderItem": "00020",
+      "Material": "SEN-INDTEMP-5500",
+      "QuantityInEntryUnit": 90,
+      "EntryUnit": "EA",
+      "AmountInDocumentCurrency": 6300.00,
+      "GRStatus": "Received"
+    },
+    {
+      "MaterialDocumentItem": "0003",
+      "PurchaseOrder": "4600078912",
+      "PurchaseOrderItem": "00030",
+      "Material": "FLT-AIL-990X",
+      "QuantityInEntryUnit": 200,
+      "EntryUnit": "EA",
+      "AmountInDocumentCurrency": 4000.00,
+      "GRStatus": "Received"
+    },
+    {
+      "MaterialDocumentItem": "0004",
+      "PurchaseOrder": "4600078912",
+      "PurchaseOrderItem": "00040",
+      "Material": "MTOR-SRV-2K",
+      "QuantityInEntryUnit": 18,
+      "EntryUnit": "EA",
+      "AmountInDocumentCurrency": 19800.00,
+      "GRStatus": "Received"
+    },
+    {
+      "MaterialDocumentItem": "0005",
+      "PurchaseOrder": "4600078912",
+      "PurchaseOrderItem": "00050",
+      "Material": "CTRL-UNIT-Z19",
+      "QuantityInEntryUnit": 12,
+      "EntryUnit": "EA",
+      "AmountInDocumentCurrency": 21600.00,
+      "GRStatus": "Received"
+    }
+  ]
+}

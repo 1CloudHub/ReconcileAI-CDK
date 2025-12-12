@@ -470,7 +470,13 @@ class CdkCodeStack(Stack):
         )
         
         
-        
+"""
+1. Dependencies installation
+2. RDS connection and SQL dumps
+3. Strands code insertion
+
+last. Frontend management code from genaifoundry
+"""      
         
 
 

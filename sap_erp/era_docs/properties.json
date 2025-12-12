@@ -1,0 +1,1366 @@
+[
+  {
+    "project_name": "The Interlace",
+    "developer": "CapitaLand",
+    "district": 3,
+    "region": "CCR",
+    "estate": "Alexandra",
+    "property_type": "Non-Landed",
+    "property_subtype": "Condo",
+    "price_min": 1200000,
+    "price_max": 3500000,
+    "psf_avg_1yr": 1450,
+    "top_year": 2013,
+    "tenure_type": "99-year",
+    "amenities_mrt": [
+      {
+        "station": "Redhill",
+        "distance_km": 0.8
+      },
+      {
+        "station": "Queenstown",
+        "distance_km": 1.2
+      }
+    ],
+    "amenities_primary": [
+      {
+        "school": "Alexandra Primary School",
+        "distance_km": 0.5
+      },
+      {
+        "school": "Queenstown Primary School",
+        "distance_km": 1.1
+      }
+    ],
+    "amenities_supermarket": [
+      {
+        "name": "Cold Storage",
+        "distance_km": 0.3
+      },
+      {
+        "name": "NTUC FairPrice",
+        "distance_km": 0.7
+      }
+    ]
+  },
+  {
+    "project_name": "Punggol Waterway Terraces",
+    "developer": "HDB",
+    "district": 19,
+    "region": "OCR",
+    "estate": "Punggol",
+    "property_type": "HDB",
+    "property_subtype": "EC",
+    "price_min": 450000,
+    "price_max": 750000,
+    "psf_avg_1yr": 680,
+    "top_year": 2015,
+    "tenure_type": "99-year",
+    "amenities_mrt": [
+      {
+        "station": "Punggol",
+        "distance_km": 0.4
+      },
+      {
+        "station": "Punggol East",
+        "distance_km": 0.9
+      }
+    ],
+    "amenities_primary": [
+      {
+        "school": "Punggol Primary School",
+        "distance_km": 0.3
+      },
+      {
+        "school": "Edgefield Primary School",
+        "distance_km": 0.6
+      }
+    ],
+    "amenities_supermarket": [
+      {
+        "name": "NTUC FairPrice",
+        "distance_km": 0.2
+      },
+      {
+        "name": "Giant",
+        "distance_km": 0.5
+      }
+    ]
+  },
+  {
+    "project_name": "Marina Bay Residences",
+    "developer": "Keppel Land",
+    "district": 1,
+    "region": "CCR",
+    "estate": "Marina Bay",
+    "property_type": "Non-Landed",
+    "property_subtype": "Condo",
+    "price_min": 2500000,
+    "price_max": 8000000,
+    "psf_avg_1yr": 2800,
+    "top_year": 2010,
+    "tenure_type": "99-year",
+    "amenities_mrt": [
+      {
+        "station": "Marina Bay",
+        "distance_km": 0.3
+      },
+      {
+        "station": "Raffles Place",
+        "distance_km": 0.8
+      }
+    ],
+    "amenities_primary": [
+      {
+        "school": "Raffles Girls' Primary School",
+        "distance_km": 1.5
+      },
+      {
+        "school": "St. Joseph's Institution Junior",
+        "distance_km": 2.0
+      }
+    ],
+    "amenities_supermarket": [
+      {
+        "name": "Cold Storage",
+        "distance_km": 0.5
+      },
+      {
+        "name": "Market Place",
+        "distance_km": 0.7
+      }
+    ]
+  },
+  {
+    "project_name": "The Pinnacle@Duxton",
+    "developer": "HDB",
+    "district": 2,
+    "region": "CCR",
+    "estate": "Tanjong Pagar",
+    "property_type": "HDB",
+    "property_subtype": "Condo",
+    "price_min": 800000,
+    "price_max": 1500000,
+    "psf_avg_1yr": 1200,
+    "top_year": 2009,
+    "tenure_type": "99-year",
+    "amenities_mrt": [
+      {
+        "station": "Tanjong Pagar",
+        "distance_km": 0.2
+      },
+      {
+        "station": "Outram Park",
+        "distance_km": 0.6
+      }
+    ],
+    "amenities_primary": [
+      {
+        "school": "Cantonment Primary School",
+        "distance_km": 0.4
+      },
+      {
+        "school": "Radin Mas Primary School",
+        "distance_km": 0.8
+      }
+    ],
+    "amenities_supermarket": [
+      {
+        "name": "NTUC FairPrice",
+        "distance_km": 0.3
+      },
+      {
+        "name": "Cold Storage",
+        "distance_km": 0.5
+      }
+    ]
+  },
+  {
+    "project_name": "Treasure at Tampines",
+    "developer": "Sim Lian Group",
+    "district": 18,
+    "region": "OCR",
+    "estate": "Tampines",
+    "property_type": "Non-Landed",
+    "property_subtype": "Condo",
+    "price_min": 850000,
+    "price_max": 1800000,
+    "psf_avg_1yr": 1250,
+    "top_year": 2021,
+    "tenure_type": "99-year",
+    "amenities_mrt": [
+      {
+        "station": "Tampines",
+        "distance_km": 0.6
+      },
+      {
+        "station": "Tampines West",
+        "distance_km": 0.9
+      }
+    ],
+    "amenities_primary": [
+      {
+        "school": "Tampines Primary School",
+        "distance_km": 0.4
+      },
+      {
+        "school": "St. Hilda's Primary School",
+        "distance_km": 0.7
+      }
+    ],
+    "amenities_supermarket": [
+      {
+        "name": "NTUC FairPrice",
+        "distance_km": 0.3
+      },
+      {
+        "name": "Giant",
+        "distance_km": 0.5
+      }
+    ]
+  },
+  {
+    "project_name": "The Sail @ Marina Bay",
+    "developer": "City Developments Limited",
+    "district": 1,
+    "region": "CCR",
+    "estate": "Marina Bay",
+    "property_type": "Non-Landed",
+    "property_subtype": "Condo",
+    "price_min": 1800000,
+    "price_max": 5000000,
+    "psf_avg_1yr": 2400,
+    "top_year": 2008,
+    "tenure_type": "99-year",
+    "amenities_mrt": [
+      {
+        "station": "Marina Bay",
+        "distance_km": 0.4
+      },
+      {
+        "station": "Raffles Place",
+        "distance_km": 0.9
+      }
+    ],
+    "amenities_primary": [
+      {
+        "school": "Raffles Girls' Primary School",
+        "distance_km": 1.6
+      },
+      {
+        "school": "St. Joseph's Institution Junior",
+        "distance_km": 2.1
+      }
+    ],
+    "amenities_supermarket": [
+      {
+        "name": "Cold Storage",
+        "distance_km": 0.6
+      },
+      {
+        "name": "Market Place",
+        "distance_km": 0.8
+      }
+    ]
+  },
+  {
+    "project_name": "Parc Esta",
+    "developer": "Mitsui Fudosan",
+    "district": 14,
+    "region": "RCR",
+    "estate": "Eunos",
+    "property_type": "Non-Landed",
+    "property_subtype": "Condo",
+    "price_min": 950000,
+    "price_max": 2200000,
+    "psf_avg_1yr": 1650,
+    "top_year": 2022,
+    "tenure_type": "99-year",
+    "amenities_mrt": [
+      {
+        "station": "Eunos",
+        "distance_km": 0.3
+      },
+      {
+        "station": "Paya Lebar",
+        "distance_km": 0.8
+      }
+    ],
+    "amenities_primary": [
+      {
+        "school": "Eunos Primary School",
+        "distance_km": 0.4
+      },
+      {
+        "school": "Tao Nan School",
+        "distance_km": 1.2
+      }
+    ],
+    "amenities_supermarket": [
+      {
+        "name": "NTUC FairPrice",
+        "distance_km": 0.2
+      },
+      {
+        "name": "Cold Storage",
+        "distance_km": 0.6
+      }
+    ]
+  },
+  {
+    "project_name": "The Clement Canopy",
+    "developer": "TID",
+    "district": 5,
+    "region": "RCR",
+    "estate": "Clementi",
+    "property_type": "Non-Landed",
+    "property_subtype": "Condo",
+    "price_min": 1100000,
+    "price_max": 2500000,
+    "psf_avg_1yr": 1520,
+    "top_year": 2019,
+    "tenure_type": "99-year",
+    "amenities_mrt": [
+      {
+        "station": "Clementi",
+        "distance_km": 0.5
+      },
+      {
+        "station": "Dover",
+        "distance_km": 1.1
+      }
+    ],
+    "amenities_primary": [
+      {
+        "school": "Clementi Primary School",
+        "distance_km": 0.3
+      },
+      {
+        "school": "Nan Hua Primary School",
+        "distance_km": 0.8
+      }
+    ],
+    "amenities_supermarket": [
+      {
+        "name": "NTUC FairPrice",
+        "distance_km": 0.4
+      },
+      {
+        "name": "Cold Storage",
+        "distance_km": 0.7
+      }
+    ]
+  },
+  {
+    "project_name": "Sky Everton",
+    "developer": "Everton Development",
+    "district": 2,
+    "region": "CCR",
+    "estate": "Tanjong Pagar",
+    "property_type": "Non-Landed",
+    "property_subtype": "Condo",
+    "price_min": 1500000,
+    "price_max": 3800000,
+    "psf_avg_1yr": 2100,
+    "top_year": 2020,
+    "tenure_type": "Freehold",
+    "amenities_mrt": [
+      {
+        "station": "Tanjong Pagar",
+        "distance_km": 0.4
+      },
+      {
+        "station": "Outram Park",
+        "distance_km": 0.7
+      }
+    ],
+    "amenities_primary": [
+      {
+        "school": "Cantonment Primary School",
+        "distance_km": 0.5
+      },
+      {
+        "school": "Radin Mas Primary School",
+        "distance_km": 0.9
+      }
+    ],
+    "amenities_supermarket": [
+      {
+        "name": "NTUC FairPrice",
+        "distance_km": 0.4
+      },
+      {
+        "name": "Cold Storage",
+        "distance_km": 0.6
+      }
+    ]
+  },
+  {
+    "project_name": "The Florence Residences",
+    "developer": "Logan Property",
+    "district": 19,
+    "region": "OCR",
+    "estate": "Hougang",
+    "property_type": "Non-Landed",
+    "property_subtype": "Condo",
+    "price_min": 780000,
+    "price_max": 1800000,
+    "psf_avg_1yr": 1350,
+    "top_year": 2023,
+    "tenure_type": "99-year",
+    "amenities_mrt": [
+      {
+        "station": "Hougang",
+        "distance_km": 0.7
+      },
+      {
+        "station": "Kovan",
+        "distance_km": 1.2
+      }
+    ],
+    "amenities_primary": [
+      {
+        "school": "Hougang Primary School",
+        "distance_km": 0.5
+      },
+      {
+        "school": "Xinmin Primary School",
+        "distance_km": 0.9
+      }
+    ],
+    "amenities_supermarket": [
+      {
+        "name": "NTUC FairPrice",
+        "distance_km": 0.4
+      },
+      {
+        "name": "Giant",
+        "distance_km": 0.6
+      }
+    ]
+  },
+  {
+    "project_name": "One Pearl Bank",
+    "developer": "CapitaLand",
+    "district": 3,
+    "region": "CCR",
+    "estate": "Outram",
+    "property_type": "Non-Landed",
+    "property_subtype": "Condo",
+    "price_min": 1300000,
+    "price_max": 3200000,
+    "psf_avg_1yr": 2200,
+    "top_year": 2021,
+    "tenure_type": "99-year",
+    "amenities_mrt": [
+      {
+        "station": "Outram Park",
+        "distance_km": 0.3
+      },
+      {
+        "station": "Chinatown",
+        "distance_km": 0.6
+      }
+    ],
+    "amenities_primary": [
+      {
+        "school": "Cantonment Primary School",
+        "distance_km": 0.4
+      },
+      {
+        "school": "Radin Mas Primary School",
+        "distance_km": 0.7
+      }
+    ],
+    "amenities_supermarket": [
+      {
+        "name": "NTUC FairPrice",
+        "distance_km": 0.3
+      },
+      {
+        "name": "Cold Storage",
+        "distance_km": 0.5
+      }
+    ]
+  },
+  {
+    "project_name": "The M",
+    "developer": "GuocoLand",
+    "district": 9,
+    "region": "CCR",
+    "estate": "Orchard",
+    "property_type": "Non-Landed",
+    "property_subtype": "Condo",
+    "price_min": 2000000,
+    "price_max": 6000000,
+    "psf_avg_1yr": 3200,
+    "top_year": 2020,
+    "tenure_type": "Freehold",
+    "amenities_mrt": [
+      {
+        "station": "Orchard",
+        "distance_km": 0.5
+      },
+      {
+        "station": "Somerset",
+        "distance_km": 0.8
+      }
+    ],
+    "amenities_primary": [
+      {
+        "school": "Anglo-Chinese School (Primary)",
+        "distance_km": 1.2
+      },
+      {
+        "school": "St. Joseph's Institution Junior",
+        "distance_km": 1.5
+      }
+    ],
+    "amenities_supermarket": [
+      {
+        "name": "Cold Storage",
+        "distance_km": 0.4
+      },
+      {
+        "name": "Market Place",
+        "distance_km": 0.6
+      }
+    ]
+  },
+  {
+    "project_name": "JadeScape",
+    "developer": "Qingjian Realty",
+    "district": 20,
+    "region": "OCR",
+    "estate": "Bishan",
+    "property_type": "Non-Landed",
+    "property_subtype": "Condo",
+    "price_min": 1200000,
+    "price_max": 2800000,
+    "psf_avg_1yr": 1680,
+    "top_year": 2022,
+    "tenure_type": "99-year",
+    "amenities_mrt": [
+      {
+        "station": "Bishan",
+        "distance_km": 0.4
+      },
+      {
+        "station": "Marymount",
+        "distance_km": 0.9
+      }
+    ],
+    "amenities_primary": [
+      {
+        "school": "Catholic High School (Primary)",
+        "distance_km": 0.6
+      },
+      {
+        "school": "Kuo Chuan Presbyterian Primary School",
+        "distance_km": 0.8
+      }
+    ],
+    "amenities_supermarket": [
+      {
+        "name": "NTUC FairPrice",
+        "distance_km": 0.3
+      },
+      {
+        "name": "Cold Storage",
+        "distance_km": 0.5
+      }
+    ]
+  },
+  {
+    "project_name": "The Woodleigh Residences",
+    "developer": "Kajima Development",
+    "district": 13,
+    "region": "RCR",
+    "estate": "Potong Pasir",
+    "property_type": "Non-Landed",
+    "property_subtype": "Condo",
+    "price_min": 1400000,
+    "price_max": 3000000,
+    "psf_avg_1yr": 1850,
+    "top_year": 2021,
+    "tenure_type": "99-year",
+    "amenities_mrt": [
+      {
+        "station": "Potong Pasir",
+        "distance_km": 0.2
+      },
+      {
+        "station": "Woodleigh",
+        "distance_km": 0.5
+      }
+    ],
+    "amenities_primary": [
+      {
+        "school": "St. Andrew's Junior School",
+        "distance_km": 0.7
+      },
+      {
+        "school": "St. Gabriel's Primary School",
+        "distance_km": 1.0
+      }
+    ],
+    "amenities_supermarket": [
+      {
+        "name": "NTUC FairPrice",
+        "distance_km": 0.3
+      },
+      {
+        "name": "Cold Storage",
+        "distance_km": 0.6
+      }
+    ]
+  },
+  {
+    "project_name": "Normanton Park",
+    "developer": "Kingsford Development",
+    "district": 5,
+    "region": "RCR",
+    "estate": "Kent Ridge",
+    "property_type": "Non-Landed",
+    "property_subtype": "Condo",
+    "price_min": 1250000,
+    "price_max": 2900000,
+    "psf_avg_1yr": 1580,
+    "top_year": 2023,
+    "tenure_type": "99-year",
+    "amenities_mrt": [
+      {
+        "station": "Kent Ridge",
+        "distance_km": 0.8
+      },
+      {
+        "station": "Haw Par Villa",
+        "distance_km": 1.2
+      }
+    ],
+    "amenities_primary": [
+      {
+        "school": "Nan Hua Primary School",
+        "distance_km": 0.9
+      },
+      {
+        "school": "Clementi Primary School",
+        "distance_km": 1.3
+      }
+    ],
+    "amenities_supermarket": [
+      {
+        "name": "NTUC FairPrice",
+        "distance_km": 0.5
+      },
+      {
+        "name": "Cold Storage",
+        "distance_km": 0.8
+      }
+    ]
+  },
+  {
+    "project_name": "The Tre Ver",
+    "developer": "Roxy-Pacific Holdings",
+    "district": 13,
+    "region": "RCR",
+    "estate": "Potong Pasir",
+    "property_type": "Non-Landed",
+    "property_subtype": "Condo",
+    "price_min": 1150000,
+    "price_max": 2600000,
+    "psf_avg_1yr": 1720,
+    "top_year": 2020,
+    "tenure_type": "99-year",
+    "amenities_mrt": [
+      {
+        "station": "Potong Pasir",
+        "distance_km": 0.3
+      },
+      {
+        "station": "Woodleigh",
+        "distance_km": 0.6
+      }
+    ],
+    "amenities_primary": [
+      {
+        "school": "St. Andrew's Junior School",
+        "distance_km": 0.8
+      },
+      {
+        "school": "St. Gabriel's Primary School",
+        "distance_km": 1.1
+      }
+    ],
+    "amenities_supermarket": [
+      {
+        "name": "NTUC FairPrice",
+        "distance_km": 0.4
+      },
+      {
+        "name": "Cold Storage",
+        "distance_km": 0.7
+      }
+    ]
+  },
+  {
+    "project_name": "Dairy Farm Residences",
+    "developer": "Frasers Property",
+    "district": 23,
+    "region": "OCR",
+    "estate": "Dairy Farm",
+    "property_type": "Non-Landed",
+    "property_subtype": "Condo",
+    "price_min": 950000,
+    "price_max": 2100000,
+    "psf_avg_1yr": 1420,
+    "top_year": 2022,
+    "tenure_type": "99-year",
+    "amenities_mrt": [
+      {
+        "station": "Choa Chu Kang",
+        "distance_km": 1.1
+      },
+      {
+        "station": "Bukit Panjang",
+        "distance_km": 1.4
+      }
+    ],
+    "amenities_primary": [
+      {
+        "school": "De La Salle School",
+        "distance_km": 0.6
+      },
+      {
+        "school": "Kranji Primary School",
+        "distance_km": 1.0
+      }
+    ],
+    "amenities_supermarket": [
+      {
+        "name": "NTUC FairPrice",
+        "distance_km": 0.5
+      },
+      {
+        "name": "Giant",
+        "distance_km": 0.8
+      }
+    ]
+  },
+  {
+    "project_name": "The Landmark",
+    "developer": "Far East Organization",
+    "district": 9,
+    "region": "CCR",
+    "estate": "River Valley",
+    "property_type": "Non-Landed",
+    "property_subtype": "Condo",
+    "price_min": 1800000,
+    "price_max": 4500000,
+    "psf_avg_1yr": 2750,
+    "top_year": 2019,
+    "tenure_type": "Freehold",
+    "amenities_mrt": [
+      {
+        "station": "Great World",
+        "distance_km": 0.4
+      },
+      {
+        "station": "Orchard",
+        "distance_km": 0.9
+      }
+    ],
+    "amenities_primary": [
+      {
+        "school": "Anglo-Chinese School (Primary)",
+        "distance_km": 1.3
+      },
+      {
+        "school": "River Valley Primary School",
+        "distance_km": 0.8
+      }
+    ],
+    "amenities_supermarket": [
+      {
+        "name": "Cold Storage",
+        "distance_km": 0.3
+      },
+      {
+        "name": "Market Place",
+        "distance_km": 0.5
+      }
+    ]
+  },
+  {
+    "project_name": "Kopar at Newton",
+    "developer": "CEL Development",
+    "district": 9,
+    "region": "CCR",
+    "estate": "Newton",
+    "property_type": "Non-Landed",
+    "property_subtype": "Condo",
+    "price_min": 1600000,
+    "price_max": 4000000,
+    "psf_avg_1yr": 2600,
+    "top_year": 2023,
+    "tenure_type": "99-year",
+    "amenities_mrt": [
+      {
+        "station": "Newton",
+        "distance_km": 0.2
+      },
+      {
+        "station": "Novena",
+        "distance_km": 0.7
+      }
+    ],
+    "amenities_primary": [
+      {
+        "school": "Anglo-Chinese School (Primary)",
+        "distance_km": 1.0
+      },
+      {
+        "school": "St. Joseph's Institution Junior",
+        "distance_km": 1.4
+      }
+    ],
+    "amenities_supermarket": [
+      {
+        "name": "Cold Storage",
+        "distance_km": 0.4
+      },
+      {
+        "name": "Market Place",
+        "distance_km": 0.6
+      }
+    ]
+  },
+  {
+    "project_name": "The Avenir",
+    "developer": "Roxy-Pacific Holdings",
+    "district": 9,
+    "region": "CCR",
+    "estate": "River Valley",
+    "property_type": "Non-Landed",
+    "property_subtype": "Condo",
+    "price_min": 1700000,
+    "price_max": 4200000,
+    "psf_avg_1yr": 2550,
+    "top_year": 2022,
+    "tenure_type": "99-year",
+    "amenities_mrt": [
+      {
+        "station": "Great World",
+        "distance_km": 0.5
+      },
+      {
+        "station": "Orchard",
+        "distance_km": 1.0
+      }
+    ],
+    "amenities_primary": [
+      {
+        "school": "Anglo-Chinese School (Primary)",
+        "distance_km": 1.4
+      },
+      {
+        "school": "River Valley Primary School",
+        "distance_km": 0.9
+      }
+    ],
+    "amenities_supermarket": [
+      {
+        "name": "Cold Storage",
+        "distance_km": 0.4
+      },
+      {
+        "name": "Market Place",
+        "distance_km": 0.6
+      }
+    ]
+  },
+  {
+    "project_name": "The Linq @ Beauty World",
+    "developer": "Hoi Hup Realty",
+    "district": 21,
+    "region": "OCR",
+    "estate": "Beauty World",
+    "property_type": "Non-Landed",
+    "property_subtype": "Condo",
+    "price_min": 1100000,
+    "price_max": 2500000,
+    "psf_avg_1yr": 1620,
+    "top_year": 2021,
+    "tenure_type": "99-year",
+    "amenities_mrt": [
+      {
+        "station": "Beauty World",
+        "distance_km": 0.3
+      },
+      {
+        "station": "King Albert Park",
+        "distance_km": 0.8
+      }
+    ],
+    "amenities_primary": [
+      {
+        "school": "Pei Hwa Presbyterian Primary School",
+        "distance_km": 0.5
+      },
+      {
+        "school": "Bukit Timah Primary School",
+        "distance_km": 0.9
+      }
+    ],
+    "amenities_supermarket": [
+      {
+        "name": "NTUC FairPrice",
+        "distance_km": 0.4
+      },
+      {
+        "name": "Cold Storage",
+        "distance_km": 0.6
+      }
+    ]
+  },
+  {
+    "project_name": "The Garden Residences",
+    "developer": "MCC Land",
+    "district": 19,
+    "region": "OCR",
+    "estate": "Serangoon",
+    "property_type": "Non-Landed",
+    "property_subtype": "Condo",
+    "price_min": 1050000,
+    "price_max": 2400000,
+    "psf_avg_1yr": 1550,
+    "top_year": 2020,
+    "tenure_type": "99-year",
+    "amenities_mrt": [
+      {
+        "station": "Serangoon",
+        "distance_km": 0.6
+      },
+      {
+        "station": "Lorong Chuan",
+        "distance_km": 1.0
+      }
+    ],
+    "amenities_primary": [
+      {
+        "school": "Serangoon Primary School",
+        "distance_km": 0.4
+      },
+      {
+        "school": "Rosyth School",
+        "distance_km": 0.8
+      }
+    ],
+    "amenities_supermarket": [
+      {
+        "name": "NTUC FairPrice",
+        "distance_km": 0.3
+      },
+      {
+        "name": "Cold Storage",
+        "distance_km": 0.5
+      }
+    ]
+  },
+  {
+    "project_name": "The Gazania",
+    "developer": "SingHaiyi Group",
+    "district": 15,
+    "region": "RCR",
+    "estate": "Katong",
+    "property_type": "Non-Landed",
+    "property_subtype": "Condo",
+    "price_min": 1350000,
+    "price_max": 3100000,
+    "psf_avg_1yr": 1950,
+    "top_year": 2022,
+    "tenure_type": "99-year",
+    "amenities_mrt": [
+      {
+        "station": "Dakota",
+        "distance_km": 0.7
+      },
+      {
+        "station": "Paya Lebar",
+        "distance_km": 1.1
+      }
+    ],
+    "amenities_primary": [
+      {
+        "school": "Tao Nan School",
+        "distance_km": 0.8
+      },
+      {
+        "school": "Kong Hwa School",
+        "distance_km": 1.2
+      }
+    ],
+    "amenities_supermarket": [
+      {
+        "name": "NTUC FairPrice",
+        "distance_km": 0.4
+      },
+      {
+        "name": "Cold Storage",
+        "distance_km": 0.6
+      }
+    ]
+  },
+  {
+    "project_name": "The Antares",
+    "developer": "Hoi Hup Realty",
+    "district": 14,
+    "region": "RCR",
+    "estate": "Kallang",
+    "property_type": "Non-Landed",
+    "property_subtype": "Condo",
+    "price_min": 1200000,
+    "price_max": 2800000,
+    "psf_avg_1yr": 1750,
+    "top_year": 2021,
+    "tenure_type": "99-year",
+    "amenities_mrt": [
+      {
+        "station": "Kallang",
+        "distance_km": 0.5
+      },
+      {
+        "station": "Lavender",
+        "distance_km": 0.9
+      }
+    ],
+    "amenities_primary": [
+      {
+        "school": "Kallang Primary School",
+        "distance_km": 0.6
+      },
+      {
+        "school": "Geylang Methodist School (Primary)",
+        "distance_km": 1.0
+      }
+    ],
+    "amenities_supermarket": [
+      {
+        "name": "NTUC FairPrice",
+        "distance_km": 0.3
+      },
+      {
+        "name": "Cold Storage",
+        "distance_km": 0.5
+      }
+    ]
+  },
+  {
+    "project_name": "The Verandah Residences",
+    "developer": "Frasers Property",
+    "district": 12,
+    "region": "RCR",
+    "estate": "Toa Payoh",
+    "property_type": "Non-Landed",
+    "property_subtype": "Condo",
+    "price_min": 1250000,
+    "price_max": 2900000,
+    "psf_avg_1yr": 1680,
+    "top_year": 2020,
+    "tenure_type": "99-year",
+    "amenities_mrt": [
+      {
+        "station": "Toa Payoh",
+        "distance_km": 0.4
+      },
+      {
+        "station": "Braddell",
+        "distance_km": 0.8
+      }
+    ],
+    "amenities_primary": [
+      {
+        "school": "Toa Payoh Primary School",
+        "distance_km": 0.3
+      },
+      {
+        "school": "Pei Chun Public School",
+        "distance_km": 0.7
+      }
+    ],
+    "amenities_supermarket": [
+      {
+        "name": "NTUC FairPrice",
+        "distance_km": 0.2
+      },
+      {
+        "name": "Cold Storage",
+        "distance_km": 0.5
+      }
+    ]
+  },
+  {
+    "project_name": "The Commodore",
+    "developer": "CDL",
+    "district": 15,
+    "region": "RCR",
+    "estate": "Katong",
+    "property_type": "Non-Landed",
+    "property_subtype": "Condo",
+    "price_min": 1400000,
+    "price_max": 3200000,
+    "psf_avg_1yr": 2000,
+    "top_year": 2023,
+    "tenure_type": "99-year",
+    "amenities_mrt": [
+      {
+        "station": "Dakota",
+        "distance_km": 0.6
+      },
+      {
+        "station": "Paya Lebar",
+        "distance_km": 1.0
+      }
+    ],
+    "amenities_primary": [
+      {
+        "school": "Tao Nan School",
+        "distance_km": 0.7
+      },
+      {
+        "school": "Kong Hwa School",
+        "distance_km": 1.1
+      }
+    ],
+    "amenities_supermarket": [
+      {
+        "name": "NTUC FairPrice",
+        "distance_km": 0.3
+      },
+      {
+        "name": "Cold Storage",
+        "distance_km": 0.5
+      }
+    ]
+  },
+  {
+    "project_name": "The Reef at King's Dock",
+    "developer": "Keppel Land",
+    "district": 4,
+    "region": "RCR",
+    "estate": "Harbourfront",
+    "property_type": "Non-Landed",
+    "property_subtype": "Condo",
+    "price_min": 1500000,
+    "price_max": 3500000,
+    "psf_avg_1yr": 2100,
+    "top_year": 2022,
+    "tenure_type": "99-year",
+    "amenities_mrt": [
+      {
+        "station": "Harbourfront",
+        "distance_km": 0.5
+      },
+      {
+        "station": "Telok Blangah",
+        "distance_km": 0.9
+      }
+    ],
+    "amenities_primary": [
+      {
+        "school": "Radin Mas Primary School",
+        "distance_km": 0.8
+      },
+      {
+        "school": "Cantonment Primary School",
+        "distance_km": 1.2
+      }
+    ],
+    "amenities_supermarket": [
+      {
+        "name": "Cold Storage",
+        "distance_km": 0.4
+      },
+      {
+        "name": "Market Place",
+        "distance_km": 0.6
+      }
+    ]
+  },
+  {
+    "project_name": "The Atelier",
+    "developer": "MCL Land",
+    "district": 9,
+    "region": "CCR",
+    "estate": "Orchard",
+    "property_type": "Non-Landed",
+    "property_subtype": "Condo",
+    "price_min": 1900000,
+    "price_max": 4800000,
+    "psf_avg_1yr": 3000,
+    "top_year": 2021,
+    "tenure_type": "Freehold",
+    "amenities_mrt": [
+      {
+        "station": "Orchard",
+        "distance_km": 0.4
+      },
+      {
+        "station": "Somerset",
+        "distance_km": 0.7
+      }
+    ],
+    "amenities_primary": [
+      {
+        "school": "Anglo-Chinese School (Primary)",
+        "distance_km": 1.1
+      },
+      {
+        "school": "St. Joseph's Institution Junior",
+        "distance_km": 1.4
+      }
+    ],
+    "amenities_supermarket": [
+      {
+        "name": "Cold Storage",
+        "distance_km": 0.3
+      },
+      {
+        "name": "Market Place",
+        "distance_km": 0.5
+      }
+    ]
+  },
+  {
+    "project_name": "Central Grove",
+    "developer": "Frasers Property",
+    "district": 14,
+    "region": "RCR",
+    "estate": "Eunos",
+    "property_type": "Non-Landed",
+    "property_subtype": "Condo",
+    "price_min": 1100000,
+    "price_max": 2600000,
+    "psf_avg_1yr": 1700,
+    "top_year": 2018,
+    "tenure_type": "99-year",
+    "amenities_mrt": [
+      {
+        "station": "Eunos",
+        "distance_km": 0.4
+      },
+      {
+        "station": "Paya Lebar",
+        "distance_km": 0.9
+      }
+    ],
+    "amenities_primary": [
+      {
+        "school": "Eunos Primary School",
+        "distance_km": 0.5
+      },
+      {
+        "school": "Tao Nan School",
+        "distance_km": 1.3
+      }
+    ],
+    "amenities_supermarket": [
+      {
+        "name": "NTUC FairPrice",
+        "distance_km": 0.3
+      },
+      {
+        "name": "Cold Storage",
+        "distance_km": 0.6
+      }
+    ]
+  },
+  {
+    "project_name": "The Watergardens at Canberra",
+    "developer": "Frasers Property",
+    "district": 27,
+    "region": "OCR",
+    "estate": "Canberra",
+    "property_type": "Non-Landed",
+    "property_subtype": "Condo",
+    "price_min": 880000,
+    "price_max": 1900000,
+    "psf_avg_1yr": 1280,
+    "top_year": 2022,
+    "tenure_type": "99-year",
+    "amenities_mrt": [
+      {
+        "station": "Canberra",
+        "distance_km": 0.3
+      },
+      {
+        "station": "Sembawang",
+        "distance_km": 0.8
+      }
+    ],
+    "amenities_primary": [
+      {
+        "school": "Canberra Primary School",
+        "distance_km": 0.4
+      },
+      {
+        "school": "Sembawang Primary School",
+        "distance_km": 0.9
+      }
+    ],
+    "amenities_supermarket": [
+      {
+        "name": "NTUC FairPrice",
+        "distance_km": 0.2
+      },
+      {
+        "name": "Giant",
+        "distance_km": 0.5
+      }
+    ]
+  },
+  {
+    "project_name": "The Panorama",
+    "developer": "UOL Group",
+    "district": 10,
+    "region": "CCR",
+    "estate": "Ang Mo Kio",
+    "property_type": "Non-Landed",
+    "property_subtype": "Condo",
+    "price_min": 1650000,
+    "price_max": 4000000,
+    "psf_avg_1yr": 2450,
+    "top_year": 2019,
+    "tenure_type": "Freehold",
+    "amenities_mrt": [
+      {
+        "station": "Ang Mo Kio",
+        "distance_km": 0.6
+      },
+      {
+        "station": "Bishan",
+        "distance_km": 1.1
+      }
+    ],
+    "amenities_primary": [
+      {
+        "school": "Anglo-Chinese School (Primary)",
+        "distance_km": 1.3
+      },
+      {
+        "school": "St. Joseph's Institution Junior",
+        "distance_km": 1.7
+      }
+    ],
+    "amenities_supermarket": [
+      {
+        "name": "Cold Storage",
+        "distance_km": 0.5
+      },
+      {
+        "name": "Market Place",
+        "distance_km": 0.7
+      }
+    ]
+  }
+]

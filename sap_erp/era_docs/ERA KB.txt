@@ -1,0 +1,269 @@
+CATEGORY A — CEA COMPLIANCE & AGENT CONDUCT
+1. What must be included in all property advertisements under CEA guidelines?
+
+Answer:
+According to CEA’s Advertising Guidelines, every property advertisement must clearly display:
+
+Agent’s full name as registered with CEA
+
+CEA registration number (e.g., R123456A)
+
+Estate agency name as registered with CEA
+
+Estate agency licence number
+
+Accurate and verifiable information regarding property size, price, and features
+
+No misleading statements, unverifiable claims, or guarantees
+Agents are also prohibited from using terms like “best price guaranteed” or “approved discount” unless supported by documentary evidence. All ads must maintain professional integrity and avoid misrepresentation.
+
+2. Under what situations must an ERA agent declare conflicts of interest?
+
+Answer:
+An ERA agent must declare a conflict of interest before representing any party when any of the following applies:
+
+The agent has a personal interest in the transaction (e.g., is the owner, buyer, or related to involved parties).
+
+The agent receives benefits beyond standard commission (e.g., incentives from a developer).
+
+The agent has a business relationship with a service provider recommended to the client.
+
+The agent represents both buyer and seller, or both landlord and tenant.
+The declaration must be made in writing, acknowledged by the client, and retained as part of mandatory transaction records.
+
+3. What are the CEA rules regarding collecting commission from both sides?
+
+Answer:
+CEA prohibits dual representation unless explicit written consent is obtained from both parties. Agents must:
+
+Inform both parties of the dual-role situation.
+
+Obtain separate written acknowledgements from both parties.
+
+Ensure no conflict of interest affects objective advice.
+
+Maintain transparent communication and documentation.
+Without such consent, collecting commission from both sides is a serious breach of the Estate Agents Act and may result in disciplinary action.
+
+ CATEGORY B — TRANSACTION PROCEDURES (ERA SOP)
+1. What steps must an agent follow before listing a property in the ERA internal system?
+
+Answer:
+An agent must complete the following steps before listing a property:
+
+Verify ownership using property title search or seller’s identification documents.
+
+Obtain signed exclusive or open listing agreement.
+
+Collect essential documents: floor plan, land title, previous valuation (if any).
+
+Conduct a physical inspection or virtual walkthrough.
+
+Prepare accurate property details (unit size, facing, condition, features).
+
+Ensure all photos and media comply with ERA’s marketing guidelines.
+
+Submit the listing through ERA’s internal system for validation if required.
+Listings must not be published without owner authorization or documentation proof.
+
+2. What is the full ERA SOP for processing a private resale transaction from OTP to completion?
+
+Answer:
+The private resale process follows these steps:
+
+Granting of OTP — Seller issues Option to Purchase upon receiving option fee.
+
+Buyer exercises OTP within 14 days (unless otherwise agreed).
+
+Legal appointment — Both parties appoint conveyancing lawyers.
+
+Loan approval — Buyer obtains final Letter of Offer from the bank.
+
+Valuation — Bank conducts valuation through approved panel valuers.
+
+Stamp duty payment — Buyer must pay BSD/ABSD within 14 days of OTP exercise.
+
+Conveyancing work — Lawyers conduct title search, prepare documents, and liaise with bank.
+
+Final inspection and handover — Usually 1–2 days before completion.
+
+Completion — At law firm; keys handed over; seller receives sale proceeds.
+Agents must document every step and communicate consistently with both parties.
+
+3. What is the required documentation before conducting a home viewing?
+
+Answer:
+Agents must have:
+
+Owner’s authorization (exclusive agreement/marketing consent)
+
+Verified property details (floor plan, address)
+
+Safety checks (ensure no hazards)
+
+Viewing schedule record (names, time, agent)
+
+For rental viewings: confirmation that tenants or owners have been notified
+Agents must maintain a viewing log to document attendance for both internal and CEA compliance purposes.
+
+CATEGORY C — BUYER ELIGIBILITY & GOVERNMENT REGULATIONS
+1. What are the eligibility conditions for Singapore Citizens, PRs, and Foreigners when purchasing residential property?
+
+Answer:
+Singapore Citizens (SC): Eligible to buy all private properties and HDB (subject to schemes).
+Permanent Residents (PR): Cannot buy HDB BTO, HDB resale only after 3-year wait; private property purchase allowed but subject to ABSD.
+Foreigners: Generally restricted from landed property and HDB. Can buy condominiums and approved developments. Landed purchase requires LDAU approval.
+
+2. Can a HDB owner buy a private condo before selling?
+
+Answer:
+Yes, subject to:
+
+MOP Completion — The owner must have fulfilled the 5-year MOP.
+
+Loan Constraints — Subject to TDSR and LTV limits; second property buyers face reduced LTV (usually 45% or lower).
+
+ABSD Payment — SC buying second property pays 20% ABSD (refundable if selling HDB within 6 months for married couples).
+Owners who have not met MOP cannot buy private residential property.
+
+3. What are the conditions for ABSD remission for married couples?
+
+Answer:
+Couples may qualify for ABSD remission if:
+
+At least one spouse is a Singapore Citizen.
+
+They purchase the residential property jointly.
+
+Their first property is sold within 6 months of purchasing the second.
+
+They submit remission application to IRAS with legally required documentation.
+
+They are legally married at the time of purchase.
+Failure to sell within 6 months results in loss of remission.
+
+CATEGORY D — FINANCIAL GUIDELINES (BSD, ABSD, TDSR, CPF)
+1. How is Buyer’s Stamp Duty (BSD) calculated?
+
+Answer:
+BSD is calculated using tiered marginal rates:
+
+1% on first $180,000
+
+2% on next $180,000
+
+3% on next $640,000
+
+4% on next $500,000
+
+5% on next $1,500,000
+
+6% above that
+Based on the higher of purchase price or valuation. Payable within 14 days of OTP exercise.
+
+2. What is Total Debt Servicing Ratio (TDSR)?
+
+Answer:
+TDSR limits the percentage of a borrower’s monthly income that can be used to service all outstanding loan repayments.
+
+Current TDSR cap: 55% of gross monthly income
+
+Applies to all property purchases
+
+Stress-test interest rate also applies (minimum 4% for residential loans)
+Banks will verify income, liabilities, and credit reports before loan approval.
+
+3. What CPF restrictions apply to older leasehold properties?
+
+Answer:
+CPF usage depends on remaining lease:
+
+If remaining lease ≥ 20 years → CPF usable up to withdrawal limits
+
+If remaining lease < 20 years → CPF cannot be used
+
+If the lease does not last the youngest owner until age 95 → CPF usage is prorated
+Buyers must check lease decay to avoid financing issues.
+
+CATEGORY E — RENTAL & LEASING POLICIES
+1. What is the minimum rental period for private residential properties?
+
+Answer:
+URA mandates a minimum of 3 months for private residential rentals.
+Any rental below 3 months is considered short-term accommodation and is illegal unless approved (e.g., serviced apartments).
+HDB has separate rules (minimum 6 months).
+
+2. What checks must be performed to ensure tenants are legally allowed to stay in Singapore?
+
+Answer:
+Agents must verify tenant eligibility by checking:
+
+Passport validity
+
+Work pass, student pass, or other immigration documents
+
+ICA e-Service check for stay duration validity
+
+Blacklist cross-check for illegal overstayers
+Failure to conduct these checks is a breach of CEA regulations.
+
+3. What is the SOP for stamping a tenancy agreement?
+
+Answer:
+Tenancy agreements must be stamped with IRAS within 14 days of signing.
+Stamp duty is typically paid by the tenant unless negotiated otherwise.
+The duty is:
+
+0.4% of total rent for leases under 4 years
+
+0.4% × monthly rent × number of months
+Agents must assist tenants in retrieving the e-stamped document for submission to employers, ICA, or HDB if needed.
+
+CATEGORY F — PROJECT SALES / NEW LAUNCH SOP
+1. What steps must be taken before registering a buyer for a project ballot?
+
+Answer:
+Agents must:
+
+Verify the buyer’s eligibility and financial capacity.
+
+Explain the booking and payment process clearly.
+
+Submit buyer registration through developer portal or ERA project team.
+
+Collect the necessary documents (NRIC, cheque, AIP).
+
+Ensure accuracy of buyer details (name, ID, contact).
+Incomplete or inaccurate registration may void the ballot entry.
+
+2. What is the SOP for explaining progressive payment to buyers?
+
+Answer:
+Agents must provide:
+
+A clear breakdown of progressive stages (foundation → structure → walls → completion).
+
+Estimated timeline of payments.
+
+Estimated interest impact from disbursement.
+
+Stamp duty and legal fee schedule.
+
+Clarification that payment percentages are fixed by the Housing Developers Rules.
+Buyers must acknowledge understanding before committing to purchase.
+
+3. What checks must be performed before booking a new launch unit?
+
+Answer:
+The agent must ensure:
+
+Buyer has a valid AIP (In-Principle Approval).
+
+Buyer has cheque ready for booking fee.
+
+Buyer is informed of cancellation penalties and forfeiture rules.
+
+Unit availability is confirmed via internal project inventory.
+
+Buyer understands floor plans, unit size, and variations from showflat.
+Agents are responsible for advising buyers accurately to prevent misrepresentation.

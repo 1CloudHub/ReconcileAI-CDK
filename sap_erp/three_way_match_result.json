@@ -1,0 +1,34 @@
+{
+  "exception_records": [
+    {
+      "exception_id": "EXC-001-8438",
+      "exception_type": "Quantity Variance",
+      "po_number": "4500017890",
+      "item_number": "00040",
+      "exception_value": 720,
+      "material": "OIL-FLTR-100BX",
+      "severity": "High",
+      "status": "Pending",
+      "exception_summary": "Quantity variance of 720 units detected for item 00040 (OIL-FLTR-100BX) on PO 4500017890. This represents a significant deviation that requires investigation to determine if it's due to partial delivery, over-billing, or delivery discrepancies between ordered, received, and invoiced quantities.",
+      "sop_connected": "SOP_QUANTITY_CHANGE_V1.txt",
+      "sop_summary": "Calculate variance percentage, assign severity based on deviation, and recommend hold until delivery confirmation for high variances",
+      "sop_used": "SOP_QUANTITY_CHANGE_V1",
+      "sop_exc_code": "EXC-001"
+    },
+    {
+      "exception_id": "EXC-005-7939",
+      "exception_type": "UoM Issues",
+      "po_number": "4500017890",
+      "item_number": "00040",
+      "exception_value": "BOX vs PC",
+      "material": "OIL-FLTR-100BX",
+      "severity": "High",
+      "status": "Pending",
+      "exception_summary": "Unit of measure mismatch detected for material OIL-FLTR-100BX where BOX vs PC units are being used across documents. This discrepancy can cause valuation errors and posting inconsistencies if no valid conversion factor exists in master data.",
+      "sop_connected": "SOP_UOM_ISSUE_V1.txt",
+      "sop_summary": "Verify UoM conversion factor exists and correct master data if missing or inconsistent",
+      "sop_used": "SOP_UOM_ISSUE_V1",
+      "sop_exc_code": "EXC-005"
+    }
+  ]
+}

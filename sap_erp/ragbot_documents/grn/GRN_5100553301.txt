@@ -1,0 +1,49 @@
+{
+  "MaterialDocument": "5100553301",
+  "PurchaseOrder": "4600622107",
+  "PostingDate": "2025-08-17",
+  "CompanyCode": "3700",
+  "Items": [
+    {
+      "MaterialDocumentItem": "0001",
+      "PurchaseOrder": "4600622107",
+      "PurchaseOrderItem": "00010",
+      "Material": "ACT-SERVO-4400",
+      "QuantityInEntryUnit": 120,
+      "EntryUnit": "EA",
+      "AmountInDocumentCurrency": 13200.00,
+      "GRStatus": "Received"
+    },
+    {
+      "MaterialDocumentItem": "0002",
+      "PurchaseOrder": "4600622107",
+      "PurchaseOrderItem": "00020",
+      "Material": "SEN-THERM-8801",
+      "QuantityInEntryUnit": 135,
+      "EntryUnit": "EA",
+      "AmountInDocumentCurrency": 18900.00,
+      "GRStatus": "Received"
+    },
+    {
+      "MaterialDocumentItem": "0003",
+      "PurchaseOrder": "4600622107",
+      "PurchaseOrderItem": "00030",
+      "Material": "FLT-COOL-5522",
+      "QuantityInEntryUnit": 240,
+      "EntryUnit": "EA",
+      "AmountInDocumentCurrency": 7200.00,
+      "GRStatus": "Received"
+    },
+    {
+      "MaterialDocumentItem": "0004",
+      "PurchaseOrder": "4600622107",
+      "PurchaseOrderItem": "00040",
+      "Material": "BRG-SMTH-7720",
+      "QuantityInEntryUnit": 75,
+      "EntryUnit": "EA",
+      "AmountInDocumentCurrency": 5250.00,
+      "GRStatus": "Received"
+    }
+
+  ]
+}

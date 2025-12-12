@@ -1,0 +1,58 @@
+{
+  "MaterialDocument": "5100033333",
+  "PostingDate": "2025-10-16",
+  "CompanyCode": "1000",
+  "Items": [
+    {
+      "MaterialDocumentItem": "0001",
+      "PurchaseOrder": "4500017890",
+      "PurchaseOrderItem": "00010",
+      "Material": "CIR-BRD-200",
+      "QuantityInEntryUnit": 300,
+      "EntryUnit": "PC",
+      "AmountInDocumentCurrency": 12000.00,
+      "GRStatus": "Received"
+    },
+    {
+      "MaterialDocumentItem": "0002",
+      "PurchaseOrder": "4500017890",
+      "PurchaseOrderItem": "00020",
+      "Material": "BRG-BALL-6202",
+      "QuantityInEntryUnit": 500,
+      "EntryUnit": "PC",
+      "AmountInDocumentCurrency": 7750.00,
+      "GRStatus": "Received"
+    },
+    {
+      "MaterialDocumentItem": "0003",
+      "PurchaseOrder": "4500017890",
+      "PurchaseOrderItem": "00030",
+      "Material": "MTR-HS-15KW",
+      "QuantityInEntryUnit": 40,
+      "EntryUnit": "PC",
+      "AmountInDocumentCurrency": 76000.00,
+      "GRStatus": "Received"
+    },
+    {
+      "MaterialDocumentItem": "0004",
+      "PurchaseOrder": "4500017890",
+      "PurchaseOrderItem": "00040",
+      "Material": "OIL-FLTR-100BX",
+      "QuantityInEntryUnit": 80,
+      "EntryUnit": "BOX",
+      "AmountInDocumentCurrency": 16000.00,
+      "GRStatus": "Received"
+    },
+    {
+      "MaterialDocumentItem": "0005",
+      "PurchaseOrder": "4500017890",
+      "PurchaseOrderItem": "00050",
+      "Material": "SCRN-TCH-24",
+      "QuantityInEntryUnit": 100,
+      "EntryUnit": "PC",
+      "AmountInDocumentCurrency": 45000.00,
+      "GRStatus": "Received"
+    }
+  ]
+}
+

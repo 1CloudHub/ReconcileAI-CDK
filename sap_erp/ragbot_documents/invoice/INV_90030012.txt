@@ -1,0 +1,59 @@
+{
+  "BillingDocument": "90030012",
+  "PostingDate": "2025-07-15",
+  "CompanyCode": "3300",
+  "Supplier": "SUPP-HYDRO-8811",
+  "DocumentCurrency": "USD",
+  "Items": [
+    {
+      "BillingDocumentItem": "0010",
+      "ReferencePurchaseOrder": "4600551902",
+      "ReferencePurchaseOrderItem": "00010",
+      "Material": "PMP-HYD-4411",
+      "BillingQuantity": 50,
+      "BillingQuantityUnit": "EA",
+      "InvoiceUnitPrice": 210.00,
+      "NetValueAmount": 10500.00
+    },
+    {
+      "BillingDocumentItem": "0020",
+      "ReferencePurchaseOrder": "4600551902",
+      "ReferencePurchaseOrderItem": "00020",
+      "Material": "SEN-LEVEL-9902",
+      "BillingQuantity": 80,
+      "BillingQuantityUnit": "EA",
+      "InvoiceUnitPrice": 90.00,
+      "NetValueAmount": 7200.00
+    },
+    {
+      "BillingDocumentItem": "0030",
+      "ReferencePurchaseOrder": "4600551902",
+      "ReferencePurchaseOrderItem": "00030",
+      "Material": "FLT-WTR-8810",
+      "BillingQuantity": 120,
+      "BillingQuantityUnit": "EA",
+      "InvoiceUnitPrice": 40.00,
+      "NetValueAmount": 4800.00
+    },
+    {
+      "BillingDocumentItem": "0040",
+      "ReferencePurchaseOrder": "4600551902",
+      "ReferencePurchaseOrderItem": "00040",
+      "Material": "BRG-STEEL-5500",
+      "BillingQuantity": 110,
+      "BillingQuantityUnit": "EA",
+      "InvoiceUnitPrice": 120.00,
+      "NetValueAmount": 13200.00
+    },
+    {
+      "BillingDocumentItem": "0050",
+      "ReferencePurchaseOrder": "4600551902",
+      "ReferencePurchaseOrderItem": "00050",
+      "Material": "CTRL-PNL-X220",
+      "BillingQuantity": 40,
+      "BillingQuantityUnit": "EA",
+      "InvoiceUnitPrice": 500.00,         
+      "NetValueAmount": 18400.00
+    }
+  ]
+}

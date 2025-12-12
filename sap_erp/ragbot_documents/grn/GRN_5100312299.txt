@@ -1,0 +1,58 @@
+{
+  "MaterialDocument": "5100312299",
+  "PurchaseOrder": "4600411220",
+  "PostingDate": "2025-06-20",
+  "CompanyCode": "5000",
+  "Items": [
+    {
+      "MaterialDocumentItem": "0001",
+      "PurchaseOrder": "4600411220",
+      "PurchaseOrderItem": "00010",
+      "Material": "ACT-LINEAR-3300",
+      "QuantityInEntryUnit": 75,
+      "EntryUnit": "EA",
+      "AmountInDocumentCurrency": 8775.00,
+      "GRStatus": "Received"
+    },
+    {
+      "MaterialDocumentItem": "0002",
+      "PurchaseOrder": "4600411220",
+      "PurchaseOrderItem": "00020",
+      "Material": "SEN-PROX-9022",
+      "QuantityInEntryUnit": 120,
+      "EntryUnit": "EA",
+      "AmountInDocumentCurrency": 19200.00,
+      "GRStatus": "Received"
+    },
+    {
+      "MaterialDocumentItem": "0003",
+      "PurchaseOrder": "4600411220",
+      "PurchaseOrderItem": "00030",
+      "Material": "FLT-AIR-2200",
+      "QuantityInEntryUnit": 200,
+      "EntryUnit": "EA",
+      "AmountInDocumentCurrency": 3600.00,
+      "GRStatus": "Received"
+    },
+    {
+      "MaterialDocumentItem": "0004",
+      "PurchaseOrder": "4600411220",
+      "PurchaseOrderItem": "00040",
+      "Material": "BRG-HEAVY-7712",
+      "QuantityInEntryUnit": 180,
+      "EntryUnit": "EA",
+      "AmountInDocumentCurrency": 12600.00,
+      "GRStatus": "Received"
+    },
+    {
+      "MaterialDocumentItem": "0005",
+      "PurchaseOrder": "4600411220",
+      "PurchaseOrderItem": "00050",
+      "Material": "CTRL-SYS-Z88",
+      "QuantityInEntryUnit": 40,
+      "EntryUnit": "EA",
+      "AmountInDocumentCurrency": 16800.00,
+      "GRStatus": "Received"
+    }
+  ]
+}

@@ -1,0 +1,35 @@
+SOP 3: Unit of Measure (UoM) Issue
+SOP ID: SOP_UOM_ISSUE_V1
+Exception Type: Unit of Measure Mismatch
+
+Step 1: Confirm Exception Context
+- Verify PO, GRN, and invoice reference the same material but use different units (e.g., box vs piece).
+- Check if conversion factor exists in master data.
+
+Step 2: Classify Severity
+- Conversion available → Low (informational).
+- Conversion missing or inconsistent → High.
+
+Step 3: Generate Reasoning Summary
+Explain the mismatch simply:
+- What the unit difference is.
+- Why it matters (conversion missing or ambiguous).
+- Impact (valuation or posting discrepancy).
+
+Example tone:
+"PO ordered 10 boxes (100 units each) but invoice billed 1,000 pieces.
+No valid conversion found — may cause valuation mismatch."
+
+Step 4: Recommend Action
+- Low: Record and auto-convert if master data valid.
+- High: Recommend master data correction and review.
+
+Step 5: Populate Dashboard Output
+{
+  "exception_type": "Unit of Measure Issue",
+  "severity": "High",
+  "recommended_action": "Verify UoM conversion and correct master data.",
+  "agent_reasoning_summary": "Invoice uses 'pieces' while PO uses 'boxes' with no valid conversion. Could affect valuation accuracy.",
+  "status": "Pending",
+  "confidence_score": 0.88
+}

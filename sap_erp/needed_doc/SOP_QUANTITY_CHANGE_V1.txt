@@ -1,0 +1,44 @@
+SOP 2: Quantity Change Exception
+SOP ID: SOP_QUANTITY_CHANGE_V1
+Exception Type: Quantity Change (PO vs GRN vs Invoice)
+
+Step 1: Confirm Exception Context
+- Confirm that ordered, received, and invoiced quantities are mismatched.
+- Ensure this is not caused by partial delivery timing.
+
+Step 2: Quantify Deviation
+- Calculate difference between ordered / received / invoiced quantities.
+- Classify by variance %:
+  ≤ 5 % → Low
+  5–15 % → Medium
+  15 % → High
+
+Step 3: Assign Severity
+- Tag severity level and note which document pair caused the mismatch (e.g., Invoice > GRN).
+
+Step 4: Generate Reasoning Summary
+Explain:
+- What quantity difference was found.
+- Between which documents (PO, GRN, Invoice).
+- What could have caused it (partial shipment, early billing, etc.).
+- Why finance needs to know (risk of over/under-billing).
+
+Example tone:
+"Invoice shows 100 units billed, but only 80 units were received under GRN 500234.
+This 20 % variance may indicate early billing or incomplete delivery."
+
+Step 5: Recommend Action
+- Low: Note only.
+- Medium: Recommend reconfirmation with warehouse.
+- High: Recommend hold until delivery confirmation.
+
+Step 6: Populate Dashboard Output
+{
+  "exception_type": "Quantity Change",
+  "variance_percent": 20,
+  "severity": "High",
+  "recommended_action": "Hold until receipt confirmation.",
+  "agent_reasoning_summary": "Invoice quantity exceeds received quantity by 20%. Early billing or short delivery likely.",
+  "status": "Pending",
+  "confidence_score": 0.9
+}

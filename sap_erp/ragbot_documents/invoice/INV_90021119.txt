@@ -1,0 +1,59 @@
+{
+  "BillingDocument": "90021119",
+  "PostingDate": "2025-03-25",
+  "CompanyCode": "3100",
+  "Supplier": "SUPP-TECH-1188",
+  "DocumentCurrency": "USD",
+  "Items": [
+    {
+      "BillingDocumentItem": "0010",
+      "ReferencePurchaseOrder": "4600142288",
+      "ReferencePurchaseOrderItem": "00010",
+      "Material": "MOD-HOUSING-6610",
+      "BillingQuantity": 180,
+      "BillingQuantityUnit": "EA",
+      "InvoiceUnitPrice": 84.00,
+      "NetValueAmount": 15120.00
+    },
+    {
+      "BillingDocumentItem": "0020",
+      "ReferencePurchaseOrder": "4600142288",
+      "ReferencePurchaseOrderItem": "00020",
+      "Material": "COIL-TEMP-3022",
+      "BillingQuantity": 200,
+      "BillingQuantityUnit": "EA",
+      "InvoiceUnitPrice": 42.00,
+      "NetValueAmount": 8400.00
+    },
+    {
+      "BillingDocumentItem": "0030",
+      "ReferencePurchaseOrder": "4600142288",
+      "ReferencePurchaseOrderItem": "00030",
+      "Material": "DRV-BELT-9001",
+      "BillingQuantity": 600,
+      "BillingQuantityUnit": "EA",
+      "InvoiceUnitPrice": 60.00,
+      "NetValueAmount": 36000.00
+    },
+    {
+      "BillingDocumentItem": "0040",
+      "ReferencePurchaseOrder": "4600142288",
+      "ReferencePurchaseOrderItem": "00040",
+      "Material": "BRG-PREC-7710",
+      "BillingQuantity": 150,
+      "BillingQuantityUnit": "BOX",             
+      "InvoiceUnitPrice": 30.00,
+      "NetValueAmount": 4500.00
+    },
+    {
+      "BillingDocumentItem": "0050",
+      "ReferencePurchaseOrder": "4600142288",
+      "ReferencePurchaseOrderItem": "00050",
+      "Material": "CTRL-BRD-Z450",
+      "BillingQuantity": 70,
+      "BillingQuantityUnit": "EA",
+      "InvoiceUnitPrice": 390.00,
+      "NetValueAmount": 27300.00
+    }
+  ]
+}

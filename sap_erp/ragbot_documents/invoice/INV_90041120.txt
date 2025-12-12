@@ -1,0 +1,59 @@
+{
+  "BillingDocument": "90041120",
+  "PostingDate": "2025-10-25",
+  "CompanyCode": "3900",
+  "Supplier": "SUPP-INDTECH-5512",
+  "DocumentCurrency": "USD",
+  "Items": [
+    {
+      "BillingDocumentItem": "0010",
+      "ReferencePurchaseOrder": "4600883201",
+      "ReferencePurchaseOrderItem": "00010",
+      "Material": "ACT-LINEAR-5501",
+      "BillingQuantity": 100,
+      "BillingQuantityUnit": "EA",
+      "InvoiceUnitPrice": 80.00,
+      "NetValueAmount": 8000.00
+    },
+    {
+      "BillingDocumentItem": "0020",
+      "ReferencePurchaseOrder": "4600883201",
+      "ReferencePurchaseOrderItem": "00020",
+      "Material": "SEN-FLOW-7012",
+      "BillingQuantity": 150,
+      "BillingQuantityUnit": "EA",
+      "InvoiceUnitPrice": 150.00,
+      "NetValueAmount": 22500.00
+    },
+    {
+      "BillingDocumentItem": "0030",
+      "ReferencePurchaseOrder": "4600883201",
+      "ReferencePurchaseOrderItem": "00030",
+      "Material": "FLT-AIR-3300",
+      "BillingQuantity": 300,
+      "BillingQuantityUnit": "BOX",
+      "InvoiceUnitPrice": 60.00,
+      "NetValueAmount": 14400.00
+    },
+    {
+      "BillingDocumentItem": "0040",
+      "ReferencePurchaseOrder": "4600883201",
+      "ReferencePurchaseOrderItem": "00040",
+      "Material": "BRG-PREC-9901",
+      "BillingQuantity": 140,
+      "BillingQuantityUnit": "EA",
+      "InvoiceUnitPrice": 180.00,
+      "NetValueAmount": 25200.00
+    },
+    {
+      "BillingDocumentItem": "0050",
+      "ReferencePurchaseOrder": "4600883201",
+      "ReferencePurchaseOrderItem": "00050",
+      "Material": "CTRL-MOD-Y550",
+      "BillingQuantity": 40,
+      "BillingQuantityUnit": "EA",
+      "InvoiceUnitPrice": 450.00,
+      "NetValueAmount": 15600.00
+    }
+  ]
+}

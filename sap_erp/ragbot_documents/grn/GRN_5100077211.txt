@@ -1,0 +1,58 @@
+{
+  "MaterialDocument": "5100077211",
+  "PurchaseOrder": "4600011198",
+  "PostingDate": "2025-01-21",
+  "CompanyCode": "1710",
+  "Items": [
+    {
+      "MaterialDocumentItem": "0001",
+      "PurchaseOrder": "4600011198",
+      "PurchaseOrderItem": "00010",
+      "Material": "MTR-GEAR-5501",
+      "QuantityInEntryUnit": 50,
+      "EntryUnit": "EA",
+      "AmountInDocumentCurrency": 6025.00,
+      "GRStatus": "Received"
+    },
+    {
+      "MaterialDocumentItem": "0002",
+      "PurchaseOrder": "4600011198",
+      "PurchaseOrderItem": "00020",
+      "Material": "MTR-SENSOR-8832",
+      "QuantityInEntryUnit": 30,
+      "EntryUnit": "EA",
+      "AmountInDocumentCurrency": 2670.00,
+      "GRStatus": "Received"
+    },
+    {
+      "MaterialDocumentItem": "0003",
+      "PurchaseOrder": "4600011198",
+      "PurchaseOrderItem": "00030",
+      "Material": "MTR-VALVE-4410",
+      "QuantityInEntryUnit": 20,
+      "EntryUnit": "EA",
+      "AmountInDocumentCurrency": 4200.00,
+      "GRStatus": "Received"
+    },
+    {
+      "MaterialDocumentItem": "0004",
+      "PurchaseOrder": "4600011198",
+      "PurchaseOrderItem": "00040",
+      "Material": "MTR-BEARING-7321",
+      "QuantityInEntryUnit": 15,
+      "EntryUnit": "EA",
+      "AmountInDocumentCurrency": 1125.00,
+      "GRStatus": "Received"
+    },
+    {
+      "MaterialDocumentItem": "0005",
+      "PurchaseOrder": "4600011198",
+      "PurchaseOrderItem": "00050",
+      "Material": "MTR-PANEL-9922",
+      "QuantityInEntryUnit": 10,
+      "EntryUnit": "EA",
+      "AmountInDocumentCurrency": 5600.00,
+      "GRStatus": "Received"
+    }
+  ]
+}

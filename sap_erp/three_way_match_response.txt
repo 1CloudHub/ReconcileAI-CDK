@@ -1,0 +1,96 @@
+# 3-Way Match Analysis Report
+
+## Document Overview
+- **Purchase Order**: 4500018901
+- **Goods Receipt**: 5100044444
+- **Supplier Invoice**: 90011111
+- **Company Code**: 1000
+- **Supplier**: VEND-4120
+- **Currency**: USD
+
+## Summary Analysis
+
+### Overall Match Status: **FAILED** ⚠️
+**Critical Issue Identified**: Missing Goods Receipt for high-value item
+
+---
+
+## Detailed Line Item Analysis
+
+| PO Item | Material | Description | PO Qty | GR Qty | Invoice Qty | PO Price | Invoice Price | Status |
+|---------|----------|-------------|--------|--------|-------------|----------|---------------|---------|
+| 00010 | HYD-PMP-300 | Hydraulic Pump Unit 300 bar | 30 PC | 30 PC | 30 PC | $980.00 | $980.00 | ✅ **MATCHED** |
+| 00020 | VALVE-GATE-22 | Stainless Steel Gate Valve 2 inch | 60 PC | 60 PC | 60 PC | $220.00 | $220.00 | ✅ **MATCHED** |
+| 00030 | COMP-AIR-750 | Industrial Air Compressor 7.5 kW | 10 PC | **0 PC** | 10 PC | $8,900.00 | $8,900.00 | ❌ **FAILED** |
+| 00040 | PIPE-GI-100 | Galvanized Pipe 100 mm – 6 m Length | 100 PC | 100 PC | 100 PC | $165.00 | $165.00 | ✅ **MATCHED** |
+| 00050 | ELEC-CONT-3P50A | Electrical Contactor 3-Pole 50 A | 300 PC | 300 PC | 300 PC | $35.00 | $35.00 | ✅ **MATCHED** |
+
+---
+
+## Exception Details
+
+### 🚨 **HIGH SEVERITY EXCEPTION**
+
+**Exception Type**: Missing Goods Receipt  
+**Item**: 00030 - Industrial Air Compressor 7.5 kW  
+**Material**: COMP-AIR-750  
+**Severity**: High  
+**Confidence**: 95%
+
+**Issue Description**:
+- Invoice 90011111 bills for 10 units ($89,000) of Industrial Air Compressor
+- No corresponding goods receipt found in document 5100044444
+- This represents 41.6% of total PO value ($89,000 out of $213,950)
+
+**Financial Impact**:
+- **Amount at Risk**: $89,000
+- **Percentage of Total PO**: 41.6%
+
+**Recommended Action**: 
+Hold invoice until GRN is posted or delivery is confirmed.
+
+---
+
+## Financial Summary
+
+| Component | Amount | Status |
+|-----------|--------|---------|
+| **Total PO Value** | $213,950.00 | - |
+| **Total Invoice Value** | $158,600.00 | - |
+| **Matched Amount** | $69,600.00 | ✅ |
+| **Exception Amount** | $89,000.00 | ❌ |
+| **Coverage Percentage** | 43.9% | - |
+
+---
+
+## Risk Assessment
+
+**Risk Level**: **HIGH** 🔴
+
+**Key Risk Factors**:
+1. Large monetary value ($89,000) without goods receipt
+2. High-value equipment (Industrial Air Compressor) 
+3. Potential payment without actual delivery confirmation
+4. Represents significant portion of total PO value
+
+---
+
+## Recommendations
+
+### Immediate Actions Required:
+1. **HOLD PAYMENT** for Invoice 90011111 until resolved
+2. **Verify Physical Delivery** of Industrial Air Compressor (Material: COMP-AIR-750)
+3. **Post Goods Receipt** if delivery is confirmed
+4. **Investigate Delivery Status** with Plant PL04
+
+### Process Improvements:
+1. Implement mandatory GRN posting before invoice processing for high-value items
+2. Set up automated alerts for invoices without corresponding goods receipts
+3. Establish clear escalation procedures for missing documentation
+
+---
+
+## Approval Status
+**3-Way Match Result**: **REJECT** - Invoice requires resolution before payment processing
+
+**Next Review Date**: Upon goods receipt posting or delivery confirmation
