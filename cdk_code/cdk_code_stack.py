@@ -315,7 +315,7 @@ class CdkCodeStack(Stack):
             "AmazonRDSFullAccess",
             "AmazonS3FullAccess",
             "AmazonSESFullAccess",
-            "service-role/AWSLambdaVPCAccessExecutionRole"       # ENIs for VPC access
+            "service-role/AWSLambdaVPCAccessExecutionRole"
         ]
         
         for policy_name in managed_policies:
