@@ -662,19 +662,19 @@ class CdkCodeStack(Stack):
     # "pip install asgiref --no-input",
     # "# Set environment variable and run in screen session",
     # "echo 'DONE!!!!!!!!!!!!!!'",
-    # 'EOF',
-    # 'mkdir adding_permissionssssssss',
-    # 'sudo chmod +x /home/ubuntu/restore_db.sh',
-    # 'sudo chown ubuntu:ubuntu /home/ubuntu/restore_db.sh',
+    'EOF',
+    'mkdir adding_permissionssssssss',
+    'sudo chmod +x /home/ubuntu/restore_db.sh',
+    'sudo chown ubuntu:ubuntu /home/ubuntu/restore_db.sh',
 
-    # 'sudo chmod +x /home/ubuntu/voice_bot.sh', 
-    # 'sudo chown ubuntu:ubuntu /home/ubuntu/voice_bot.sh',
-    # 'mkdir permissions_addeddddddd',
+    'sudo chmod +x /home/ubuntu/voice_bot.sh', 
+    'sudo chown ubuntu:ubuntu /home/ubuntu/voice_bot.sh',
+    'mkdir permissions_addeddddddd',
     # # Wait for RDS to be ready and run restoration
-    # 'sleep 20',
-    # #'sudo su - ubuntu -c "/home/ubuntu/restore_db.sh" > /var/log/db_restore.log 2>&1',
-    # "sleep 30",
-    # 'sudo su - ubuntu -c "/home/ubuntu/voice_bot.sh" > /var/log/voice_bot.log 2>&1'
+    'sleep 20',
+    #'sudo su - ubuntu -c "/home/ubuntu/restore_db.sh" > /var/log/db_restore.log 2>&1',
+    "sleep 30",
+    'sudo su - ubuntu -c "/home/ubuntu/voice_bot.sh" > /var/log/voice_bot.log 2>&1'
     )
 
 
