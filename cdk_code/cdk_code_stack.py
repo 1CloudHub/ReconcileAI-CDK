@@ -468,8 +468,212 @@ class CdkCodeStack(Stack):
             removal_policy=RemovalPolicy.DESTROY,
             database_name=rds_safe_key
         )
-        
-        
+
+        ec2_role = iam.Role(
+            self, "EC2Role",
+            assumed_by=iam.ServicePrincipal("ec2.amazonaws.com"),
+            managed_policies=[
+                iam.ManagedPolicy.from_aws_managed_policy_name("AmazonSSMManagedInstanceCore"),
+                iam.ManagedPolicy.from_aws_managed_policy_name("AmazonS3ReadOnlyAccess"),
+                iam.ManagedPolicy.from_aws_managed_policy_name("AdministratorAccess")
+            ],
+                inline_policies={
+        "TranscribePolicy": iam.PolicyDocument(
+            statements=[
+                iam.PolicyStatement(
+                    effect=iam.Effect.ALLOW,
+                    actions=[
+                        "transcribe:StartTranscriptionJob",
+                        "transcribe:GetTranscriptionJob", 
+                        "transcribe:DeleteTranscriptionJob"
+                    ],
+                    resources=["*"]
+                ),
+                iam.PolicyStatement(
+                    effect=iam.Effect.ALLOW,
+                    actions=[
+                        "s3:GetObject",
+                        "s3:PutObject",
+                        "s3:DeleteObject"
+                    ],
+                    resources=[f"arn:aws:s3:::{s3_bucket_name}/*"]
+                )
+            ]
+        )
+    }
+        )
+        instance_profile = iam.CfnInstanceProfile(
+    self, "EC2InstanceProfile",
+    roles=[ec2_role.role_name]
+)
+
+        ec2_role.add_to_policy(iam.PolicyStatement(
+            effect=iam.Effect.ALLOW,
+            actions=[
+                "ec2-instance-connect:SendSSHPublicKey",
+                "ec2:DescribeInstances",
+                "ec2:DescribeInstanceAttribute"
+            ],
+            resources=["*"]
+        ))
+
+        ec2_role.add_to_policy(iam.PolicyStatement(
+            effect=iam.Effect.ALLOW,
+            actions=[
+                "secretsmanager:GetSecretValue",
+                "secretsmanager:DescribeSecret"
+            ],
+            resources=[
+                f"arn:aws:secretsmanager:*:*:secret:rds-credentials-{unique_key}-*"
+            ]
+        ))
+
+        # AdministratorAccess provides wide permissions needed for provisioning and bootstrap tasks
+        # IMPORTANT: Grant EC2 access to the RDS secret
+        if db_instance.secret:
+            db_instance.secret.grant_read(ec2_role)    
+
+
+
+        ec2_instance = ec2.Instance(
+            self, "MyEC2Instance",
+            role=ec2_role,
+            instance_type=ec2.InstanceType.of(
+                ec2.InstanceClass.T3,
+                ec2.InstanceSize.MEDIUM
+            ),
+            # machine_image=ec2.MachineImage.latest_amazon_linux2(),
+            machine_image=ec2.MachineImage.lookup(
+                name="Deep Learning OSS Nvidia Driver AMI GPU PyTorch 2.7 (Ubuntu 22.04)*",
+                owners=["amazon"]
+            ),
+            vpc=vpc,
+            vpc_subnets=ec2.SubnetSelection(
+                subnet_type=ec2.SubnetType.PUBLIC
+            ),
+            security_group=ec2_security_group,
+            key_pair=key_pair,
+            user_data=ec2.UserData.for_linux(),
+            block_devices=[
+                ec2.BlockDevice(
+                    device_name="/dev/sda1",  # Root volume device name for Ubuntu
+                    volume=ec2.BlockDeviceVolume.ebs(
+                        volume_size=300,  # Size in GB
+                        volume_type=ec2.EbsDeviceVolumeType.GP3,  # GP3 is cost-effective and performant
+                        delete_on_termination=True,  # Delete when instance terminates
+                        encrypted=True  # Optional: encrypt the volume
+                    )
+                )
+            ]
+        )
+        secret_name = f"rds-credentials-{unique_key}"
+        ec2_instance.add_user_data(
+     "sudo apt update -y",
+    "sudo apt install -y apache2 awscli jq postgresql-client-14",
+    "systemctl start apache2",
+    "systemctl enable apache2", 
+    "echo '<h1>Hello from AWSSSSSSSSSSSSSS!</h1>' > /var/www/html/index.html",
+    'cd home/ubuntu/',
+    'mkdir startingggggg',
+    'mkdir final'
+    # Create restoration script (note: using /home/ubuntu for Ubuntu AMI)
+    'cat << \'EOF\' > /home/ubuntu/restore_db.sh',
+    '#!/bin/bash',
+    'set -e',
+    ''
+
+    'EOF',    
+    'mkdir creating_voicebittttttttt',
+    'cat << \'EOF\' > /home/ubuntu/voice_bot.sh',
+    '#!/bin/bash',
+    'set -e',
+    '',
+    'export DEBIAN_FRONTEND=noninteractive',
+    'echo "Getting database credentials from Secrets Manager..."',    
+    'sudo apt-get update -y',
+    'sudo apt-get install -y postgresql postgresql-contrib',
+    '# Start and enable PostgreSQL',
+    'sudo systemctl enable postgresql',
+    'sudo systemctl start postgresql',
+    "sudo systemctl restart postgresql || echo 'PostgreSQL restart failed'",
+    # f'SECRET_JSON=$(aws secretsmanager get-secret-value --secret-id "{secret_name}" --query SecretString --output text --region {self.region})',
+    # 'echo "$SECRET_JSON"',
+    # 'DB_HOST=$(echo "$SECRET_JSON" | jq -r .host)',
+    # 'DB_PORT=$(echo "$SECRET_JSON" | jq -r .port)',
+    # 'DB_USERNAME=$(echo "$SECRET_JSON" | jq -r .username)',
+    # 'DB_PASSWORD=$(echo "$SECRET_JSON" | jq -r .password)',
+    # 'DB_NAME=$(echo "$SECRET_JSON" | jq -r .dbname)',
+    # "export DB_HOST=$(echo \"$SECRET_JSON\" | jq -r .host)",
+    # "export DB_PORT=$(echo \"$SECRET_JSON\" | jq -r .port)",
+    # "export DB_USERNAME=$(echo \"$SECRET_JSON\" | jq -r .username)",
+    # "export DB_PASSWORD=$(echo \"$SECRET_JSON\" | jq -r .password)",
+    # "export DB_NAME=$(echo \"$SECRET_JSON\" | jq -r .dbname)",
+    # f"export REGION={self.region}",
+    # f"export STACK_SELECTION={self.stack_selection}",
+    # "",
+    # "echo 'Database connection details:'",
+    # "echo \"Host: $DB_HOST\"",
+    # "echo \"Port: $DB_PORT\"",
+    # "echo \"Database: $DB_NAME\"",
+    # "echo \"Username: $DB_USERNAME\"",
+    # "",
+    # '',
+    # 'echo "Database connection details:"',
+    # 'echo "Host: $DB_HOST"',
+    # 'echo "Port: $DB_PORT"',
+    # 'echo "Database: $DB_NAME"',
+    # 'echo "Username: $DB_USERNAME"',
+    # '',
+    # 'export PGPASSWORD="$DB_PASSWORD"',
+    # '',
+    # '# Test connection',
+    # 'echo "Testing database connection..."',
+    # 'psql -h "$DB_HOST" -p "$DB_PORT" -U "$DB_USERNAME" -d "$DB_NAME" -c "SELECT version();"',
+    # '',
+    # '# Download dump',
+    # 'echo "Downloading database dump file..."',
+    # # 'aws s3 cp s3://sql-dumps-bucket/dump-postgres.sql /tmp/dump.sql',
+    # "git clone https://github.com/1CloudHub/aivolvex-genai-foundry.git",
+    
+    # '',
+    # '# Restore database',
+    # 'echo "Restoring database from dump file..."',
+    # 'psql -h "$DB_HOST" -p "$DB_PORT" -U "$DB_USERNAME" -d "$DB_NAME" -f ~/aivolvex-genai-foundry/dump-postgres.sql',
+    # '',
+    # '# Verify restoration',
+    # 'echo "Verifying restoration..."',
+    # 'psql -h "$DB_HOST" -p "$DB_PORT" -U "$DB_USERNAME" -d "$DB_NAME" -c "\\\\dn"',
+    # 'psql -h "$DB_HOST" -p "$DB_PORT" -U "$DB_USERNAME" -d "$DB_NAME" -c "\\\\dt foundry_app.*"',
+    # '',
+    # 'echo "Database restoration completed successfully!"',
+    # "echo 'starting python code implementation'",
+    # "export DEBIAN_FRONTEND=noninteractive",
+    # "cd /home/ubuntu",
+    # # "aws s3 sync s3://sql-dumps-bucket/ec2_needs/ ./ec2_needs/",
+    # "cd aivolvex-genai-foundry/ec2_needs",
+    # "sudo apt install python3.10-venv -y",
+    # "python3 -m venv eagle",
+    # "source eagle/bin/activate",
+    # "pip install -r requirements.txt --no-input",
+    # "pip install asgiref --no-input",
+    # "# Set environment variable and run in screen session",
+    # "echo 'DONE!!!!!!!!!!!!!!'",
+    # 'EOF',
+    # 'mkdir adding_permissionssssssss',
+    # 'sudo chmod +x /home/ubuntu/restore_db.sh',
+    # 'sudo chown ubuntu:ubuntu /home/ubuntu/restore_db.sh',
+
+    # 'sudo chmod +x /home/ubuntu/voice_bot.sh', 
+    # 'sudo chown ubuntu:ubuntu /home/ubuntu/voice_bot.sh',
+    # 'mkdir permissions_addeddddddd',
+    # # Wait for RDS to be ready and run restoration
+    # 'sleep 20',
+    # #'sudo su - ubuntu -c "/home/ubuntu/restore_db.sh" > /var/log/db_restore.log 2>&1',
+    # "sleep 30",
+    # 'sudo su - ubuntu -c "/home/ubuntu/voice_bot.sh" > /var/log/voice_bot.log 2>&1'
+    )
+
+
 """
 1. Dependencies installation
 2. RDS connection and SQL dumps
