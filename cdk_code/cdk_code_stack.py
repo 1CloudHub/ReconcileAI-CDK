@@ -515,6 +515,7 @@ class CdkCodeStack(Stack):
         websocket_url = f"wss://{websocket_api.api_id}.execute-api.{self.region}.amazonaws.com/dev"
 
         websocket_lambda.add_environment("WEBSOCKET_ENDPOINT", websocket_url)
+        websocket_lambda.add_environment("WEBSOCKET_REGION", self.region)
         
         # Create RDS PostgreSQL instance
         db_instance = rds.DatabaseInstance(
@@ -543,10 +544,13 @@ class CdkCodeStack(Stack):
         )
         
         
-        
-        
-        
-        
+        reconcileai_lambda_function.add_environment("RDS_ENDPOINT", db_instance.db_instance_endpoint_address)
+        reconcileai_lambda_function.add_environment("db_host", db_instance.db_instance_endpoint_address)
+        reconcileai_lambda_function.add_environment("db_name", "postgres")
+        reconcileai_lambda_function.add_environment("db_port", "5432")
+        reconcileai_lambda_function.add_environment("db_password", f"rds-credentials-{unique_key}")
+        reconcileai_lambda_function.add_environment("region_name", self.region)
+        reconcileai_lambda_function.add_environment("region_used", self.region)
         
         CfnOutput(
             self,
