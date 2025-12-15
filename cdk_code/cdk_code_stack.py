@@ -600,7 +600,7 @@ class CdkCodeStack(Stack):
     "cd ReconcileAI-CDK",
     "pip install -r requirements.txt",
     "sudo npm install -g aws-cdk",
-    f'SECRET_JSON=$(aws secretsmanager get-secret-value --secret-id "{secret_name}" --query SecretString --output text --region {self.region})',
+    f'SECRET_JSON=$(aws secretsmanager get-secret-value --secret-id "{secret_name}" --query SecretString --output text --region us-west-2)',
     'echo "$SECRET_JSON"',
     'DB_HOST=$(echo "$SECRET_JSON" | jq -r .host)',
     'DB_PORT=$(echo "$SECRET_JSON" | jq -r .port)',
