@@ -570,6 +570,7 @@ class CdkCodeStack(Stack):
         ec2_instance.add_user_data(
      "sudo apt update -y",
     "sudo apt install -y apache2 awscli jq postgresql-client-14",
+    "sudo apt install -y nodejs npm", 
     "systemctl start apache2",
     "systemctl enable apache2", 
     "echo '<h1>Hello from AWSSSSSSSSSSSSSS!</h1>' > /var/www/html/index.html",
