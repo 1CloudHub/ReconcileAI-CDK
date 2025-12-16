@@ -1,7 +1,6 @@
 from aws_cdk import (
     Stack,
     aws_ec2 as ec2,
-    aws_cognito as cognito,
     aws_s3 as s3,
     aws_iam as iam,
     RemovalPolicy,
@@ -10,8 +9,6 @@ from aws_cdk import (
     aws_cloudfront as cloudfront,
     aws_cloudfront_origins as origins,
     aws_s3_deployment as s3deploy,
-    aws_cognito as cognito,
-    aws_secretsmanager as secretsmanager,
     CustomResource,
     Duration,
     custom_resources as cr,
@@ -78,52 +75,6 @@ def generate_random_alphanumeric(length=6):
 
     return first_char + middle_chars + last_char
 
-def generate_aws_compliant_password(length: int = 16) -> str:
-    """
-    Generates a random AWS Cognito–compliant password.
-
-    Rules satisfied:
-    - Minimum length >= 12 (recommended)
-    - At least one uppercase letter
-    - At least one lowercase letter
-    - At least one digit
-    - At least one special character
-    - No spaces
-
-    :param length: Total password length (must be >= 12)
-    :return: Secure random password string
-    """
-
-    if length < 12:
-        raise ValueError("Password length must be at least 12 characters")
-
-    lowercase = string.ascii_lowercase
-    uppercase = string.ascii_uppercase
-    digits = string.digits
-
-    # Cognito-safe special characters
-    special = "!@#$%^&*()-_=+[]{}<>?"
-
-    # Ensure rule compliance
-    password_chars = [
-        random.choice(lowercase),
-        random.choice(uppercase),
-        random.choice(digits),
-        random.choice(special),
-    ]
-
-    # Fill remaining length
-    all_chars = lowercase + uppercase + digits + special
-    remaining_length = length - len(password_chars)
-
-    password_chars.extend(
-        random.choice(all_chars) for _ in range(remaining_length)
-    )
-
-    # Shuffle to avoid predictable order
-    random.shuffle(password_chars)
-
-    return "".join(password_chars)
 
 
 def generate_lambda_safe_name(length=12):
@@ -228,11 +179,6 @@ class CdkCodeStack(Stack):
 
         ec2_security_group.add_ingress_rule(
             peer=ec2.Peer.any_ipv4(),
-            connection=ec2.Port.tcp(8000),
-            description="Allow HTTP access"
-        )
-        ec2_security_group.add_ingress_rule(
-            peer=ec2.Peer.any_ipv4(),
             connection=ec2.Port.tcp(8084),
             description="Allow HTTP access"
         )
@@ -241,7 +187,6 @@ class CdkCodeStack(Stack):
             connection=ec2.Port.tcp(8085),
             description="Allow HTTP access"
         )
-
          # Create security group for RDS
         rds_security_group = ec2.SecurityGroup(
             self, "RDSSecurityGroup",
@@ -374,7 +319,7 @@ class CdkCodeStack(Stack):
             "AmazonRDSFullAccess",
             "AmazonS3FullAccess",
             "AmazonSESFullAccess",
-            "service-role/AWSLambdaVPCAccessExecutionRole"
+            "service-role/AWSLambdaVPCAccessExecutionRole"       # ENIs for VPC access
         ]
         
         for policy_name in managed_policies:
@@ -434,22 +379,6 @@ class CdkCodeStack(Stack):
         reconcileai_lambda_function.add_layers(boto3_layer)
         reconcileai_lambda_function.add_layers(mcp_v2_layer)
         
-        websocket_lambda = lambda_.Function(
-            self,
-            "WebSocketHandlerLambda",
-            function_name="websocket_handler_" + lambda_safe_key,
-            runtime=lambda_.Runtime.PYTHON_3_12,
-            handler="websocket_handler.lambda_handler",  # file: websocket_handler.py
-            code=lambda_.Code.from_asset("lambda"),
-            timeout=Duration.seconds(30),
-            role=lambda_role,  # reuse your existing Lambda role
-            environment={
-                "WEBSOCKET_REGION": self.region,
-                # Endpoint will be filled after API is created
-                "WEBSOCKET_ENDPOINT": ""  
-            }
-        )
-        
         
         #REST API
         sap_api = apigateway.RestApi(
@@ -457,124 +386,66 @@ class CdkCodeStack(Stack):
             rest_api_name="sap_rest_api",
             description="API Gateway for SAP data access",
             binary_media_types=["multipart/form-data"],
+            default_cors_preflight_options=apigateway.CorsOptions(
+                allow_origins=["*"],
+                allow_methods=["GET", "POST", "PUT", "DELETE", "OPTIONS"],
+                allow_headers=["*"],
+                allow_credentials=False,
+                max_age=Duration.seconds(86400)
+                ),
             deploy_options=apigateway.StageOptions(
                 stage_name="dev",
                 logging_level=apigateway.MethodLoggingLevel.OFF,
                 data_trace_enabled=False
                 )
             )
-        #/erp resource starts here
-        erp_resource = sap_api.root.add_resource("ERP")
-
-        # OPTIONS (CORS Preflight)
-        erp_resource.add_method(
-            "OPTIONS",
-            apigateway.MockIntegration(
-                integration_responses=[
-                    apigateway.IntegrationResponse(
-                        status_code="200",
-                        response_parameters={
-                            "method.response.header.Access-Control-Allow-Headers": "'*'",
-                            "method.response.header.Access-Control-Allow-Methods": "'OPTIONS,POST'",
-                            "method.response.header.Access-Control-Allow-Origin": "'*'"
-                        },
-                        response_templates={
-                            "application/json": ""
-                        }
-                    )
-                ],
-                passthrough_behavior=apigateway.PassthroughBehavior.WHEN_NO_MATCH,
-                request_templates={"application/json": "{\"statusCode\": 200}"}
-            ),
-            method_responses=[
-                apigateway.MethodResponse(
-                    status_code="200",
-                    response_parameters={
-                        "method.response.header.Access-Control-Allow-Headers": True,
-                        "method.response.header.Access-Control-Allow-Methods": True,
-                        "method.response.header.Access-Control-Allow-Origin": True
-                    }
-                )
-            ]
-        )
-
-        # POST (Lambda Integration)
-        erp_resource.add_method(
-            "POST",
-            apigateway.LambdaIntegration(reconcileai_lambda_function),
-            authorization_type=apigateway.AuthorizationType.NONE,
-            method_responses=[
-                apigateway.MethodResponse(status_code="200")
-            ]
-        )
         
         
-        #erp resource ends here
-
-
-        websocket_api = apigatewayv2.WebSocketApi(
-            self,
-            "SAPWebSocketAPI" + unique_key,
-            api_name="SAP_ws_" + unique_key,
-        )
-        
-        # $connect
-        websocket_api.add_route(
-            "$connect",
-            integration=apigatewayv2_integrations.WebSocketLambdaIntegration(
-                "WSConnectIntegration",
-                websocket_lambda
-            )
-        )
-
-        # $disconnect
-        websocket_api.add_route(
-            "$disconnect",
-            integration=apigatewayv2_integrations.WebSocketLambdaIntegration(
-                "WSDisconnectIntegration",
-                websocket_lambda
-            )
-        )
-
-        # $default
-        websocket_api.add_route(
-            "$default",
-            integration=apigatewayv2_integrations.WebSocketLambdaIntegration(
-                "WSDefaultIntegration",
-                websocket_lambda
-            )
-        )
-
-        # Custom route: sendMessage
-        websocket_api.add_route(
-            "sendMessage",
-            integration=apigatewayv2_integrations.WebSocketLambdaIntegration(
-                "WSSendMessageIntegration",
-                websocket_lambda
-            )
-        )
         
         
-        websocket_stage = apigatewayv2.WebSocketStage(
-            self,
-            "SAPWebSocketStage",
-            web_socket_api=websocket_api,
-            stage_name="dev",
-            auto_deploy=True
-        )
         
-        websocket_lambda.add_permission(
-            "InvokeByWebSocketAPI",
-            principal=iam.ServicePrincipal("apigateway.amazonaws.com"),
-            action="lambda:InvokeFunction",
-            source_arn=f"arn:aws:execute-api:{self.region}:{self.account}:{websocket_api.api_id}/*"
-        )
-        
-        
-        websocket_url = f"wss://{websocket_api.api_id}.execute-api.{self.region}.amazonaws.com/dev"
+        # Create WebSocket API Gateway using API Gateway v2
+        # websocket_api = apigatewayv2.WebSocketApi(
+        #     self, "SAPWebSocketAPI"+unique_key,
+        #     api_name="SAP_ws"+unique_key
+        # )
 
-        websocket_lambda.add_environment("WEBSOCKET_ENDPOINT", websocket_url)
-        websocket_lambda.add_environment("WEBSOCKET_REGION", self.region)
+        # # Add routes to the WebSocket API
+        # websocket_api.add_route(
+        #     "$connect",
+        #     integration=apigatewayv2_integrations.WebSocketLambdaIntegration(
+        #         "ConnectIntegration",
+        #         websocket_lambda_function
+        #     )
+        # )
+
+        # websocket_api.add_route(
+        #     "$disconnect",
+        #     integration=apigatewayv2_integrations.WebSocketLambdaIntegration(
+        #         "DisconnectIntegration",
+        #         websocket_lambda_function
+        #     )
+        # )
+
+        # websocket_api.add_route(
+        #     "$default",
+        #     integration=apigatewayv2_integrations.WebSocketLambdaIntegration(
+        #         "DefaultIntegration",
+        #         websocket_lambda_function
+        #     )
+        # )
+
+        # # Create WebSocket Stage
+        # websocket_stage = apigatewayv2.WebSocketStage(
+        #     self, "WebSocketStage",
+        #     web_socket_api=websocket_api,
+        #     stage_name="dev",
+        #     auto_deploy=True
+        # )
+        
+        
+        
+        
         
         # Create RDS PostgreSQL instance
         db_instance = rds.DatabaseInstance(
@@ -601,108 +472,7 @@ class CdkCodeStack(Stack):
             removal_policy=RemovalPolicy.DESTROY,
             database_name=rds_safe_key
         )
-        
-        
-        #lambda environment variables for RDS connection
-        reconcileai_lambda_function.add_environment("RDS_ENDPOINT", db_instance.db_instance_endpoint_address)
-        reconcileai_lambda_function.add_environment("db_host", db_instance.db_instance_endpoint_address)
-        reconcileai_lambda_function.add_environment("db_name", "postgres")
-        reconcileai_lambda_function.add_environment("db_port", "5432")
-        reconcileai_lambda_function.add_environment("db_password", f"rds-credentials-{unique_key}")
-        reconcileai_lambda_function.add_environment("region_name", self.region)
-        reconcileai_lambda_function.add_environment("region_used", self.region)
 
-
-        USER_EMAIL = "user@reconcileai.com"
-        USERNAME = USER_EMAIL  # Cognito requires a username internally
-        PASSWORD = generate_aws_compliant_password()
-        
-        user_pool = cognito.UserPool(
-            self,
-            "UserPool",
-            self_sign_up_enabled=False,
-            sign_in_aliases=cognito.SignInAliases(
-                email=True,
-                username=False
-            ),
-            password_policy=cognito.PasswordPolicy(
-                min_length=12,
-                require_lowercase=True,
-                require_uppercase=True,
-                require_digits=True,
-                require_symbols=True
-            ),
-            account_recovery=cognito.AccountRecovery.EMAIL_ONLY
-        )
-
-        # --------------------------------------------------
-        # Create User via AdminCreateUser
-        # --------------------------------------------------
-        create_user = cr.AwsCustomResource(
-            self,
-            "CreateCognitoUser",
-            on_create=cr.AwsSdkCall(
-                service="CognitoIdentityServiceProvider",
-                action="adminCreateUser",
-                parameters={
-                    "UserPoolId": user_pool.user_pool_id,
-                    "Username": USERNAME,
-                    "UserAttributes": [
-                        {"Name": "email", "Value": USER_EMAIL},
-                        {"Name": "email_verified", "Value": "true"}
-                    ],
-                    "MessageAction": "SUPPRESS"
-                },
-                physical_resource_id=cr.PhysicalResourceId.of(
-                    f"{USERNAME}-user"
-                )
-            ),
-            policy=cr.AwsCustomResourcePolicy.from_sdk_calls(
-                resources=[user_pool.user_pool_arn]
-            )
-        )
-
-        # --------------------------------------------------
-        # Set PERMANENT password
-        # --------------------------------------------------
-        set_password = cr.AwsCustomResource(
-            self,
-            "SetPermanentPassword",
-            on_create=cr.AwsSdkCall(
-                service="CognitoIdentityServiceProvider",
-                action="adminSetUserPassword",
-                parameters={
-                    "UserPoolId": user_pool.user_pool_id,
-                    "Username": USERNAME,
-                    "Password": PASSWORD,
-                    "Permanent": True
-                },
-                physical_resource_id=cr.PhysicalResourceId.of(
-                    f"{USERNAME}-password"
-                )
-            ),
-            policy=cr.AwsCustomResourcePolicy.from_sdk_calls(
-                resources=[user_pool.user_pool_arn]
-            ),
-            timeout=Duration.minutes(2)
-        )
-
-        set_password.node.add_dependency(create_user)
-        
-        
-        
-        CfnOutput(self, "UserPoolId", value=user_pool.user_pool_id)
-        CfnOutput(self, "LoginEmail", value=USER_EMAIL)
-        CfnOutput(self, "LoginPassword", value=PASSWORD)
-        
-        CfnOutput(
-            self,
-            "WebSocketURL",
-            value=websocket_url,
-            description="WebSocket connection URL"
-        )
-        
-        
         ec2_role = iam.Role(
             self, "EC2Role",
             assumed_by=iam.ServicePrincipal("ec2.amazonaws.com"),
@@ -923,5 +693,15 @@ class CdkCodeStack(Stack):
     "sleep 30",
     'sudo su - ubuntu -c "/home/ubuntu/voice_bot.sh" > /var/log/voice_bot.log 2>&1'
     )
+
+
+"""
+1. Dependencies installation
+2. RDS connection and SQL dumps
+3. Strands code insertion
+
+last. Frontend management code from genaifoundry
+"""      
+        
 
 
