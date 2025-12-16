@@ -483,7 +483,7 @@ COPY erp.users (userid, email_id, created_date, is_active) FROM stdin;
 \.
 
 
---
+--users
 -- TOC entry 4394 (class 0 OID 0)
 -- Dependencies: 246
 -- Name: chat_history_id_seq; Type: SEQUENCE SET; Schema: erp; Owner: postgres

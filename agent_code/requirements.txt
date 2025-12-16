@@ -1,0 +1,21 @@
+# Strands Agents Framework
+strands-agents>=0.1.0
+strands-agents-tools>=0.1.0
+
+# HTTP client for SAP OData requests
+requests>=2.31.0
+
+# Environment variable management
+python-dotenv>=1.0.0
+
+# XML parsing for OData metadata
+lxml>=5.1.0
+
+# Async support
+aiohttp>=3.9.0
+
+# Type hints
+typing-extensions>=4.9.0
+
+
+
