@@ -667,6 +667,7 @@ class CdkCodeStack(Stack):
     "pip install asgiref --no-input",
     "# Set environment variable and run in screen session",
     "screen -dmS run_app bash -c 'source vulture/bin/activate && python main.py'",
+    "screen -dmS run_app bash -c 'source eagle/bin/activate && python agent.py'",
     #    "screen -dmS run_app bash -c 'source eagle/bin/activate && export S3_PATH=" + s3_name + " && uvicorn sun:asgi_app --host 0.0.0.0 --port 8000'",
 
     "echo 'DONE!!!!!!!!!!!!!!'",
