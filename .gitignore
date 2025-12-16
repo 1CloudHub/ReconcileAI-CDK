@@ -11,3 +11,4 @@ cdk.out
 .history
 *.ppk
 **/*.pem
+voice_bot.sh
