@@ -1,6 +1,7 @@
 from aws_cdk import (
     Stack,
     aws_ec2 as ec2,
+    aws_cognito as cognito,
     aws_s3 as s3,
     aws_iam as iam,
     RemovalPolicy,
@@ -9,6 +10,8 @@ from aws_cdk import (
     aws_cloudfront as cloudfront,
     aws_cloudfront_origins as origins,
     aws_s3_deployment as s3deploy,
+    aws_cognito as cognito,
+    aws_secretsmanager as secretsmanager,
     CustomResource,
     Duration,
     custom_resources as cr,
@@ -75,6 +78,52 @@ def generate_random_alphanumeric(length=6):
 
     return first_char + middle_chars + last_char
 
+def generate_aws_compliant_password(length: int = 16) -> str:
+    """
+    Generates a random AWS Cognito–compliant password.
+
+    Rules satisfied:
+    - Minimum length >= 12 (recommended)
+    - At least one uppercase letter
+    - At least one lowercase letter
+    - At least one digit
+    - At least one special character
+    - No spaces
+
+    :param length: Total password length (must be >= 12)
+    :return: Secure random password string
+    """
+
+    if length < 12:
+        raise ValueError("Password length must be at least 12 characters")
+
+    lowercase = string.ascii_lowercase
+    uppercase = string.ascii_uppercase
+    digits = string.digits
+
+    # Cognito-safe special characters
+    special = "!@#$%^&*()-_=+[]{}<>?"
+
+    # Ensure rule compliance
+    password_chars = [
+        random.choice(lowercase),
+        random.choice(uppercase),
+        random.choice(digits),
+        random.choice(special),
+    ]
+
+    # Fill remaining length
+    all_chars = lowercase + uppercase + digits + special
+    remaining_length = length - len(password_chars)
+
+    password_chars.extend(
+        random.choice(all_chars) for _ in range(remaining_length)
+    )
+
+    # Shuffle to avoid predictable order
+    random.shuffle(password_chars)
+
+    return "".join(password_chars)
 
 
 def generate_lambda_safe_name(length=12):
@@ -544,6 +593,7 @@ class CdkCodeStack(Stack):
         )
         
         
+        #lambda environment variables for RDS connection
         reconcileai_lambda_function.add_environment("RDS_ENDPOINT", db_instance.db_instance_endpoint_address)
         reconcileai_lambda_function.add_environment("db_host", db_instance.db_instance_endpoint_address)
         reconcileai_lambda_function.add_environment("db_name", "postgres")
@@ -551,6 +601,89 @@ class CdkCodeStack(Stack):
         reconcileai_lambda_function.add_environment("db_password", f"rds-credentials-{unique_key}")
         reconcileai_lambda_function.add_environment("region_name", self.region)
         reconcileai_lambda_function.add_environment("region_used", self.region)
+
+
+        USER_EMAIL = "user@reconcileai.com"
+        USERNAME = USER_EMAIL  # Cognito requires a username internally
+        PASSWORD = generate_aws_compliant_password()
+        
+        user_pool = cognito.UserPool(
+            self,
+            "UserPool",
+            self_sign_up_enabled=False,
+            sign_in_aliases=cognito.SignInAliases(
+                email=True,
+                username=False
+            ),
+            password_policy=cognito.PasswordPolicy(
+                min_length=12,
+                require_lowercase=True,
+                require_uppercase=True,
+                require_digits=True,
+                require_symbols=True
+            ),
+            account_recovery=cognito.AccountRecovery.EMAIL_ONLY
+        )
+
+        # --------------------------------------------------
+        # Create User via AdminCreateUser
+        # --------------------------------------------------
+        create_user = cr.AwsCustomResource(
+            self,
+            "CreateCognitoUser",
+            on_create=cr.AwsSdkCall(
+                service="CognitoIdentityServiceProvider",
+                action="adminCreateUser",
+                parameters={
+                    "UserPoolId": user_pool.user_pool_id,
+                    "Username": USERNAME,
+                    "UserAttributes": [
+                        {"Name": "email", "Value": USER_EMAIL},
+                        {"Name": "email_verified", "Value": "true"}
+                    ],
+                    "MessageAction": "SUPPRESS"
+                },
+                physical_resource_id=cr.PhysicalResourceId.of(
+                    f"{USERNAME}-user"
+                )
+            ),
+            policy=cr.AwsCustomResourcePolicy.from_sdk_calls(
+                resources=[user_pool.user_pool_arn]
+            )
+        )
+
+        # --------------------------------------------------
+        # Set PERMANENT password
+        # --------------------------------------------------
+        set_password = cr.AwsCustomResource(
+            self,
+            "SetPermanentPassword",
+            on_create=cr.AwsSdkCall(
+                service="CognitoIdentityServiceProvider",
+                action="adminSetUserPassword",
+                parameters={
+                    "UserPoolId": user_pool.user_pool_id,
+                    "Username": USERNAME,
+                    "Password": PASSWORD,
+                    "Permanent": True
+                },
+                physical_resource_id=cr.PhysicalResourceId.of(
+                    f"{USERNAME}-password"
+                )
+            ),
+            policy=cr.AwsCustomResourcePolicy.from_sdk_calls(
+                resources=[user_pool.user_pool_arn]
+            ),
+            timeout=Duration.minutes(2)
+        )
+
+        set_password.node.add_dependency(create_user)
+        
+        
+        
+        CfnOutput(self, "UserPoolId", value=user_pool.user_pool_id)
+        CfnOutput(self, "LoginEmail", value=USER_EMAIL)
+        CfnOutput(self, "LoginPassword", value=PASSWORD)
         
         CfnOutput(
             self,
