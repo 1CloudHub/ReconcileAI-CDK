@@ -179,10 +179,14 @@ class CdkCodeStack(Stack):
 
         ec2_security_group.add_ingress_rule(
             peer=ec2.Peer.any_ipv4(),
-            connection=ec2.Port.tcp(8000),
+            connection=ec2.Port.tcp(8084),
             description="Allow HTTP access"
         )
-
+        ec2_security_group.add_ingress_rule(
+            peer=ec2.Peer.any_ipv4(),
+            connection=ec2.Port.tcp(8085),
+            description="Allow HTTP access"
+        )
          # Create security group for RDS
         rds_security_group = ec2.SecurityGroup(
             self, "RDSSecurityGroup",
