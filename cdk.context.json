@@ -1,0 +1,8 @@
+{
+  "availability-zones:account=155798754631:region=us-east-2": [
+    "us-east-2a",
+    "us-east-2b",
+    "us-east-2c"
+  ],
+  "ami:account=155798754631:filters.image-type.0=machine:filters.name.0=Deep Learning OSS Nvidia Driver AMI GPU PyTorch 2.7 (Ubuntu 22.04)*:filters.state.0=available:owners.0=amazon:region=us-east-2": "ami-0709d3affcd3771c1"
+}
