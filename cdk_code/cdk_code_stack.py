@@ -618,7 +618,10 @@ class CdkCodeStack(Stack):
         reconcileai_lambda_function.add_environment("db_port", "5432")
         reconcileai_lambda_function.add_environment("db_password", f"rds-credentials-{unique_key}")
         reconcileai_lambda_function.add_environment("region_name", self.region)
-        reconcileai_lambda_function.add_environment("region_used", self.region)
+        reconcileai_lambda_function.add_environment("db_user", "postgres")
+        reconcileai_lambda_function.add_environment("db_database", "postgres")
+        
+
 
 
         USER_EMAIL = "user@reconcileai.com"
@@ -697,11 +700,26 @@ class CdkCodeStack(Stack):
 
         set_password.node.add_dependency(create_user)
         
-        
+        user_pool_client = cognito.UserPoolClient(
+            self,
+            "UserPoolClient",
+            user_pool=user_pool,
+            auth_flows=cognito.AuthFlow(
+                user_password=True,
+                admin_user_password=True
+            ),
+            generate_secret=False,   # REQUIRED for frontend / Lambda auth
+            prevent_user_existence_errors=True
+        )
         
         CfnOutput(self, "UserPoolId", value=user_pool.user_pool_id)
         CfnOutput(self, "LoginEmail", value=USER_EMAIL)
         CfnOutput(self, "LoginPassword", value=PASSWORD)
+        
+        
+        reconcileai_lambda_function.add_environment("COGNITO_USER_POOL_ID", user_pool.user_pool_id)
+        reconcileai_lambda_function.add_environment("COGNITO_CLIENT_ID", user_pool_client.user_pool_client_id)
+        
         
         CfnOutput(
             self,
@@ -1063,7 +1081,7 @@ class CdkCodeStack(Stack):
         ec2_instance_front.node.add_dependency(frontend_deploy)
         
         # Set the environment variables that will be passed to the EC2 instance
-        rest_api_name = f"sap_rest_api{unique_key}"
+        rest_api_name = f"sap_rest_api-{unique_key}"
         websocket_api_name = f"SAP_ws_{unique_key}"
         bucket_name = frontend_bucket_name
         region = self.region
