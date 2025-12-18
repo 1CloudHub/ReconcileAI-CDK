@@ -607,7 +607,7 @@ class CdkCodeStack(Stack):
             delete_automated_backups=False,
             backup_retention=Duration.days(7),
             removal_policy=RemovalPolicy.DESTROY,
-            database_name=rds_safe_key
+            database_name="postgres"
         )
         
         
@@ -616,7 +616,7 @@ class CdkCodeStack(Stack):
         reconcileai_lambda_function.add_environment("db_host", db_instance.db_instance_endpoint_address)
         reconcileai_lambda_function.add_environment("db_name", "postgres")
         reconcileai_lambda_function.add_environment("db_port", "5432")
-        reconcileai_lambda_function.add_environment("db_password", f"rds-credentials-{unique_key}")
+        reconcileai_lambda_function.add_environment("DB_SECRET_NAME",f"rds-credentials-{unique_key}")
         reconcileai_lambda_function.add_environment("region_name", self.region)
         reconcileai_lambda_function.add_environment("db_user", "postgres")
         reconcileai_lambda_function.add_environment("db_database", "postgres")
@@ -913,7 +913,7 @@ class CdkCodeStack(Stack):
             'psql -h "$DB_HOST" -p "$DB_PORT" -U "$DB_USERNAME" -d "$DB_NAME" -c "\\\\dn"',
             'psql -h "$DB_HOST" -p "$DB_PORT" -U "$DB_USERNAME" -d "$DB_NAME" -c "\\\\dt erp.*"',
             'psql -h "$DB_HOST" -p "$DB_PORT" -U "$DB_USERNAME" -d "$DB_NAME" -c "SELECT * FROM erp.users"',
-            f'psql -h "$DB_HOST" -p "$DB_PORT" -U "$DB_USERNAME" -d "$DB_NAME" -c "INSERT INTO erp.users (email_id, created_date, is_active) VALUES ({USERNAME}, NOW(), true)"',
+            f'psql -h "$DB_HOST" -p "$DB_PORT" -U "$DB_USERNAME" -d "$DB_NAME" -c "INSERT INTO erp.users (email_id, created_date, is_active) VALUES (\'{USERNAME}\', NOW(), true)"',
             'echo "Database restoration completed successfully!"',
             "echo 'starting python code implementation'",
             "export DEBIAN_FRONTEND=noninteractive",

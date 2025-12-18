@@ -534,16 +534,26 @@ def lambda_handler(event, context):
     host = os.environ['db_host']
     port = int(os.environ['db_port'])
     user = os.environ['db_user']
-    password = os.environ['db_password']
+    region = os.environ['region_name']
+    
+    secret_name = os.environ["DB_SECRET_NAME"]
     database = os.environ['db_database']
+    
     COGNITO_CLIENT_ID=os.environ['COGNITO_CLIENT_ID']
     COGNITO_USER_POOL_ID=os.environ['COGNITO_USER_POOL_ID']
+    
+    
+    client = boto3.client("secretsmanager", region_name=region)
+    secret = json.loads(
+    client.get_secret_value(SecretId=secret_name)["SecretString"]
+    )
+
+    DB_PASSWORD = secret["password"]
     
     # Store as module-level constants for insert_data event
     DB_HOST = host
     DB_PORT = port
     DB_USER = user
-    DB_PASSWORD = password
     DB_DATABASE = database
 
     # Extract event_type from the request body
