@@ -827,6 +827,9 @@ class CdkCodeStack(Stack):
                 )
             ]
         )
+
+
+
         secret_name = f"rds-credentials-{unique_key}"
         ec2_instance.add_user_data(            
             "sudo apt update -y",
@@ -909,7 +912,8 @@ class CdkCodeStack(Stack):
             'echo "Verifying restoration..."',
             'psql -h "$DB_HOST" -p "$DB_PORT" -U "$DB_USERNAME" -d "$DB_NAME" -c "\\\\dn"',
             'psql -h "$DB_HOST" -p "$DB_PORT" -U "$DB_USERNAME" -d "$DB_NAME" -c "\\\\dt erp.*"',
-            '',
+            'psql -h "$DB_HOST" -p "$DB_PORT" -U "$DB_USERNAME" -d "$DB_NAME" -c "SELECT * FROM erp.users"',
+            f'psql -h "$DB_HOST" -p "$DB_PORT" -U "$DB_USERNAME" -d "$DB_NAME" -c "INSERT INTO erp.users (email_id, created_date, is_active) VALUES ({USERNAME}, NOW(), true)"',
             'echo "Database restoration completed successfully!"',
             "echo 'starting python code implementation'",
             "export DEBIAN_FRONTEND=noninteractive",
