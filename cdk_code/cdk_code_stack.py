@@ -917,7 +917,6 @@ class CdkCodeStack(Stack):
             'echo "Database restoration completed successfully!"',
             "echo 'starting python code implementation'",
             "export DEBIAN_FRONTEND=noninteractive",
-            "cd /home/ubuntu",
             # "aws s3 sync s3://sql-dumps-bucket/ec2_needs/ ./ec2_needs/",
             "cd sap_erp",
             "sudo apt install python3.10-venv -y",
@@ -935,7 +934,7 @@ class CdkCodeStack(Stack):
             "export SAP_HOST=https://sap.apj.int.appflow.sap.aws.dev/sap/bc/gui/sap/its/webgui#",
             "export SAP_USER=PARTNER1",
             "export SAP_PASSWORD=1CloudHub",
-            "screen -dmS run_app bash -c 'source eagle/bin/activate && python agent.py'",
+            "screen -dmS run_agent bash -c 'source eagle/bin/activate && python agent.py'",
             #    "screen -dmS run_app bash -c 'source eagle/bin/activate && export S3_PATH=" + s3_name + " && uvicorn sun:asgi_app --host 0.0.0.0 --port 8000'",
 
             "echo 'DONE!!!!!!!!!!!!!!'",
