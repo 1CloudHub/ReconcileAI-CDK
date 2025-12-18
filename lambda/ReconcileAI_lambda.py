@@ -549,6 +549,7 @@ def lambda_handler(event, context):
     )
 
     DB_PASSWORD = secret["password"]
+   
     
     # Store as module-level constants for insert_data event
     DB_HOST = host
@@ -592,7 +593,7 @@ def lambda_handler(event, context):
             host=host,
             port=port,
             user=user,
-            password=password,
+            password=DB_PASSWORD,
             dbname=database
         )
         cursor = conn.cursor()

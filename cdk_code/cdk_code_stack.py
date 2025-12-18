@@ -792,7 +792,8 @@ class CdkCodeStack(Stack):
         # AdministratorAccess provides wide permissions needed for provisioning and bootstrap tasks
         # IMPORTANT: Grant EC2 access to the RDS secret
         if db_instance.secret:
-            db_instance.secret.grant_read(ec2_role)    
+            db_instance.secret.grant_read(ec2_role)
+            db_instance.secret.grant_read(lambda_role)
 
 
 
