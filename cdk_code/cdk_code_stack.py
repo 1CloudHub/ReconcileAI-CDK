@@ -511,6 +511,8 @@ class CdkCodeStack(Stack):
         
         #erp resource ends here
         
+        erp_post_url = f"{sap_api.url}ERP"
+        
         
         # -----------------------------
         # /sap_ec2_ec2 Resource
@@ -855,6 +857,8 @@ class CdkCodeStack(Stack):
             'set -e',
             '',
             'export DEBIAN_FRONTEND=noninteractive',
+            f'export REST_API_URL={erp_post_url}',
+            f'export WEBSOCKET_URL={websocket_url}',
             'echo "Getting database credentials from Secrets Manager..."',    
             'sudo apt-get update -y',
             'sudo apt-get install -y postgresql postgresql-contrib',

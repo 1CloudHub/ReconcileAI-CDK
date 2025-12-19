@@ -45,6 +45,8 @@ AWS_ACCESS_KEY_ID = os.environ.get("AWS_ACCESS_KEY_ID")
 AWS_SECRET_ACCESS_KEY = os.environ.get("AWS_SECRET_ACCESS_KEY")
 MODEL_ID = os.environ.get("BEDROCK_MODEL_ID", "us.anthropic.claude-sonnet-4-20250514-v1:0")
 AWS_REGION = os.environ.get("AWS_REGION")
+url = os.environ.get("REST_API_URL")
+websocket_url = os.environ.get("WEBSOCKET_URL")
 
 
 EXCEPTION_TYPE_CODES = {
@@ -123,7 +125,7 @@ def check_po_status(po_number: str) -> dict:
             print(f"EC2: Cleared old cache for {cache_key}")
     
     # Trigger Lambda to check PO status (Lambda will POST back to /receive_from_lambda)
-    url = "https://agbmqz53j0.execute-api.us-west-2.amazonaws.com/test/ERP"
+
     headers = {"content-type": "application/json"}
     
     payload = {
@@ -1125,7 +1127,6 @@ def insert_data_lambda(payload):
 
     print("PAYLOOOOOOOOOOOOOOOOOOOOO\n\n\n\n\n\n\n\n\n\n\n", payload, "\n\n\n\n\n\n\n\n\n\n\n\n\n")
 
-    url = "https://agbmqz53j0.execute-api.us-west-2.amazonaws.com/test/ERP"
 
     headers = {"content-type": "application/json"}
 
@@ -1147,8 +1148,7 @@ def check_po_queried_lambda(po_number: str, userid: int) -> dict:
     print("=" * 80)
     print(f"EC2: Checking if PO {po_number} has been queried by userid {userid}")
     print("=" * 80)
-    
-    url = "https://agbmqz53j0.execute-api.us-west-2.amazonaws.com/test/ERP"
+
     headers = {"content-type": "application/json"}
     
     payload = {
@@ -1184,7 +1184,7 @@ def send_ws_message(connection_id, data):
     """
     client = boto3.client(
         'apigatewaymanagementapi',
-        endpoint_url="https://0if9awq559.execute-api.us-west-2.amazonaws.com/production"
+        endpoint_url=websocket_url
     )
 
     if isinstance(data, dict):
