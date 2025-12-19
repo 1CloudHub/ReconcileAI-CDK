@@ -453,47 +453,6 @@ def delete_sap_entity(
         }, indent=2)
 
 
-# ============================================================================
-# Connection Tools
-# ============================================================================
-
-@tool(
-    name="test_sap_connection",
-    description="Test the connection to the SAP system"
-)
-def test_sap_connection() -> str:
-    """
-    Test the connection to the configured SAP system.
-    Verifies authentication and network connectivity.
-    
-    Returns:
-        JSON string indicating connection status
-    """
-    try:
-        client = get_odata_client()
-        success = client.test_connection()
-        
-        if success:
-            return json.dumps({
-                "success": True,
-                "message": "Successfully connected to SAP system",
-                "host": client.sap_config.host,
-                "client": client.sap_config.client
-            }, indent=2)
-        else:
-            return json.dumps({
-                "success": False,
-                "error": "Connection test failed",
-                "host": client.sap_config.host
-            }, indent=2)
-            
-    except Exception as e:
-        logger.error(f"Connection test error: {e}")
-        return json.dumps({
-            "success": False,
-            "error": str(e)
-        }, indent=2)
-
 
 # ============================================================================
 # Export all tools for easy import
@@ -507,7 +466,6 @@ SAP_ODATA_TOOLS = [
     create_sap_entity,
     update_sap_entity,
     delete_sap_entity,
-    test_sap_connection
 ]
 
 

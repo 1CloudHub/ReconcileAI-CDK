@@ -507,6 +507,14 @@ class CdkCodeStack(Stack):
                 apigateway.MethodResponse(status_code="200")
             ]
         )
+
+        # 👇 ADD THIS RIGHT HERE
+        CfnOutput(
+            self,
+            "ERPPostLambdaUrl",
+            value=f"{sap_api.url}ERP",
+            description="POST /ERP → ReconcileAI Lambda"
+        )
         
         
         #erp resource ends here
