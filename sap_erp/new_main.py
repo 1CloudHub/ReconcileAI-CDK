@@ -1530,7 +1530,7 @@ async def create_item(request: Request):
         current_userid = None
 
 if __name__ == "__main__":
-    uvicorn.run("new_main:app", host="0.0.0.0", port=8084, reload=True)
+    uvicorn.run("new_main:app", host="0.0.0.0", port=8000, reload=True)
     
 # if __name__ == "__main__":
 #     fetch_s3_data(po_number="4500016789")

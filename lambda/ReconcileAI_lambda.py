@@ -846,16 +846,15 @@ def lambda_handler(event, context):
             # Export the same columns shown in bundle_exceptions table
             try:
                 query = """
-                    SELECT 
-                        b.po_number,
-                        b.status,
-                        b.created_at,
-                        b.updated_at,
-                        COALESCE(COUNT(e.exception_id), 0) as exception_count
-                    FROM bundle b
-                    LEFT JOIN exceptions e ON b.po_number = e.po_number
-                    GROUP BY b.po_number, b.status, b.created_at, b.updated_at
-                    ORDER BY b.updated_at DESC;
+                    SELECT
+                        po_number,
+                        MAX(exception_status) AS status,
+                        MIN(created_at) AS created_at,
+                        MAX(updated_at) AS updated_at,
+                        COUNT(DISTINCT unique_exception_id) AS exception_count
+                    FROM erp.exception_table
+                    GROUP BY po_number
+                    ORDER BY MAX(updated_at) DESC;
                 """
                 cursor.execute(query)
                 rows = cursor.fetchall()

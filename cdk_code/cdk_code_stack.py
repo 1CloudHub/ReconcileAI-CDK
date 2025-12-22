@@ -429,7 +429,9 @@ class CdkCodeStack(Stack):
             role=lambda_role,
             environment={
                 "DATA_BUCKET_NAME": data_bucket.bucket_name,
-                "FRONTEND_BUCKET_NAME": frontend_bucket.bucket_name
+                "FRONTEND_BUCKET_NAME": frontend_bucket.bucket_name,
+                "WEBSOCKET_REGION": self.region,
+                "WEBSOCKET_ENDPOINT": ""
             }
             
         )
@@ -599,6 +601,10 @@ class CdkCodeStack(Stack):
 
         websocket_lambda.add_environment("WEBSOCKET_ENDPOINT", websocket_url)
         websocket_lambda.add_environment("WEBSOCKET_REGION", self.region)
+        reconcileai_lambda_function.add_environment("WEBSOCKET_ENDPOINT", websocket_url)
+        reconcileai_lambda_function.add_environment("WEBSOCKET_REGION", self.region)
+
+        
         
         
         
