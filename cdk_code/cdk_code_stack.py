@@ -511,7 +511,7 @@ class CdkCodeStack(Stack):
             ]
         )
         # erp_post_url = f"{sap_api.url}ERP"
-        REST_API_ID = sap_api.api_id
+        
         rest_api_url = f"https://{sap_api.restApiId}.execute-api.{self.region}.amazonaws.com/dev/ERP"
 
         
