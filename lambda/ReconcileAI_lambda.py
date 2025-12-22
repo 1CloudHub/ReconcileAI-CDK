@@ -726,7 +726,7 @@ def lambda_handler(event, context):
             try:
                 cognito_client = boto3.client(
                         'cognito-idp',
-                        region_name='us-west-2' 
+                        region_name=region
                     )
                 print(COGNITO_USER_POOL_ID,"COGNITO_USER_POOL_ID")
                 print(COGNITO_CLIENT_ID,"COGNITO_CLIENT_ID")
@@ -3347,7 +3347,7 @@ def lambda_handler(event, context):
             try:
                 cognito_client = boto3.client(
                     'cognito-idp',
-                    region_name='us-west-2'
+                    region_name=region
                 )
                 
                 # Create user in Cognito
@@ -3461,7 +3461,7 @@ def lambda_handler(event, context):
             try:
                 cognito_client = boto3.client(
                     'cognito-idp',
-                    region_name='us-west-2'
+                    region_name=region
                 )
                 
                 # Update Cognito user status
@@ -3623,7 +3623,7 @@ def lambda_handler(event, context):
                 # Delete user from Cognito (after successful database deletion)
                 cognito_client = boto3.client(
                     'cognito-idp',
-                    region_name='us-west-2'
+                    region_name=region
                 )
                 
                 try:
