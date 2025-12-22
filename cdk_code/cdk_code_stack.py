@@ -527,6 +527,8 @@ class CdkCodeStack(Stack):
         
         
         #erp resource ends here
+        #erp_post_url = f"{sap_api.url}ERP"
+        
         
         
         # -----------------------------
