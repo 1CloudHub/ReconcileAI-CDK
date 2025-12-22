@@ -43,6 +43,8 @@ import boto3
 import os
 from constructs import Construct
 
+
+
 def generate_random_alphanumeric(length=6):
     """
     Generates a random name that follows AWS naming requirements.
@@ -184,6 +186,7 @@ class CdkCodeStack(Stack):
 
     def __init__(self, scope: Construct, construct_id: str, **kwargs) -> None:
         super().__init__(scope, construct_id, **kwargs)
+        region = self.region
 
         # The code that defines your stack goes here
         
@@ -507,14 +510,20 @@ class CdkCodeStack(Stack):
                 apigateway.MethodResponse(status_code="200")
             ]
         )
+        # erp_post_url = f"{sap_api.url}ERP"
+        # REST_API_ID = sap_api.restApiId;
+        rest_api_url = f"https://{sap_api.restApiId}.execute-api.{self.region}.amazonaws.com/dev/ERP"
 
-        # 👇 ADD THIS RIGHT HERE
+        
         CfnOutput(
             self,
             "ERPPostLambdaUrl",
             value=f"{sap_api.url}ERP",
             description="POST /ERP → ReconcileAI Lambda"
         )
+
+        
+
         
         
         #erp resource ends here
@@ -837,12 +846,46 @@ class CdkCodeStack(Stack):
             ]
         )
 
-
+        rest_api_name = f"sap_rest_api-{unique_key}"
+        websocket_api_name = f"SAP_ws_{unique_key}"
 
         secret_name = f"rds-credentials-{unique_key}"
-        ec2_instance.add_user_data(            
+        ec2_instance.add_user_data(  
+            'set -e',          
             "sudo apt update -y",
+            f"export REGION={self.region}",
+            f'export REST_API_NAME="sap_rest_api-{unique_key}"',
+            f'export WEBSOCKET_API_NAME="SAP_ws_{unique_key}"',
             "sudo apt install -y apache2 awscli jq postgresql-client-14",
+            'echo "Fetching API Gateway IDs..."',
+
+            'API_ID_REST=$(aws apigateway get-rest-apis '
+            '--region "$REGION" '
+            '--query "items[?name==\'$REST_API_NAME\'].id | [0]" '
+            '--output text)',
+
+            'API_ID_WS=$(aws apigatewayv2 get-apis '
+            '--region "$REGION" '
+            '--query "Items[?Name==\'$WEBSOCKET_API_NAME\'].ApiId | [0]" '
+            '--output text)',
+
+            'if [[ -z "$API_ID_REST" || "$API_ID_REST" == "None" ]]; then',
+            '  echo "REST API discovery failed"',
+            '  exit 1',
+            'fi',
+
+            'if [[ -z "$API_ID_WS" || "$API_ID_WS" == "None" ]]; then',
+            '  echo "WebSocket API discovery failed"',
+            '  exit 1',
+            'fi',
+
+            'export REST_API_URL="https://${API_ID_REST}.execute-api.${REGION}.amazonaws.com/dev/ERP"',
+            'export WEBSOCKET_URL="wss://${API_ID_WS}.execute-api.${REGION}.amazonaws.com/dev"',
+
+            'echo "REST_API_URL=$REST_API_URL" | sudo tee -a /etc/environment',
+            'echo "WEBSOCKET_URL=$WEBSOCKET_URL" | sudo tee -a /etc/environment',
+
+
             "sudo apt install -y nodejs npm", 
             "systemctl start apache2",
             "systemctl enable apache2", 
@@ -886,7 +929,7 @@ class CdkCodeStack(Stack):
             "export DB_USERNAME=$(echo \"$SECRET_JSON\" | jq -r .username)",
             "export DB_PASSWORD=$(echo \"$SECRET_JSON\" | jq -r .password)",
             "export DB_NAME=$(echo \"$SECRET_JSON\" | jq -r .dbname)",
-            f"export REGION={self.region}",
+            
             "",
             "echo 'Database connection details:'",
             "echo \"Host: $DB_HOST\"",
