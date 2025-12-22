@@ -42,6 +42,10 @@ current_userid: Optional[str] = None
 # Global variable to store final response text from streaming
 final_text_ff: str = ""
 
+ACTIVE_AGENT: Optional[Agent] = None
+ACTIVE_CHAT_SESSION_ID: Optional[str] = None
+AGENT_LOCK = threading.Lock()
+
 # -------------------------------------------------------------------
 # WebSocket and Callback Handler Functions
 # -------------------------------------------------------------------
@@ -186,19 +190,23 @@ You are an intelligent SAP OData Agent that helps users interact with SAP system
 - Example: $orderby=CreationDate desc&$top=5
 
 ### Error Handling:
+- If a connection test fails, suggest checking SAP credentials and network connectivity
 - If an entity is not found, suggest listing available entity sets first
 - Provide clear error messages and suggestions for resolution
 
 ### Best Practices:
+- Start by testing the connection if unsure about system availability
 - Use list_sap_entity_sets to discover available data before querying
 - Always use $top to limit results for large entity sets
 - Validate entity keys before delete or update operations
 
 ## Response Format:
-- Provide clear, formatted responses
+- Provide clear, markdown formatted responses
 - For query results, summarize the data and highlight key fields
 - For errors, explain what went wrong and suggest next steps
 - When showing data, format it in a readable way
+- Always show the data in a bullet points format . 
+- Avoid using tables for data representation or for anything else.
 """
 
 # -------------------------------------------------------------------
@@ -235,11 +243,31 @@ def create_sap_odata_agent(
     logger.info("SAP OData Agent created successfully")
     return agent
 
+def get_or_reset_agent(chat_session_id: str) -> Agent:
+    """
+    Ensures exactly one agent exists.
+    If chat_session_id changes, old agent is discarded and a new one is created.
+    """
+    global ACTIVE_AGENT, ACTIVE_CHAT_SESSION_ID
+
+    with AGENT_LOCK:
+        if ACTIVE_CHAT_SESSION_ID != chat_session_id:
+            logger.info(
+                f"[AGENT] New chat session detected. "
+                f"Old={ACTIVE_CHAT_SESSION_ID}, New={chat_session_id}. "
+                f"Reinitializing agent."
+            )
+
+            ACTIVE_AGENT = create_sap_odata_agent()
+            ACTIVE_CHAT_SESSION_ID = chat_session_id
+
+        return ACTIVE_AGENT
+
+
 # -------------------------------------------------------------------
 # FastAPI application (added, does not change CLI logic)
 # -------------------------------------------------------------------
-# Create global agent ONCE
-GLOBAL_AGENT = create_sap_odata_agent()
+
 
 app = FastAPI(title="SAP OData Agent API")
 
@@ -279,6 +307,7 @@ async def process(request: Request):
     connection_id = event.get("connection_id")
     message_id = event.get("message_id")
     userid = event.get("userid")
+    chat_session_id = event.get("chat_session_id")
 
     current_userid = userid
 
@@ -297,7 +326,10 @@ async def process(request: Request):
 
     try:
         # Reuse global agent
-        agent = GLOBAL_AGENT
+        if not chat_session_id:
+            return {"status": "error", "message": "Missing chat_session_id"}
+        agent = get_or_reset_agent(chat_session_id)
+        
         # Attach callback handler dynamically (keeps streaming working)
         if connection_id and message_id:
             agent.callback_handler = make_callback_handler(connection_id, message_id)
@@ -472,4 +504,4 @@ if __name__ == "__main__":
         print("Starting SAP OData Agent FastAPI server on port 8085...")
         uvicorn.run("agent:app", host="0.0.0.0", port=8085, reload=True)
     else:
-        main()
+        main()  
