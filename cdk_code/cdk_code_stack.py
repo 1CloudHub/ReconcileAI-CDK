@@ -595,9 +595,9 @@ class CdkCodeStack(Stack):
             action="lambda:InvokeFunction",
             source_arn=f"arn:aws:execute-api:{self.region}:{self.account}:{websocket_api.api_id}/*"
         )
-        
-        
-        websocket_url = f"wss://{websocket_api.api_id}.execute-api.{self.region}.amazonaws.com/dev"
+
+
+        websocket_url = f"https://{websocket_api.api_id}.execute-api.{self.region}.amazonaws.com/dev"
 
         websocket_lambda.add_environment("WEBSOCKET_ENDPOINT", websocket_url)
         websocket_lambda.add_environment("WEBSOCKET_REGION", self.region)
@@ -994,7 +994,7 @@ class CdkCodeStack(Stack):
             "export SAP_HOST=https://sap.apj.int.appflow.sap.aws.dev/sap/bc/gui/sap/its/webgui#",
             "export SAP_USER=PARTNER1",
             "export SAP_PASSWORD=1CloudHub",
-            "screen -dmS run_agent bash -c 'source eagle/bin/activate && python agent.py'",
+            "screen -dmS run_agent bash -c 'source eagle/bin/activate && python agent.py --server'",
             #    "screen -dmS run_app bash -c 'source eagle/bin/activate && export S3_PATH=" + s3_name + " && uvicorn sun:asgi_app --host 0.0.0.0 --port 8000'",
 
             "echo 'DONE!!!!!!!!!!!!!!'",

@@ -41,11 +41,10 @@ lambda_callback_lock = threading.Lock()
 
 
 S3_BUCKET = os.environ.get("S3_BUCKET")
-AWS_REGION = os.environ.get("AWS_REGION")
 AWS_ACCESS_KEY_ID = os.environ.get("AWS_ACCESS_KEY_ID")
 AWS_SECRET_ACCESS_KEY = os.environ.get("AWS_SECRET_ACCESS_KEY")
 MODEL_ID = os.environ.get("BEDROCK_MODEL_ID", "us.anthropic.claude-sonnet-4-20250514-v1:0")
-AWS_REGION = os.environ.get("AWS_REGION")
+AWS_REGION = os.environ.get("REGION")
 url = os.environ.get("REST_API_URL")
 websocket_url = os.environ.get("WEBSOCKET_URL")
 

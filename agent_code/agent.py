@@ -36,7 +36,8 @@ import time
 # -------------------------------------------------------------------
 # Global state
 # -------------------------------------------------------------------
-
+websocket_url = os.environ.get("WEBSOCKET_URL")
+AWS_REGION = os.environ.get("REGION")
 # Global variable to store userid for the current request context
 current_userid: Optional[str] = None
 # Global variable to store final response text from streaming
@@ -61,7 +62,8 @@ def send_ws_message(connection_id: str, data: Any):
     # NOTE: Keep this endpoint as in your existing code.
     client = boto3.client(
         "apigatewaymanagementapi",
-        endpoint_url="https://0if9awq559.execute-api.us-west-2.amazonaws.com/production",
+        endpoint_url=websocket_url,
+        region_name=AWS_REGION
     )
 
     if isinstance(data, dict):
