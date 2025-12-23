@@ -861,8 +861,7 @@ class CdkCodeStack(Stack):
         ec2_instance.add_user_data(  
             'set -e',          
             "sudo apt update -y",
-            f'export AWS_REGION="{region}"',
-            f'export S3_BUCKET="{s3_bucket_name}"',
+            f"export REGION={self.region}",
             f'export REST_API_NAME="sap_rest_api-{unique_key}"',
             f'export WEBSOCKET_API_NAME="SAP_ws_{unique_key}"',
             "sudo apt install -y apache2 awscli jq postgresql-client-14",
@@ -1159,7 +1158,6 @@ class CdkCodeStack(Stack):
             "echo \"🚀 Starting React deployment from S3...\"",
             "",
             "# Set environment variables from CDK",
-            f"export AWS_REGION=\"{region}\"",
             f"export REST_API_NAME=\"{rest_api_name}\"",
             f"export WEBSOCKET_API_NAME=\"{websocket_api_name}\"",
             f"export BUCKET_NAME=\"{bucket_name}\"",
