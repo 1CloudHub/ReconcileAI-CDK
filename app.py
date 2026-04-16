@@ -3,7 +3,7 @@ import os
 
 import aws_cdk as cdk
 
-from reconcileai no sap cdk.reconcileai no sap cdk_stack import ReconcileaiNoSapCdkStack
+from reconcileai_no_sap_cdk.reconcileai_no_sap_cdk_stack import ReconcileaiNoSapCdkStack
 
 
 app = cdk.App()
