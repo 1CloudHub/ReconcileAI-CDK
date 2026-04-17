@@ -108,7 +108,4 @@ class ReconcileaiNoSapCdkStack(Stack):
             vpc_subnets=ec2.SubnetSelection(
                 subnet_type=ec2.SubnetType.PRIVATE_WITH_EGRESS
             )
-        )  
-
-
-
+        )
