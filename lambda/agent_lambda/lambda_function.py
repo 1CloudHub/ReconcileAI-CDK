@@ -23,15 +23,42 @@ db_schema = "erp_no_sap"
 # DB helpers
 # ---------------------------------------------------------------------------
 
-def _get_db_connection():
+_SECRET_CACHE = None
+
+def get_secret():
+    global _SECRET_CACHE
+    if _SECRET_CACHE is not None:
+        return _SECRET_CACHE
+
+    import boto3
     import os
+    import json
+
+    secret_name = os.environ.get("SECRET_NAME")
+    if not secret_name:
+        return os.environ # Fallback to os.environ if secret is not configured
+        
+    region_name = os.environ.get("AWS_REGION_NAME", "us-west-2")
+
+    try:
+        client = boto3.client("secretsmanager", region_name=region_name)
+        response = client.get_secret_value(SecretId=secret_name)
+        _SECRET_CACHE = json.loads(response["SecretString"])
+        return _SECRET_CACHE
+    except Exception as e:
+        logger.error(f"Failed to fetch secret: {e}")
+        return os.environ
+
+
+def _get_db_connection():
     import psycopg2
+    secret = get_secret()
     return psycopg2.connect(
-        host=os.environ.get("db_host", "sap-erp.czka2e64ehbk.us-west-2.rds.amazonaws.com"),
-        port=5432,
-        dbname=os.environ.get("db_database", "postgres"),
-        user=os.environ.get("db_user", "postgres"),
-        password=os.environ.get("db_password", "postgres123"),
+        host=secret.get("db_host", "sap-erp.czka2e64ehbk.us-west-2.rds.amazonaws.com"),
+        port=int(secret.get("db_port", 5432)),
+        dbname=secret.get("db_database", "postgres"),
+        user=secret.get("db_user", "postgres"),
+        password=secret.get("db_password", "postgres123"),
         options=f"-c search_path={db_schema}",
     )
 

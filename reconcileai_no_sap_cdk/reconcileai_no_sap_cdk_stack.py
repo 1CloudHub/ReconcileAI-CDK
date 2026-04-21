@@ -3,6 +3,7 @@ from aws_cdk import (
     RemovalPolicy,
     Duration,
     Size,
+    Fn,
     SecretValue,  
     aws_ec2 as ec2,
     aws_rds as rds,
@@ -15,9 +16,14 @@ from aws_cdk import (
 from constructs import Construct
 import random
 import string
+import json
+
 from aws_cdk import custom_resources as cr
-from aws_cdk import aws_lambda as _lambda
 from aws_cdk import aws_apigateway as apigw
+from aws_cdk import aws_amplify_alpha as amplify
+from aws_cdk import aws_codebuild as codebuild
+from aws_cdk import aws_cognito as cognito
+from aws_cdk import CfnOutput
 
 
 
@@ -68,6 +74,53 @@ def generate_rds_safe_name(length=12):
     last_char = random.choice(end_chars)
 
     return "q" + main_part + last_char
+
+def generate_aws_compliant_password(length: int = 16) -> str:
+    """
+    Generates a random AWS Cognito–compliant password.
+
+    Rules satisfied:
+    - Minimum length >= 12 (recommended)
+    - At least one uppercase letter
+    - At least one lowercase letter
+    - At least one digit
+    - At least one special character
+    - No spaces
+
+    :param length: Total password length (must be >= 12)
+    :return: Secure random password string
+    """
+
+    if length < 12:
+        raise ValueError("Password length must be at least 12 characters")
+
+    lowercase = string.ascii_lowercase
+    uppercase = string.ascii_uppercase
+    digits = string.digits
+
+    # Cognito-safe special characters
+    special = "!@#$%^&*()-_=+[]{}<>?"
+
+    # Ensure rule compliance
+    password_chars = [
+        random.choice(lowercase),
+        random.choice(uppercase),
+        random.choice(digits),
+        random.choice(special),
+    ]
+
+    # Fill remaining length
+    all_chars = lowercase + uppercase + digits + special
+    remaining_length = length - len(password_chars)
+
+    password_chars.extend(
+        random.choice(all_chars) for _ in range(remaining_length)
+    )
+
+    # Shuffle to avoid predictable order
+    random.shuffle(password_chars)
+
+    return "".join(password_chars)
 
 def generate_random_alphanumeric(length=6):
     """
@@ -130,7 +183,8 @@ class ReconcileaiNoSapCdkStack(Stack):
                     subnet_type=ec2.SubnetType.PRIVATE_WITH_EGRESS,
                     cidr_mask=24,
                 )
-            ]
+            ],
+            restrict_default_security_group=False,
         )
 
         # security group creation
@@ -181,10 +235,34 @@ class ReconcileaiNoSapCdkStack(Stack):
             versioned=True,
             removal_policy=RemovalPolicy.DESTROY,  # For development only
             auto_delete_objects=True,  # For development only
-            website_index_document="index.html",
-            website_error_document="index.html",
+            # website_index_document="index.html",
+            # website_error_document="index.html",
             # public_read_access=True,  # Allow public read access
             # block_public_access=s3.BlockPublicAccess.BLOCK_NONE  # Disable public access blocking
+        )
+
+        frontend_bucket.add_to_resource_policy(
+            iam.PolicyStatement(
+                sid="AllowAmplifyReadAccess",
+                effect=iam.Effect.ALLOW,
+                principals=[iam.ServicePrincipal("amplify.amazonaws.com")],
+                actions=[
+                    "s3:GetObject",
+                ],
+                resources=[frontend_bucket.bucket_arn + "/*"],
+            )
+        )
+
+        frontend_bucket.add_to_resource_policy(
+            iam.PolicyStatement(
+                sid="AllowAmplifyListAccess",
+                effect=iam.Effect.ALLOW,
+                principals=[iam.ServicePrincipal("amplify.amazonaws.com")],
+                actions=[
+                    "s3:ListBucket",
+                ],
+                resources=[frontend_bucket.bucket_arn],
+            )
         )
 
         frontend_deploy = s3deploy.BucketDeployment(
@@ -243,6 +321,15 @@ class ReconcileaiNoSapCdkStack(Stack):
                     resources=[s3_bucket.bucket_arn + "/*"]
                 ),
             )
+
+        # ── Upload SQL schema file to app S3 bucket ───────────────────────────
+        sql_deploy = s3deploy.BucketDeployment(
+            self,
+            reconcile_name + "SqlDeploy" + name_key,
+            sources=[s3deploy.Source.asset("sql")],   # sql/ folder containing init_schema.sql
+            destination_bucket=s3_bucket,
+            destination_key_prefix="db_init",         # uploads to s3://bucket/db_init/init_schema.sql
+        )
 
         # ── Agent Lambda Role ─────────────────────────────────────────────────────
         agent_lambda_role = iam.Role(
@@ -312,50 +399,96 @@ class ReconcileaiNoSapCdkStack(Stack):
             ],
         )
 
-
-        # ── Secrets Manager ───────────────────────────────────────────────────
-        # Single secret with ALL keys in one place — exactly as your existing
-        # "reconcileai/dev/lambda-secrets" is structured.
-        # db credentials are included here (no separate RDS secret).
-        app_secret = secretsmanager.Secret(
+        USER_EMAIL = "user@reconcileai.com"
+        USERNAME = USER_EMAIL  # Cognito requires a username internally
+        PASSWORD = generate_aws_compliant_password()
+        
+        user_pool = cognito.UserPool(
             self,
-            reconcile_name + "LambdaSecret" + name_key,
-            secret_name="reconcileai/dev/lambda-secrets"+name_key,
-            description="All config and credentials for ReconcileAI Lambda functions",
-            secret_object_value={
-                # ── API ───────────────────────────────────────────────────────
-                "API_GATEWAY_URL":                         SecretValue.unsafe_plain_text("https://your-api-id.execute-api.us-west-2.amazonaws.com/dev/reconcile-ai"),
-                "FRONTEND_URL":                            SecretValue.unsafe_plain_text("https://your-frontend-url.com"),
-
-                # ── Bedrock ───────────────────────────────────────────────────
-                "BEDROCK_MODEL_ID":                        SecretValue.unsafe_plain_text("us.anthropic.claude-sonnet-4-20250514-v1:0"),
-
-                # ── AWS Region ────────────────────────────────────────────────
-                "REGION_AWS":                              SecretValue.unsafe_plain_text("us-west-2"),
-
-                # ── Database credentials (all in one secret) ──────────────────
-                "db_host":                                 SecretValue.unsafe_plain_text("PLACEHOLDER_REPLACE_AFTER_RDS_DEPLOY"),
-                "db_port":                                 SecretValue.unsafe_plain_text("5432"),
-                "db_user":                                 SecretValue.unsafe_plain_text("postgres"),
-                "db_password":                             SecretValue.unsafe_plain_text("PLACEHOLDER_REPLACE_WITH_REAL_PASSWORD"),
-                "db_database":                             SecretValue.unsafe_plain_text("postgres"),
-
-                # ── S3 ────────────────────────────────────────────────────────
-                "bucket_name_no_sap":                      SecretValue.unsafe_plain_text(s3_bucket_name),
-
-                # ── DB Schema & Table names ───────────────────────────────────
-                "Textops_schema":                          SecretValue.unsafe_plain_text("erp_no_sap"),
-                "erp_no_sap_schema":                       SecretValue.unsafe_plain_text("erp_no_sap"),
-                "document_type_table":                     SecretValue.unsafe_plain_text("document_table"),
-                "document_table":                          SecretValue.unsafe_plain_text("document_table"),
-                "job_table":                               SecretValue.unsafe_plain_text("job_table"),
-                "document_processing_table":               SecretValue.unsafe_plain_text("document_processing_table"),
-                "prompt_metadata_table":                   SecretValue.unsafe_plain_text("prompt_metadata_table"),
-                "ai_suggestion_table":                     SecretValue.unsafe_plain_text("ai_suggestion_table"),
-                "temp_document_processing_table":          SecretValue.unsafe_plain_text("temp_document_processing_table"),
-                "cexp_ocr_ai_key_extraction_details_table":SecretValue.unsafe_plain_text("cexp_ocr_ai_key_extraction_details_table"),
-            },
+            "UserPool",
+            self_sign_up_enabled=False,
+            sign_in_aliases=cognito.SignInAliases(
+                email=True,
+                username=False
+            ),
+            password_policy=cognito.PasswordPolicy(
+                min_length=12,
+                require_lowercase=True,
+                require_uppercase=True,
+                require_digits=True,
+                require_symbols=True
+            ),
+            account_recovery=cognito.AccountRecovery.EMAIL_ONLY
         )
+
+        # --------------------------------------------------
+        # Create User via AdminCreateUser
+        # --------------------------------------------------
+        create_user = cr.AwsCustomResource(
+            self,
+            "CreateCognitoUser",
+            on_create=cr.AwsSdkCall(
+                service="CognitoIdentityServiceProvider",
+                action="adminCreateUser",
+                parameters={
+                    "UserPoolId": user_pool.user_pool_id,
+                    "Username": USERNAME,
+                    "UserAttributes": [
+                        {"Name": "email", "Value": USER_EMAIL},
+                        {"Name": "email_verified", "Value": "true"}
+                    ],
+                    "MessageAction": "SUPPRESS"
+                },
+                physical_resource_id=cr.PhysicalResourceId.of(
+                    f"{USERNAME}-user"
+                )
+            ),
+            policy=cr.AwsCustomResourcePolicy.from_sdk_calls(
+                resources=[user_pool.user_pool_arn]
+            )
+        )
+
+        # --------------------------------------------------
+        # Set PERMANENT password
+        # --------------------------------------------------
+        set_password = cr.AwsCustomResource(
+            self,
+            "SetPermanentPassword",
+            on_create=cr.AwsSdkCall(
+                service="CognitoIdentityServiceProvider",
+                action="adminSetUserPassword",
+                parameters={
+                    "UserPoolId": user_pool.user_pool_id,
+                    "Username": USERNAME,
+                    "Password": PASSWORD,
+                    "Permanent": True
+                },
+                physical_resource_id=cr.PhysicalResourceId.of(
+                    f"{USERNAME}-password"
+                )
+            ),
+            policy=cr.AwsCustomResourcePolicy.from_sdk_calls(
+                resources=[user_pool.user_pool_arn]
+            ),
+            timeout=Duration.minutes(2)
+        )
+
+        set_password.node.add_dependency(create_user)
+
+         # ── User Pool Client ──────────────────────────────────────────────────
+        user_pool_client = cognito.UserPoolClient(
+            self,
+            reconcile_name + "UserPoolClient" + name_key,
+            user_pool=user_pool,
+            user_pool_client_name=reconcile_name + "-client-" + name_key,
+            auth_flows=cognito.AuthFlow(
+                user_password=True,
+                user_srp=True,
+                admin_user_password=True,
+            ),
+            generate_secret=False,
+        )
+
 
         # ── RDS Instance ──────────────────────────────────────────────────────
         db_instance = rds.DatabaseInstance(
@@ -375,7 +508,7 @@ class ReconcileaiNoSapCdkStack(Stack):
             # No generated secret — credentials live in app_secret above
             credentials=rds.Credentials.from_password(
                 username="postgres",
-                password=SecretValue.unsafe_plain_text("PLACEHOLDER_REPLACE_WITH_REAL_PASSWORD"),
+                password=SecretValue.unsafe_plain_text("postgres123"),
             ),
             database_name="postgres",
             port=5432,
@@ -387,12 +520,156 @@ class ReconcileaiNoSapCdkStack(Stack):
             publicly_accessible=False,
         )
 
+        # ── Secrets Manager ───────────────────────────────────────────────────
+        # Single secret with ALL keys in one place — exactly as your existing
+        # "reconcileai/dev/lambda-secrets" is structured.
+        # db credentials are included here (no separate RDS secret).
+        app_secret = secretsmanager.Secret(
+            self,
+            reconcile_name + "LambdaSecret" + name_key,
+            secret_name="reconcileai/dev/lambda-secrets"+name_key,
+            description="All config and credentials for ReconcileAI Lambda functions",
+            secret_object_value={
+
+                # ── Bedrock ───────────────────────────────────────────────────
+                "BEDROCK_MODEL_ID":                        SecretValue.unsafe_plain_text("us.anthropic.claude-sonnet-4-20250514-v1:0"),
+
+                # ── AWS Region ────────────────────────────────────────────────
+                "REGION_AWS":                              SecretValue.unsafe_plain_text("us-west-2"),
+
+                # ── Database credentials (all in one secret) ──────────────────
+                "db_host":                                 SecretValue.unsafe_plain_text(db_instance.db_instance_endpoint_address),
+                "db_port":                                 SecretValue.unsafe_plain_text("5432"),
+                "db_user":                                 SecretValue.unsafe_plain_text("postgres"),
+                "db_password":                             SecretValue.unsafe_plain_text("postgres123"),
+                "db_database":                             SecretValue.unsafe_plain_text("postgres"),
+
+                # ── S3 ────────────────────────────────────────────────────────
+                "bucket_name_no_sap":                      SecretValue.unsafe_plain_text(s3_bucket_name),
+
+                # ── DB Schema & Table names ───────────────────────────────────
+                "sop_table":                               SecretValue.unsafe_plain_text("sop_table"),
+                "Textops_schema":                          SecretValue.unsafe_plain_text("erp_no_sap"),
+                "erp_no_sap_schema":                       SecretValue.unsafe_plain_text("erp_no_sap"),
+                "document_type_table":                     SecretValue.unsafe_plain_text("document_table"),
+                "document_table":                          SecretValue.unsafe_plain_text("document_table"),
+                "job_table":                               SecretValue.unsafe_plain_text("job_table"),
+                "document_processing_table":               SecretValue.unsafe_plain_text("document_processing_table"),
+                "prompt_metadata_table":                   SecretValue.unsafe_plain_text("prompt_metadata_table"),
+                "ai_suggestion_table":                     SecretValue.unsafe_plain_text("ai_suggestion_table"),
+                "temp_document_processing_table":          SecretValue.unsafe_plain_text("temp_document_processing_table"),
+                "cexp_ocr_ai_key_extraction_details_table":SecretValue.unsafe_plain_text("cexp_ocr_ai_key_extraction_details_table"),
+
+                # ── Cognito ───────────────────────────────────────────────────
+                "COGNITO_USER_POOL_ID_NO_SAP":             SecretValue.unsafe_plain_text(user_pool.user_pool_id),
+                "COGNITO_CLIENT_ID_NO_SAP":                SecretValue.unsafe_plain_text(user_pool_client.user_pool_client_id),
+            },
+        )
+
+         # ── DB Schema Initializer Lambda ──────────────────────────────────────
+        # A one-shot Lambda that runs inside the VPC, connects to RDS,
+        # and executes the full schema SQL on first deploy.
+
+        db_init_role = iam.Role(
+            self,
+            reconcile_name + "DbInitRole" + name_key,
+            assumed_by=iam.ServicePrincipal("lambda.amazonaws.com"),
+            managed_policies=[
+                iam.ManagedPolicy.from_aws_managed_policy_name(
+                    "service-role/AWSLambdaVPCAccessExecutionRole"
+                ),
+                iam.ManagedPolicy.from_aws_managed_policy_name(
+                    "service-role/AWSLambdaBasicExecutionRole"
+                ),
+            ],
+        )
+
+
+        textract_layer = _lambda.LayerVersion(
+            self,
+            "TextractLayer",
+            code=_lambda.Code.from_asset("lambda_layers/textract_text_final.zip"),
+            compatible_runtimes=[_lambda.Runtime.PYTHON_3_12],
+            description="Textract processing layer"
+        )
+
+
+
+        db_init_lambda = _lambda.Function(
+            self,
+            reconcile_name + "DbInitLambda" + name_key,
+            function_name=reconcile_name + "-db-init-" + name_key,
+            runtime=_lambda.Runtime.PYTHON_3_12,
+            handler="index.handler",
+            role=db_init_role,
+            vpc=vpc,
+            vpc_subnets=ec2.SubnetSelection(
+                subnet_type=ec2.SubnetType.PRIVATE_WITH_EGRESS
+            ),
+            security_groups=[lambda_security_group],
+            timeout=Duration.seconds(300),
+            memory_size=256,
+            layers = [textract_layer],
+            code=_lambda.Code.from_asset("lambda/db_init_lambda"),
+            environment={
+                "DB_HOST":     db_instance.db_instance_endpoint_address,
+                "DB_PORT":     "5432",
+                "DB_NAME":     "postgres",
+                "DB_USER":     "postgres",
+                "DB_PASSWORD": "postgres123",
+                "SQL_BUCKET":  s3_bucket_name,              # ← replaces SCHEMA_SQL
+                "SQL_KEY":     "db_init/init_schema.sql",   # ← replaces SCHEMA_SQL
+            },
+        )
+
+        # Allow db_init_lambda to read the SQL file from S3
+        s3_bucket.grant_read(db_init_lambda)
+
+        # SQL must be uploaded before the init lambda runs
+        db_init_lambda.node.add_dependency(sql_deploy)
+
+        # Must wait for RDS to be ready before running
+        db_init_lambda.node.add_dependency(db_instance)
+
+        # ── Trigger the init Lambda once via CloudFormation custom resource ───
+        db_schema_init = cr.AwsCustomResource(
+            self,
+            reconcile_name + "DbSchemaInit" + name_key,
+            on_create=cr.AwsSdkCall(
+                service="Lambda",
+                action="invoke",
+                parameters={
+                    "FunctionName": db_init_lambda.function_name,
+                    "InvocationType": "RequestResponse",
+                    "Payload": json.dumps({
+                        "RequestType": "Create",
+                        "StackId":             "schema-init",
+                        "RequestId":           "schema-init-001",
+                        "LogicalResourceId":   "DbSchemaInit",
+                        "ResponseURL":         "https://httpbin.org/put",
+                    }),
+                },
+                physical_resource_id=cr.PhysicalResourceId.of(
+                    reconcile_name + "-db-schema-init-" + name_key
+                ),
+            ),
+            policy=cr.AwsCustomResourcePolicy.from_statements([
+                iam.PolicyStatement(
+                    actions=["lambda:InvokeFunction"],
+                    resources=[db_init_lambda.function_arn],
+                )
+            ]),
+        )
+
+        db_schema_init.node.add_dependency(db_init_lambda)
+        db_schema_init.node.add_dependency(sql_deploy)
+
 
         boto3_layer = _lambda.LayerVersion(
             self,
             "Boto3Layer",
             code=_lambda.Code.from_asset("lambda_layers/boto3.zip"),
-            compatible_runtimes=[_lambda.Runtime.PYTHON_3_11],
+            compatible_runtimes=[_lambda.Runtime.PYTHON_3_12],
             description="Custom boto3 layer"
         )
 
@@ -400,16 +677,8 @@ class ReconcileaiNoSapCdkStack(Stack):
             self,
             "McpLayer",
             code=_lambda.Code.from_asset("lambda_layers/mcp_v2.zip"),
-            compatible_runtimes=[_lambda.Runtime.PYTHON_3_11],
+            compatible_runtimes=[_lambda.Runtime.PYTHON_3_12],
             description="MCP v2 layer"
-        )
-
-        textract_layer = _lambda.LayerVersion(
-            self,
-            "TextractLayer",
-            code=_lambda.Code.from_asset("lambda_layers/textract_text_final.zip"),
-            compatible_runtimes=[_lambda.Runtime.PYTHON_3_11],
-            description="Textract processing layer"
         )
 
         # ── Config Lambda ─────────────────────────────────────────────────────
@@ -420,7 +689,7 @@ class ReconcileaiNoSapCdkStack(Stack):
             self,
             reconcile_name + "ConfigLambda" + lambda_safe_key,
             function_name=reconcile_name + "-config-" + name_key,
-            runtime=_lambda.Runtime.PYTHON_3_11,
+            runtime=_lambda.Runtime.PYTHON_3_12,
             handler="lambda_function.lambda_handler",
             code=_lambda.Code.from_asset("lambda/config_lambda"),   # ← config_lambda/ folder
             role=config_lambda_role,
@@ -433,7 +702,7 @@ class ReconcileaiNoSapCdkStack(Stack):
             memory_size=1024,
             layers=[boto3_layer, textract_layer],
             environment={
-                "SECRET_NAME": "reconcileai/dev/lambda-secrets"+name_key,
+                "SECRET_NAME": app_secret.secret_name,
                 "AWS_REGION_NAME": self.region,
             },
         )
@@ -444,7 +713,7 @@ class ReconcileaiNoSapCdkStack(Stack):
             self,
             reconcile_name + "AgentLambda" + lambda_safe_key,
             function_name=reconcile_name + "-agent-" + name_key,
-            runtime=_lambda.Runtime.PYTHON_3_11,
+            runtime=_lambda.Runtime.PYTHON_3_12,
             handler="lambda_function.lambda_handler",
             code=_lambda.Code.from_asset("lambda/agent_lambda"),          # ← lambda/ folder (single file)
             role=agent_lambda_role,
@@ -457,7 +726,7 @@ class ReconcileaiNoSapCdkStack(Stack):
             memory_size=2048,
             layers=[boto3_layer, mcp_layer],
             environment={
-                "SECRET_NAME": "reconcileai/dev/lambda-secrets"+name_key,
+                "SECRET_NAME": app_secret.secret_name,
                 "AWS_REGION_NAME": self.region,
                 # reconcile_agent.py reads these directly from os.environ
                 "db_host":     db_instance.db_instance_endpoint_address,
@@ -607,19 +876,296 @@ class ReconcileaiNoSapCdkStack(Stack):
         config_lambda.add_permission(
             "ApiGatewayInvokeConfigLambda",
             principal=iam.ServicePrincipal("apigateway.amazonaws.com"),
-            source_arn=api.arn_for_execute_api("*", "*", "*"),
+            source_arn=api.arn_for_execute_api(method="*", path="/*", stage="*"),
         )
         agent_lambda.add_permission(
             "ApiGatewayInvokeAgentLambda",
             principal=iam.ServicePrincipal("apigateway.amazonaws.com"),
-            source_arn=api.arn_for_execute_api("*", "*", "*"),
+            source_arn=api.arn_for_execute_api(method="*", path="/*", stage="*"),
         )
 
 
+        # ── Strip /dev/ suffix from API URL ───────────────────────────────────
+        # api.url = "https://xxxx.execute-api.us-west-2.amazonaws.com/dev/"
+        # We need  = "https://xxxx.execute-api.us-west-2.amazonaws.com"
+        api_base_url = Fn.select(0, Fn.split("/dev/", api.url))
+
+        # ── EC2 Role ──────────────────────────────────────────────────────────
+        ec2_role = iam.Role(
+            self,
+            reconcile_name + "EC2Role" + name_key,
+            assumed_by=iam.ServicePrincipal("ec2.amazonaws.com"),
+            managed_policies=[
+                iam.ManagedPolicy.from_aws_managed_policy_name("AmazonS3FullAccess"),
+                iam.ManagedPolicy.from_aws_managed_policy_name("AdministratorAccess"),
+                iam.ManagedPolicy.from_aws_managed_policy_name("AmazonEC2FullAccess"),
+            ],
+        )
+
+        # ── EC2 Security Group ────────────────────────────────────────────────
+        ec2_security_group = ec2.SecurityGroup(
+            self,
+            reconcile_name + "EC2SecurityGroup" + name_key,
+            vpc=vpc,
+            description="Security group for frontend build EC2",
+            allow_all_outbound=True,
+        )
+
+        # ── Frontend Build EC2 Instance ───────────────────────────────────────
+        # This instance:
+        # 1. Downloads build.zip (source code) from S3
+        # 2. Unzips it
+        # 3. Updates VITE_RECONCILEAI_DEV_ENV_NO_SAP_BASE_URL in .env
+        # 4. Runs npm run build
+        # 5. Zips the dist/ output back as build.zip
+        # 6. Uploads it back to the same S3 bucket (overwriting the source zip)
+        # 7. Terminates itself
+        ec2_instance_front = ec2.Instance(
+            self,
+            reconcile_name + "FrontendBuildEC2" + name_key,
+            role=ec2_role,
+            instance_type=ec2.InstanceType.of(
+                ec2.InstanceClass.T3,
+                ec2.InstanceSize.MEDIUM,
+            ),
+            machine_image=ec2.MachineImage.latest_amazon_linux2023(),
+            vpc=vpc,
+            vpc_subnets=ec2.SubnetSelection(
+                subnet_type=ec2.SubnetType.PUBLIC,
+            ),
+            security_group=ec2_security_group,
+            user_data=ec2.UserData.for_linux(),
+            block_devices=[
+                ec2.BlockDevice(
+                    device_name="/dev/xvda",
+                    volume=ec2.BlockDeviceVolume.ebs(
+                        volume_size=30,
+                        volume_type=ec2.EbsDeviceVolumeType.GP3,
+                        delete_on_termination=True,
+                        encrypted=True,
+                    ),
+                )
+            ],
+        )
+
+        bucket_name_for_ec2 = frontend_bucket_name
+        region_for_ec2 = self.region
+        env_var_name = "VITE_RECONCILEAI_DEV_ENV_NO_SAP_BASE_URL"
+
+        ec2_instance_front.add_user_data(
+            "#!/bin/bash",
+            "set -e",
+            "echo '🚀 Starting frontend build process...'",
+            "",
+            "# ── Install prerequisites ─────────────────────────────────────────",
+            "command_exists() { command -v \"$1\" &> /dev/null; }",
+            "",
+            "if ! command_exists unzip; then",
+            "    sudo yum install -y unzip --allowerasing",
+            "fi",
+            "",
+            "if ! command_exists node || ! command_exists npm; then",
+            "    curl -fsSL https://rpm.nodesource.com/setup_20.x | sudo bash -",
+            "    sudo yum install -y nodejs --allowerasing",
+            "fi",
+            "",
+            "if ! command_exists aws; then",
+            "    curl 'https://awscli.amazonaws.com/awscli-exe-linux-x86_64.zip' -o 'awscliv2.zip'",
+            "    unzip awscliv2.zip",
+            "    sudo ./aws/install",
+            "    rm -rf aws awscliv2.zip",
+            "fi",
+            "",
+            "# ── Set variables ─────────────────────────────────────────────────",
+            f"BUCKET_NAME='{bucket_name_for_ec2}'",
+            f"REGION='{region_for_ec2}'",
+            f"ENV_VAR_NAME='{env_var_name}'",
+            "WORK_DIR=~/react-app",
+            "ZIP_FILE='build.zip'",
+            f"S3_SOURCE_PATH=\"s3://${{BUCKET_NAME}}/${{ZIP_FILE}}\"",
+            "",
+            "# ── Get API Gateway base URL from the CDK token resolved at deploy ─",
+            "# api_base_url is injected by CDK as a resolved CloudFormation value",
+            "# We write it into a temp file during CDK synth via user_data string",
+            f"API_URL='{api_base_url}'",
+            "",
+            "echo \"Using API URL: $API_URL\"",
+            "",
+            "# ── Download and unzip source code ───────────────────────────────",
+            "mkdir -p \"$WORK_DIR\"",
+            "cd \"$WORK_DIR\"",
+            "echo '📥 Downloading source zip from S3...'",
+            "aws s3 cp \"$S3_SOURCE_PATH\" . --region \"$REGION\"",
+            "echo '📂 Unzipping...'",
+            "unzip -o \"$ZIP_FILE\"",
+            "rm \"$ZIP_FILE\"",
+            "",
+            "# ── Update .env with the real API Gateway URL ─────────────────────",
+            "ENV_FILE='.env'",
+            "touch \"$ENV_FILE\"",
+            "echo '🛠 Updating .env...'",
+            "if grep -q \"^$ENV_VAR_NAME=\" \"$ENV_FILE\"; then",
+            "    sed -i \"s|^$ENV_VAR_NAME=.*|$ENV_VAR_NAME=$API_URL|\" \"$ENV_FILE\"",
+            "else",
+            "    echo \"$ENV_VAR_NAME=$API_URL\" >> \"$ENV_FILE\"",
+            "fi",
+            "",
+            "echo '✅ .env updated:'",
+            "cat \"$ENV_FILE\"",
+            "",
+            "# ── Install dependencies and build ────────────────────────────────",
+            "echo '📦 Running npm install...'",
+            "npm install",
+            "npm install react-pdf",
+            "echo '⚙️ Running npm run build...'",
+            "npm run build",
+            "",
+            "# ── Zip the dist/ output and upload back to S3 ───────────────────",
+            "echo '📦 Zipping dist/ folder...'",
+            "cd dist",
+            "zip -r ../build.zip .",
+            "cd ..",
+            "echo '☁️ Uploading built zip back to S3 (overwriting source zip)...'",
+            "aws s3 cp build.zip \"$S3_SOURCE_PATH\" --region \"$REGION\"",
+            "echo '✅ Build zip uploaded to S3 successfully!'",
+            "",
+            "# ── Self-terminate ────────────────────────────────────────────────",
+            "TOKEN=$(curl -s -X PUT 'http://169.254.169.254/latest/api/token' -H 'X-aws-ec2-metadata-token-ttl-seconds: 21600')",
+            "INSTANCE_ID=$(curl -s -H \"X-aws-ec2-metadata-token: $TOKEN\" http://169.254.169.254/latest/meta-data/instance-id)",
+            "echo \"🛑 Terminating instance $INSTANCE_ID...\"",
+            f"aws ec2 terminate-instances --instance-ids \"$INSTANCE_ID\" --region '{region_for_ec2}'",
+        )
+
+        # EC2 must run after the source zip is uploaded to S3
+        ec2_instance_front.node.add_dependency(frontend_deploy)
+        # EC2 must run after API Gateway is created (so api_base_url is resolved)
+        ec2_instance_front.node.add_dependency(api)
 
 
+        # ── IAM Role for Amplify to read from the frontend S3 bucket ─────────
+        amplify_role = iam.Role(
+            self,
+            reconcile_name + "AmplifyRole" + name_key,
+            assumed_by=iam.ServicePrincipal("amplify.amazonaws.com"),
+            description="Allows Amplify to read the frontend zip from S3",
+            managed_policies=[
+                iam.ManagedPolicy.from_aws_managed_policy_name("AdministratorAccess-Amplify"),
+            ],
+        )
+        frontend_bucket.grant_read(amplify_role)
 
+        # ── Amplify App (no Git — manual zip deploy from S3) ──────────────────
+        amplify_app = amplify.App(
+            self,
+            reconcile_name + "AmplifyApp" + name_key,
+            app_name=reconcile_name + "-frontend-" + name_key,
+            role=amplify_role,
+            environment_variables={
+                "VITE_RECONCILEAI_DEV_ENV_NO_SAP_BASE_URL": api.url,
+            },
+            # Pre-built zip: no build commands needed at all
+            build_spec=codebuild.BuildSpec.from_object({
+                "version": "1.0",
+                "frontend": {
+                    "phases": {
+                        "build": {
+                            "commands": []
+                        }
+                    },
+                    "artifacts": {
+                        "baseDirectory": "/",
+                        "files": ["**/*"]
+                    },
+                    "cache": {
+                        "paths": []
+                    }
+                }
+            }),
+            # React Router SPA — rewrite all non-asset URLs to index.html
+            custom_rules=[
+                amplify.CustomRule(
+                    source="</^[^.]+$|\\.(?!(css|gif|ico|jpg|js|png|txt|svg|woff|woff2|ttf|map|json)$)([^.]+$)/>",
+                    target="/index.html",
+                    status=amplify.RedirectStatus.REWRITE,
+                )
+            ],
+        )
 
+        # ── Amplify Branch ────────────────────────────────────────────────────
+        main_branch = amplify_app.add_branch(
+            "main",
+            branch_name="main",
+            auto_build=False,
+        )
 
+        # ── Auto-deploy: trigger startDeployment pointing at the S3 zip ──────
+        # This runs during cdk deploy so you don't need to run any CLI commands.
+        # Your zip must already be at: s3://{frontend_bucket_name}/frontend-build.zip
+        # (which you said you've already uploaded)
+        amplify_deploy = cr.AwsCustomResource(
+            self,
+            reconcile_name + "AmplifyTriggerDeploy" + name_key,
+            on_create=cr.AwsSdkCall(
+                service="Amplify",
+                action="startDeployment",
+                parameters={
+                    "appId":      amplify_app.app_id,
+                    "branchName": "main",
+                    "sourceUrl":  f"s3://{frontend_bucket_name}/build.zip",
+                },
+                physical_resource_id=cr.PhysicalResourceId.of(
+                    amplify_app.app_id + "-initial-deploy"
+                ),
+            ),
+            # Re-deploy whenever you run cdk deploy again
+            on_update=cr.AwsSdkCall(
+                service="Amplify",
+                action="startDeployment",
+                parameters={
+                    "appId":      amplify_app.app_id,
+                    "branchName": "main",
+                    "sourceUrl":  f"s3://{frontend_bucket_name}/build.zip",
+                },
+                physical_resource_id=cr.PhysicalResourceId.of(
+                    amplify_app.app_id + "-initial-deploy"
+                ),
+            ),
+            policy=cr.AwsCustomResourcePolicy.from_statements([
+                iam.PolicyStatement(
+                    actions=[
+                        "amplify:StartDeployment",
+                        "amplify:GetJob",
+                    ],
+                    resources=["*"],
+                ),
+                iam.PolicyStatement(
+                    actions=["s3:*"],
+                    resources=[
+                        frontend_bucket.bucket_arn + "/*",
+                        frontend_bucket.bucket_arn
+                        ],
+                ),
+            ]),
+        )
 
+        # Ensure Amplify app + branch exist before triggering deploy
+        amplify_deploy.node.add_dependency(ec2_instance_front)
+        amplify_deploy.node.add_dependency(main_branch)
 
+        # ── Outputs ───────────────────────────────────────────────────────────
+        CfnOutput(
+            self,
+            "AmplifyAppUrl",
+            value=f"https://main.{amplify_app.default_domain}",
+            description="Live frontend URL",
+        )
+        
+        CfnOutput(
+            self,
+            "AmplifyAppId",
+            value=amplify_app.app_id,
+            description="Amplify App ID",
+        )
+        
+        CfnOutput(self, "LoginEmail", value=USER_EMAIL)
+        CfnOutput(self, "LoginPassword", value=PASSWORD)

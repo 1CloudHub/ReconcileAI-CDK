@@ -1,0 +1,4547 @@
+{
+ "Resources": {
+  "reconcileainosapVPCz9zd9d8s8F5C2A0A": {
+   "Type": "AWS::EC2::VPC",
+   "Properties": {
+    "CidrBlock": "10.0.0.0/16",
+    "EnableDnsHostnames": true,
+    "EnableDnsSupport": true,
+    "InstanceTenancy": "default",
+    "Tags": [
+     {
+      "Key": "Name",
+      "Value": "ReconcileaiNoSapCdkStack/reconcileai_no_sapVPCz9zd9d8s"
+     }
+    ]
+   },
+   "Metadata": {
+    "aws:cdk:path": "ReconcileaiNoSapCdkStack/reconcileai_no_sapVPCz9zd9d8s/Resource"
+   }
+  },
+  "reconcileainosapVPCz9zd9d8sPublicSubnetSubnet1SubnetBFD77CFF": {
+   "Type": "AWS::EC2::Subnet",
+   "Properties": {
+    "AvailabilityZone": {
+     "Fn::Select": [
+      0,
+      {
+       "Fn::GetAZs": ""
+      }
+     ]
+    },
+    "CidrBlock": "10.0.0.0/24",
+    "MapPublicIpOnLaunch": true,
+    "Tags": [
+     {
+      "Key": "aws-cdk:subnet-name",
+      "Value": "PublicSubnet"
+     },
+     {
+      "Key": "aws-cdk:subnet-type",
+      "Value": "Public"
+     },
+     {
+      "Key": "Name",
+      "Value": "ReconcileaiNoSapCdkStack/reconcileai_no_sapVPCz9zd9d8s/PublicSubnetSubnet1"
+     }
+    ],
+    "VpcId": {
+     "Ref": "reconcileainosapVPCz9zd9d8s8F5C2A0A"
+    }
+   },
+   "Metadata": {
+    "aws:cdk:path": "ReconcileaiNoSapCdkStack/reconcileai_no_sapVPCz9zd9d8s/PublicSubnetSubnet1/Subnet"
+   }
+  },
+  "reconcileainosapVPCz9zd9d8sPublicSubnetSubnet1RouteTable6CA48495": {
+   "Type": "AWS::EC2::RouteTable",
+   "Properties": {
+    "Tags": [
+     {
+      "Key": "Name",
+      "Value": "ReconcileaiNoSapCdkStack/reconcileai_no_sapVPCz9zd9d8s/PublicSubnetSubnet1"
+     }
+    ],
+    "VpcId": {
+     "Ref": "reconcileainosapVPCz9zd9d8s8F5C2A0A"
+    }
+   },
+   "Metadata": {
+    "aws:cdk:path": "ReconcileaiNoSapCdkStack/reconcileai_no_sapVPCz9zd9d8s/PublicSubnetSubnet1/RouteTable"
+   }
+  },
+  "reconcileainosapVPCz9zd9d8sPublicSubnetSubnet1RouteTableAssociation651F8D1E": {
+   "Type": "AWS::EC2::SubnetRouteTableAssociation",
+   "Properties": {
+    "RouteTableId": {
+     "Ref": "reconcileainosapVPCz9zd9d8sPublicSubnetSubnet1RouteTable6CA48495"
+    },
+    "SubnetId": {
+     "Ref": "reconcileainosapVPCz9zd9d8sPublicSubnetSubnet1SubnetBFD77CFF"
+    }
+   },
+   "Metadata": {
+    "aws:cdk:path": "ReconcileaiNoSapCdkStack/reconcileai_no_sapVPCz9zd9d8s/PublicSubnetSubnet1/RouteTableAssociation"
+   }
+  },
+  "reconcileainosapVPCz9zd9d8sPublicSubnetSubnet1DefaultRoute7952536E": {
+   "Type": "AWS::EC2::Route",
+   "Properties": {
+    "DestinationCidrBlock": "0.0.0.0/0",
+    "GatewayId": {
+     "Ref": "reconcileainosapVPCz9zd9d8sIGW82AF80D0"
+    },
+    "RouteTableId": {
+     "Ref": "reconcileainosapVPCz9zd9d8sPublicSubnetSubnet1RouteTable6CA48495"
+    }
+   },
+   "DependsOn": [
+    "reconcileainosapVPCz9zd9d8sVPCGW6A73A361"
+   ],
+   "Metadata": {
+    "aws:cdk:path": "ReconcileaiNoSapCdkStack/reconcileai_no_sapVPCz9zd9d8s/PublicSubnetSubnet1/DefaultRoute"
+   }
+  },
+  "reconcileainosapVPCz9zd9d8sPublicSubnetSubnet1EIP5C2B60E0": {
+   "Type": "AWS::EC2::EIP",
+   "Properties": {
+    "Domain": "vpc",
+    "Tags": [
+     {
+      "Key": "Name",
+      "Value": "ReconcileaiNoSapCdkStack/reconcileai_no_sapVPCz9zd9d8s/PublicSubnetSubnet1"
+     }
+    ]
+   },
+   "Metadata": {
+    "aws:cdk:path": "ReconcileaiNoSapCdkStack/reconcileai_no_sapVPCz9zd9d8s/PublicSubnetSubnet1/EIP"
+   }
+  },
+  "reconcileainosapVPCz9zd9d8sPublicSubnetSubnet1NATGateway248FDF11": {
+   "Type": "AWS::EC2::NatGateway",
+   "Properties": {
+    "AllocationId": {
+     "Fn::GetAtt": [
+      "reconcileainosapVPCz9zd9d8sPublicSubnetSubnet1EIP5C2B60E0",
+      "AllocationId"
+     ]
+    },
+    "SubnetId": {
+     "Ref": "reconcileainosapVPCz9zd9d8sPublicSubnetSubnet1SubnetBFD77CFF"
+    },
+    "Tags": [
+     {
+      "Key": "Name",
+      "Value": "ReconcileaiNoSapCdkStack/reconcileai_no_sapVPCz9zd9d8s/PublicSubnetSubnet1"
+     }
+    ]
+   },
+   "DependsOn": [
+    "reconcileainosapVPCz9zd9d8sPublicSubnetSubnet1DefaultRoute7952536E",
+    "reconcileainosapVPCz9zd9d8sPublicSubnetSubnet1RouteTableAssociation651F8D1E"
+   ],
+   "Metadata": {
+    "aws:cdk:path": "ReconcileaiNoSapCdkStack/reconcileai_no_sapVPCz9zd9d8s/PublicSubnetSubnet1/NATGateway"
+   }
+  },
+  "reconcileainosapVPCz9zd9d8sPublicSubnetSubnet2Subnet3F4A0392": {
+   "Type": "AWS::EC2::Subnet",
+   "Properties": {
+    "AvailabilityZone": {
+     "Fn::Select": [
+      1,
+      {
+       "Fn::GetAZs": ""
+      }
+     ]
+    },
+    "CidrBlock": "10.0.1.0/24",
+    "MapPublicIpOnLaunch": true,
+    "Tags": [
+     {
+      "Key": "aws-cdk:subnet-name",
+      "Value": "PublicSubnet"
+     },
+     {
+      "Key": "aws-cdk:subnet-type",
+      "Value": "Public"
+     },
+     {
+      "Key": "Name",
+      "Value": "ReconcileaiNoSapCdkStack/reconcileai_no_sapVPCz9zd9d8s/PublicSubnetSubnet2"
+     }
+    ],
+    "VpcId": {
+     "Ref": "reconcileainosapVPCz9zd9d8s8F5C2A0A"
+    }
+   },
+   "Metadata": {
+    "aws:cdk:path": "ReconcileaiNoSapCdkStack/reconcileai_no_sapVPCz9zd9d8s/PublicSubnetSubnet2/Subnet"
+   }
+  },
+  "reconcileainosapVPCz9zd9d8sPublicSubnetSubnet2RouteTable2FE28C73": {
+   "Type": "AWS::EC2::RouteTable",
+   "Properties": {
+    "Tags": [
+     {
+      "Key": "Name",
+      "Value": "ReconcileaiNoSapCdkStack/reconcileai_no_sapVPCz9zd9d8s/PublicSubnetSubnet2"
+     }
+    ],
+    "VpcId": {
+     "Ref": "reconcileainosapVPCz9zd9d8s8F5C2A0A"
+    }
+   },
+   "Metadata": {
+    "aws:cdk:path": "ReconcileaiNoSapCdkStack/reconcileai_no_sapVPCz9zd9d8s/PublicSubnetSubnet2/RouteTable"
+   }
+  },
+  "reconcileainosapVPCz9zd9d8sPublicSubnetSubnet2RouteTableAssociationA2A56A2E": {
+   "Type": "AWS::EC2::SubnetRouteTableAssociation",
+   "Properties": {
+    "RouteTableId": {
+     "Ref": "reconcileainosapVPCz9zd9d8sPublicSubnetSubnet2RouteTable2FE28C73"
+    },
+    "SubnetId": {
+     "Ref": "reconcileainosapVPCz9zd9d8sPublicSubnetSubnet2Subnet3F4A0392"
+    }
+   },
+   "Metadata": {
+    "aws:cdk:path": "ReconcileaiNoSapCdkStack/reconcileai_no_sapVPCz9zd9d8s/PublicSubnetSubnet2/RouteTableAssociation"
+   }
+  },
+  "reconcileainosapVPCz9zd9d8sPublicSubnetSubnet2DefaultRouteBA0904DE": {
+   "Type": "AWS::EC2::Route",
+   "Properties": {
+    "DestinationCidrBlock": "0.0.0.0/0",
+    "GatewayId": {
+     "Ref": "reconcileainosapVPCz9zd9d8sIGW82AF80D0"
+    },
+    "RouteTableId": {
+     "Ref": "reconcileainosapVPCz9zd9d8sPublicSubnetSubnet2RouteTable2FE28C73"
+    }
+   },
+   "DependsOn": [
+    "reconcileainosapVPCz9zd9d8sVPCGW6A73A361"
+   ],
+   "Metadata": {
+    "aws:cdk:path": "ReconcileaiNoSapCdkStack/reconcileai_no_sapVPCz9zd9d8s/PublicSubnetSubnet2/DefaultRoute"
+   }
+  },
+  "reconcileainosapVPCz9zd9d8sPublicSubnetSubnet2EIP7224CE83": {
+   "Type": "AWS::EC2::EIP",
+   "Properties": {
+    "Domain": "vpc",
+    "Tags": [
+     {
+      "Key": "Name",
+      "Value": "ReconcileaiNoSapCdkStack/reconcileai_no_sapVPCz9zd9d8s/PublicSubnetSubnet2"
+     }
+    ]
+   },
+   "Metadata": {
+    "aws:cdk:path": "ReconcileaiNoSapCdkStack/reconcileai_no_sapVPCz9zd9d8s/PublicSubnetSubnet2/EIP"
+   }
+  },
+  "reconcileainosapVPCz9zd9d8sPublicSubnetSubnet2NATGatewayDFCABC69": {
+   "Type": "AWS::EC2::NatGateway",
+   "Properties": {
+    "AllocationId": {
+     "Fn::GetAtt": [
+      "reconcileainosapVPCz9zd9d8sPublicSubnetSubnet2EIP7224CE83",
+      "AllocationId"
+     ]
+    },
+    "SubnetId": {
+     "Ref": "reconcileainosapVPCz9zd9d8sPublicSubnetSubnet2Subnet3F4A0392"
+    },
+    "Tags": [
+     {
+      "Key": "Name",
+      "Value": "ReconcileaiNoSapCdkStack/reconcileai_no_sapVPCz9zd9d8s/PublicSubnetSubnet2"
+     }
+    ]
+   },
+   "DependsOn": [
+    "reconcileainosapVPCz9zd9d8sPublicSubnetSubnet2DefaultRouteBA0904DE",
+    "reconcileainosapVPCz9zd9d8sPublicSubnetSubnet2RouteTableAssociationA2A56A2E"
+   ],
+   "Metadata": {
+    "aws:cdk:path": "ReconcileaiNoSapCdkStack/reconcileai_no_sapVPCz9zd9d8s/PublicSubnetSubnet2/NATGateway"
+   }
+  },
+  "reconcileainosapVPCz9zd9d8sPrivateSubnetSubnet1Subnet4F95860D": {
+   "Type": "AWS::EC2::Subnet",
+   "Properties": {
+    "AvailabilityZone": {
+     "Fn::Select": [
+      0,
+      {
+       "Fn::GetAZs": ""
+      }
+     ]
+    },
+    "CidrBlock": "10.0.2.0/24",
+    "MapPublicIpOnLaunch": false,
+    "Tags": [
+     {
+      "Key": "aws-cdk:subnet-name",
+      "Value": "PrivateSubnet"
+     },
+     {
+      "Key": "aws-cdk:subnet-type",
+      "Value": "Private"
+     },
+     {
+      "Key": "Name",
+      "Value": "ReconcileaiNoSapCdkStack/reconcileai_no_sapVPCz9zd9d8s/PrivateSubnetSubnet1"
+     }
+    ],
+    "VpcId": {
+     "Ref": "reconcileainosapVPCz9zd9d8s8F5C2A0A"
+    }
+   },
+   "Metadata": {
+    "aws:cdk:path": "ReconcileaiNoSapCdkStack/reconcileai_no_sapVPCz9zd9d8s/PrivateSubnetSubnet1/Subnet"
+   }
+  },
+  "reconcileainosapVPCz9zd9d8sPrivateSubnetSubnet1RouteTableD00EC4C0": {
+   "Type": "AWS::EC2::RouteTable",
+   "Properties": {
+    "Tags": [
+     {
+      "Key": "Name",
+      "Value": "ReconcileaiNoSapCdkStack/reconcileai_no_sapVPCz9zd9d8s/PrivateSubnetSubnet1"
+     }
+    ],
+    "VpcId": {
+     "Ref": "reconcileainosapVPCz9zd9d8s8F5C2A0A"
+    }
+   },
+   "Metadata": {
+    "aws:cdk:path": "ReconcileaiNoSapCdkStack/reconcileai_no_sapVPCz9zd9d8s/PrivateSubnetSubnet1/RouteTable"
+   }
+  },
+  "reconcileainosapVPCz9zd9d8sPrivateSubnetSubnet1RouteTableAssociation3D68CE12": {
+   "Type": "AWS::EC2::SubnetRouteTableAssociation",
+   "Properties": {
+    "RouteTableId": {
+     "Ref": "reconcileainosapVPCz9zd9d8sPrivateSubnetSubnet1RouteTableD00EC4C0"
+    },
+    "SubnetId": {
+     "Ref": "reconcileainosapVPCz9zd9d8sPrivateSubnetSubnet1Subnet4F95860D"
+    }
+   },
+   "Metadata": {
+    "aws:cdk:path": "ReconcileaiNoSapCdkStack/reconcileai_no_sapVPCz9zd9d8s/PrivateSubnetSubnet1/RouteTableAssociation"
+   }
+  },
+  "reconcileainosapVPCz9zd9d8sPrivateSubnetSubnet1DefaultRoute4090A112": {
+   "Type": "AWS::EC2::Route",
+   "Properties": {
+    "DestinationCidrBlock": "0.0.0.0/0",
+    "NatGatewayId": {
+     "Ref": "reconcileainosapVPCz9zd9d8sPublicSubnetSubnet1NATGateway248FDF11"
+    },
+    "RouteTableId": {
+     "Ref": "reconcileainosapVPCz9zd9d8sPrivateSubnetSubnet1RouteTableD00EC4C0"
+    }
+   },
+   "Metadata": {
+    "aws:cdk:path": "ReconcileaiNoSapCdkStack/reconcileai_no_sapVPCz9zd9d8s/PrivateSubnetSubnet1/DefaultRoute"
+   }
+  },
+  "reconcileainosapVPCz9zd9d8sPrivateSubnetSubnet2Subnet816954AA": {
+   "Type": "AWS::EC2::Subnet",
+   "Properties": {
+    "AvailabilityZone": {
+     "Fn::Select": [
+      1,
+      {
+       "Fn::GetAZs": ""
+      }
+     ]
+    },
+    "CidrBlock": "10.0.3.0/24",
+    "MapPublicIpOnLaunch": false,
+    "Tags": [
+     {
+      "Key": "aws-cdk:subnet-name",
+      "Value": "PrivateSubnet"
+     },
+     {
+      "Key": "aws-cdk:subnet-type",
+      "Value": "Private"
+     },
+     {
+      "Key": "Name",
+      "Value": "ReconcileaiNoSapCdkStack/reconcileai_no_sapVPCz9zd9d8s/PrivateSubnetSubnet2"
+     }
+    ],
+    "VpcId": {
+     "Ref": "reconcileainosapVPCz9zd9d8s8F5C2A0A"
+    }
+   },
+   "Metadata": {
+    "aws:cdk:path": "ReconcileaiNoSapCdkStack/reconcileai_no_sapVPCz9zd9d8s/PrivateSubnetSubnet2/Subnet"
+   }
+  },
+  "reconcileainosapVPCz9zd9d8sPrivateSubnetSubnet2RouteTable4633F968": {
+   "Type": "AWS::EC2::RouteTable",
+   "Properties": {
+    "Tags": [
+     {
+      "Key": "Name",
+      "Value": "ReconcileaiNoSapCdkStack/reconcileai_no_sapVPCz9zd9d8s/PrivateSubnetSubnet2"
+     }
+    ],
+    "VpcId": {
+     "Ref": "reconcileainosapVPCz9zd9d8s8F5C2A0A"
+    }
+   },
+   "Metadata": {
+    "aws:cdk:path": "ReconcileaiNoSapCdkStack/reconcileai_no_sapVPCz9zd9d8s/PrivateSubnetSubnet2/RouteTable"
+   }
+  },
+  "reconcileainosapVPCz9zd9d8sPrivateSubnetSubnet2RouteTableAssociation2F32D6EE": {
+   "Type": "AWS::EC2::SubnetRouteTableAssociation",
+   "Properties": {
+    "RouteTableId": {
+     "Ref": "reconcileainosapVPCz9zd9d8sPrivateSubnetSubnet2RouteTable4633F968"
+    },
+    "SubnetId": {
+     "Ref": "reconcileainosapVPCz9zd9d8sPrivateSubnetSubnet2Subnet816954AA"
+    }
+   },
+   "Metadata": {
+    "aws:cdk:path": "ReconcileaiNoSapCdkStack/reconcileai_no_sapVPCz9zd9d8s/PrivateSubnetSubnet2/RouteTableAssociation"
+   }
+  },
+  "reconcileainosapVPCz9zd9d8sPrivateSubnetSubnet2DefaultRoute09AD70AB": {
+   "Type": "AWS::EC2::Route",
+   "Properties": {
+    "DestinationCidrBlock": "0.0.0.0/0",
+    "NatGatewayId": {
+     "Ref": "reconcileainosapVPCz9zd9d8sPublicSubnetSubnet2NATGatewayDFCABC69"
+    },
+    "RouteTableId": {
+     "Ref": "reconcileainosapVPCz9zd9d8sPrivateSubnetSubnet2RouteTable4633F968"
+    }
+   },
+   "Metadata": {
+    "aws:cdk:path": "ReconcileaiNoSapCdkStack/reconcileai_no_sapVPCz9zd9d8s/PrivateSubnetSubnet2/DefaultRoute"
+   }
+  },
+  "reconcileainosapVPCz9zd9d8sIGW82AF80D0": {
+   "Type": "AWS::EC2::InternetGateway",
+   "Properties": {
+    "Tags": [
+     {
+      "Key": "Name",
+      "Value": "ReconcileaiNoSapCdkStack/reconcileai_no_sapVPCz9zd9d8s"
+     }
+    ]
+   },
+   "Metadata": {
+    "aws:cdk:path": "ReconcileaiNoSapCdkStack/reconcileai_no_sapVPCz9zd9d8s/IGW"
+   }
+  },
+  "reconcileainosapVPCz9zd9d8sVPCGW6A73A361": {
+   "Type": "AWS::EC2::VPCGatewayAttachment",
+   "Properties": {
+    "InternetGatewayId": {
+     "Ref": "reconcileainosapVPCz9zd9d8sIGW82AF80D0"
+    },
+    "VpcId": {
+     "Ref": "reconcileainosapVPCz9zd9d8s8F5C2A0A"
+    }
+   },
+   "Metadata": {
+    "aws:cdk:path": "ReconcileaiNoSapCdkStack/reconcileai_no_sapVPCz9zd9d8s/VPCGW"
+   }
+  },
+  "reconcileainosapVPCz9zd9d8sRestrictDefaultSecurityGroupCustomResourceAF8ACDDA": {
+   "Type": "Custom::VpcRestrictDefaultSG",
+   "Properties": {
+    "ServiceToken": {
+     "Fn::GetAtt": [
+      "CustomVpcRestrictDefaultSGCustomResourceProviderHandlerDC833E5E",
+      "Arn"
+     ]
+    },
+    "DefaultSecurityGroupId": {
+     "Fn::GetAtt": [
+      "reconcileainosapVPCz9zd9d8s8F5C2A0A",
+      "DefaultSecurityGroup"
+     ]
+    },
+    "Account": {
+     "Ref": "AWS::AccountId"
+    }
+   },
+   "UpdateReplacePolicy": "Delete",
+   "DeletionPolicy": "Delete",
+   "Metadata": {
+    "aws:cdk:path": "ReconcileaiNoSapCdkStack/reconcileai_no_sapVPCz9zd9d8s/RestrictDefaultSecurityGroupCustomResource/Default"
+   }
+  },
+  "CustomVpcRestrictDefaultSGCustomResourceProviderRole26592FE0": {
+   "Type": "AWS::IAM::Role",
+   "Properties": {
+    "AssumeRolePolicyDocument": {
+     "Version": "2012-10-17",
+     "Statement": [
+      {
+       "Action": "sts:AssumeRole",
+       "Effect": "Allow",
+       "Principal": {
+        "Service": "lambda.amazonaws.com"
+       }
+      }
+     ]
+    },
+    "ManagedPolicyArns": [
+     {
+      "Fn::Sub": "arn:${AWS::Partition}:iam::aws:policy/service-role/AWSLambdaBasicExecutionRole"
+     }
+    ],
+    "Policies": [
+     {
+      "PolicyName": "Inline",
+      "PolicyDocument": {
+       "Version": "2012-10-17",
+       "Statement": [
+        {
+         "Effect": "Allow",
+         "Action": [
+          "ec2:AuthorizeSecurityGroupIngress",
+          "ec2:AuthorizeSecurityGroupEgress",
+          "ec2:RevokeSecurityGroupIngress",
+          "ec2:RevokeSecurityGroupEgress"
+         ],
+         "Resource": [
+          {
+           "Fn::Join": [
+            "",
+            [
+             "arn:",
+             {
+              "Ref": "AWS::Partition"
+             },
+             ":ec2:",
+             {
+              "Ref": "AWS::Region"
+             },
+             ":",
+             {
+              "Ref": "AWS::AccountId"
+             },
+             ":security-group/",
+             {
+              "Fn::GetAtt": [
+               "reconcileainosapVPCz9zd9d8s8F5C2A0A",
+               "DefaultSecurityGroup"
+              ]
+             }
+            ]
+           ]
+          }
+         ]
+        }
+       ]
+      }
+     }
+    ]
+   },
+   "Metadata": {
+    "aws:cdk:path": "ReconcileaiNoSapCdkStack/Custom::VpcRestrictDefaultSGCustomResourceProvider/Role"
+   }
+  },
+  "CustomVpcRestrictDefaultSGCustomResourceProviderHandlerDC833E5E": {
+   "Type": "AWS::Lambda::Function",
+   "Properties": {
+    "Code": {
+     "S3Bucket": {
+      "Fn::Sub": "cdk-hnb659fds-assets-${AWS::AccountId}-${AWS::Region}"
+     },
+     "S3Key": "7fa1e366ee8a9ded01fc355f704cff92bfd179574e6f9cfee800a3541df1b200.zip"
+    },
+    "Timeout": 900,
+    "MemorySize": 128,
+    "Handler": "__entrypoint__.handler",
+    "Role": {
+     "Fn::GetAtt": [
+      "CustomVpcRestrictDefaultSGCustomResourceProviderRole26592FE0",
+      "Arn"
+     ]
+    },
+    "Runtime": "nodejs22.x",
+    "Description": "Lambda function for removing all inbound/outbound rules from the VPC default security group"
+   },
+   "DependsOn": [
+    "CustomVpcRestrictDefaultSGCustomResourceProviderRole26592FE0"
+   ],
+   "Metadata": {
+    "aws:cdk:path": "ReconcileaiNoSapCdkStack/Custom::VpcRestrictDefaultSGCustomResourceProvider/Handler",
+    "aws:asset:path": "asset.7fa1e366ee8a9ded01fc355f704cff92bfd179574e6f9cfee800a3541df1b200",
+    "aws:asset:property": "Code"
+   }
+  },
+  "LambdaSecurityGroup0BD9FC99": {
+   "Type": "AWS::EC2::SecurityGroup",
+   "Properties": {
+    "GroupDescription": "Security group for Lambda functions",
+    "SecurityGroupEgress": [
+     {
+      "CidrIp": "0.0.0.0/0",
+      "Description": "Allow all outbound traffic by default",
+      "IpProtocol": "-1"
+     }
+    ],
+    "VpcId": {
+     "Ref": "reconcileainosapVPCz9zd9d8s8F5C2A0A"
+    }
+   },
+   "Metadata": {
+    "aws:cdk:path": "ReconcileaiNoSapCdkStack/LambdaSecurityGroup/Resource"
+   }
+  },
+  "RDSSecurityGroup6BF2CF10": {
+   "Type": "AWS::EC2::SecurityGroup",
+   "Properties": {
+    "GroupDescription": "Security group for RDS instance",
+    "SecurityGroupEgress": [
+     {
+      "CidrIp": "255.255.255.255/32",
+      "Description": "Disallow all traffic",
+      "FromPort": 252,
+      "IpProtocol": "icmp",
+      "ToPort": 86
+     }
+    ],
+    "VpcId": {
+     "Ref": "reconcileainosapVPCz9zd9d8s8F5C2A0A"
+    }
+   },
+   "Metadata": {
+    "aws:cdk:path": "ReconcileaiNoSapCdkStack/RDSSecurityGroup/Resource"
+   }
+  },
+  "RDSSecurityGroupfromReconcileaiNoSapCdkStackLambdaSecurityGroupB7CD04845432240CA298": {
+   "Type": "AWS::EC2::SecurityGroupIngress",
+   "Properties": {
+    "Description": "Allow PostgreSQL access from Lambda",
+    "FromPort": 5432,
+    "GroupId": {
+     "Fn::GetAtt": [
+      "RDSSecurityGroup6BF2CF10",
+      "GroupId"
+     ]
+    },
+    "IpProtocol": "tcp",
+    "SourceSecurityGroupId": {
+     "Fn::GetAtt": [
+      "LambdaSecurityGroup0BD9FC99",
+      "GroupId"
+     ]
+    },
+    "ToPort": 5432
+   },
+   "Metadata": {
+    "aws:cdk:path": "ReconcileaiNoSapCdkStack/RDSSecurityGroup/from ReconcileaiNoSapCdkStackLambdaSecurityGroupB7CD0484:5432"
+   }
+  },
+  "ReconcileaiDBSubnetGroupz9zd9d8s": {
+   "Type": "AWS::RDS::DBSubnetGroup",
+   "Properties": {
+    "DBSubnetGroupDescription": "Subnet group for RDS database",
+    "SubnetIds": [
+     {
+      "Ref": "reconcileainosapVPCz9zd9d8sPrivateSubnetSubnet1Subnet4F95860D"
+     },
+     {
+      "Ref": "reconcileainosapVPCz9zd9d8sPrivateSubnetSubnet2Subnet816954AA"
+     }
+    ]
+   },
+   "Metadata": {
+    "aws:cdk:path": "ReconcileaiNoSapCdkStack/ReconcileaiDBSubnetGroupz9zd9d8s/Default"
+   }
+  },
+  "ReconcileaiFrontendBucketz9zd9d8s4FB1DCA8": {
+   "Type": "AWS::S3::Bucket",
+   "Properties": {
+    "BucketName": "reconcileai-frontz9zd9d8s",
+    "Tags": [
+     {
+      "Key": "aws-cdk:auto-delete-objects",
+      "Value": "true"
+     },
+     {
+      "Key": "aws-cdk:cr-owned:d89340ec",
+      "Value": "true"
+     }
+    ],
+    "VersioningConfiguration": {
+     "Status": "Enabled"
+    },
+    "WebsiteConfiguration": {
+     "ErrorDocument": "index.html",
+     "IndexDocument": "index.html"
+    }
+   },
+   "UpdateReplacePolicy": "Delete",
+   "DeletionPolicy": "Delete",
+   "Metadata": {
+    "aws:cdk:path": "ReconcileaiNoSapCdkStack/ReconcileaiFrontendBucketz9zd9d8s/Resource"
+   }
+  },
+  "ReconcileaiFrontendBucketz9zd9d8sPolicy1FC026B2": {
+   "Type": "AWS::S3::BucketPolicy",
+   "Properties": {
+    "Bucket": {
+     "Ref": "ReconcileaiFrontendBucketz9zd9d8s4FB1DCA8"
+    },
+    "PolicyDocument": {
+     "Statement": [
+      {
+       "Action": [
+        "s3:DeleteObject*",
+        "s3:GetBucket*",
+        "s3:List*",
+        "s3:PutBucketPolicy"
+       ],
+       "Effect": "Allow",
+       "Principal": {
+        "AWS": {
+         "Fn::GetAtt": [
+          "CustomS3AutoDeleteObjectsCustomResourceProviderRole3B1BD092",
+          "Arn"
+         ]
+        }
+       },
+       "Resource": [
+        {
+         "Fn::GetAtt": [
+          "ReconcileaiFrontendBucketz9zd9d8s4FB1DCA8",
+          "Arn"
+         ]
+        },
+        {
+         "Fn::Join": [
+          "",
+          [
+           {
+            "Fn::GetAtt": [
+             "ReconcileaiFrontendBucketz9zd9d8s4FB1DCA8",
+             "Arn"
+            ]
+           },
+           "/*"
+          ]
+         ]
+        }
+       ]
+      },
+      {
+       "Action": "s3:GetObject",
+       "Effect": "Allow",
+       "Principal": {
+        "Service": "amplify.amazonaws.com"
+       },
+       "Resource": {
+        "Fn::Join": [
+         "",
+         [
+          {
+           "Fn::GetAtt": [
+            "ReconcileaiFrontendBucketz9zd9d8s4FB1DCA8",
+            "Arn"
+           ]
+          },
+          "/*"
+         ]
+        ]
+       },
+       "Sid": "AllowAmplifyReadAccess"
+      },
+      {
+       "Action": "s3:ListBucket",
+       "Effect": "Allow",
+       "Principal": {
+        "Service": "amplify.amazonaws.com"
+       },
+       "Resource": {
+        "Fn::GetAtt": [
+         "ReconcileaiFrontendBucketz9zd9d8s4FB1DCA8",
+         "Arn"
+        ]
+       },
+       "Sid": "AllowAmplifyListAccess"
+      }
+     ],
+     "Version": "2012-10-17"
+    }
+   },
+   "Metadata": {
+    "aws:cdk:path": "ReconcileaiNoSapCdkStack/ReconcileaiFrontendBucketz9zd9d8s/Policy/Resource"
+   }
+  },
+  "ReconcileaiFrontendBucketz9zd9d8sAutoDeleteObjectsCustomResource57D4F57B": {
+   "Type": "Custom::S3AutoDeleteObjects",
+   "Properties": {
+    "ServiceToken": {
+     "Fn::GetAtt": [
+      "CustomS3AutoDeleteObjectsCustomResourceProviderHandler9D90184F",
+      "Arn"
+     ]
+    },
+    "BucketName": {
+     "Ref": "ReconcileaiFrontendBucketz9zd9d8s4FB1DCA8"
+    }
+   },
+   "DependsOn": [
+    "ReconcileaiFrontendBucketz9zd9d8sPolicy1FC026B2"
+   ],
+   "UpdateReplacePolicy": "Delete",
+   "DeletionPolicy": "Delete",
+   "Metadata": {
+    "aws:cdk:path": "ReconcileaiNoSapCdkStack/ReconcileaiFrontendBucketz9zd9d8s/AutoDeleteObjectsCustomResource/Default"
+   }
+  },
+  "CustomS3AutoDeleteObjectsCustomResourceProviderRole3B1BD092": {
+   "Type": "AWS::IAM::Role",
+   "Properties": {
+    "AssumeRolePolicyDocument": {
+     "Version": "2012-10-17",
+     "Statement": [
+      {
+       "Action": "sts:AssumeRole",
+       "Effect": "Allow",
+       "Principal": {
+        "Service": "lambda.amazonaws.com"
+       }
+      }
+     ]
+    },
+    "ManagedPolicyArns": [
+     {
+      "Fn::Sub": "arn:${AWS::Partition}:iam::aws:policy/service-role/AWSLambdaBasicExecutionRole"
+     }
+    ]
+   },
+   "Metadata": {
+    "aws:cdk:path": "ReconcileaiNoSapCdkStack/Custom::S3AutoDeleteObjectsCustomResourceProvider/Role"
+   }
+  },
+  "CustomS3AutoDeleteObjectsCustomResourceProviderHandler9D90184F": {
+   "Type": "AWS::Lambda::Function",
+   "Properties": {
+    "Code": {
+     "S3Bucket": {
+      "Fn::Sub": "cdk-hnb659fds-assets-${AWS::AccountId}-${AWS::Region}"
+     },
+     "S3Key": "faa95a81ae7d7373f3e1f242268f904eb748d8d0fdd306e8a6fe515a1905a7d6.zip"
+    },
+    "Timeout": 900,
+    "MemorySize": 128,
+    "Handler": "index.handler",
+    "Role": {
+     "Fn::GetAtt": [
+      "CustomS3AutoDeleteObjectsCustomResourceProviderRole3B1BD092",
+      "Arn"
+     ]
+    },
+    "Runtime": "nodejs22.x",
+    "Description": {
+     "Fn::Join": [
+      "",
+      [
+       "Lambda function for auto-deleting objects in ",
+       {
+        "Ref": "ReconcileaiFrontendBucketz9zd9d8s4FB1DCA8"
+       },
+       " S3 bucket."
+      ]
+     ]
+    }
+   },
+   "DependsOn": [
+    "CustomS3AutoDeleteObjectsCustomResourceProviderRole3B1BD092"
+   ],
+   "Metadata": {
+    "aws:cdk:path": "ReconcileaiNoSapCdkStack/Custom::S3AutoDeleteObjectsCustomResourceProvider/Handler",
+    "aws:asset:path": "asset.faa95a81ae7d7373f3e1f242268f904eb748d8d0fdd306e8a6fe515a1905a7d6",
+    "aws:asset:property": "Code"
+   }
+  },
+  "ReconcileaiDeployFrontendFolderz9zd9d8sAwsCliLayerF1E800E7": {
+   "Type": "AWS::Lambda::LayerVersion",
+   "Properties": {
+    "Content": {
+     "S3Bucket": {
+      "Fn::Sub": "cdk-hnb659fds-assets-${AWS::AccountId}-${AWS::Region}"
+     },
+     "S3Key": "e2659170a0721541efa761a8d5d04d5e36cbbf691c4b15a9053002b7c825055d.zip"
+    },
+    "Description": "/opt/awscli/aws"
+   },
+   "Metadata": {
+    "aws:cdk:path": "ReconcileaiNoSapCdkStack/ReconcileaiDeployFrontendFolderz9zd9d8s/AwsCliLayer/Resource",
+    "aws:asset:path": "asset.e2659170a0721541efa761a8d5d04d5e36cbbf691c4b15a9053002b7c825055d.zip",
+    "aws:asset:is-bundled": false,
+    "aws:asset:property": "Content"
+   }
+  },
+  "ReconcileaiDeployFrontendFolderz9zd9d8sCustomResourceB6B6EAB6": {
+   "Type": "Custom::CDKBucketDeployment",
+   "Properties": {
+    "ServiceToken": {
+     "Fn::GetAtt": [
+      "CustomCDKBucketDeployment8693BB64968944B69AAFB0CC9EB8756C81C01536",
+      "Arn"
+     ]
+    },
+    "SourceBucketNames": [
+     {
+      "Fn::Sub": "cdk-hnb659fds-assets-${AWS::AccountId}-${AWS::Region}"
+     }
+    ],
+    "SourceObjectKeys": [
+     "e1ea985b0fafa27e978933aedd8e69b8483b17dcc58a9e4bd1b450209dc06ec3.zip"
+    ],
+    "DestinationBucketName": {
+     "Ref": "ReconcileaiFrontendBucketz9zd9d8s4FB1DCA8"
+    },
+    "DestinationBucketKeyPrefix": "",
+    "WaitForDistributionInvalidation": true,
+    "Prune": true,
+    "OutputObjectKeys": true
+   },
+   "UpdateReplacePolicy": "Delete",
+   "DeletionPolicy": "Delete",
+   "Metadata": {
+    "aws:cdk:path": "ReconcileaiNoSapCdkStack/ReconcileaiDeployFrontendFolderz9zd9d8s/CustomResource/Default"
+   }
+  },
+  "CustomCDKBucketDeployment8693BB64968944B69AAFB0CC9EB8756CServiceRole89A01265": {
+   "Type": "AWS::IAM::Role",
+   "Properties": {
+    "AssumeRolePolicyDocument": {
+     "Statement": [
+      {
+       "Action": "sts:AssumeRole",
+       "Effect": "Allow",
+       "Principal": {
+        "Service": "lambda.amazonaws.com"
+       }
+      }
+     ],
+     "Version": "2012-10-17"
+    },
+    "ManagedPolicyArns": [
+     {
+      "Fn::Join": [
+       "",
+       [
+        "arn:",
+        {
+         "Ref": "AWS::Partition"
+        },
+        ":iam::aws:policy/service-role/AWSLambdaBasicExecutionRole"
+       ]
+      ]
+     }
+    ]
+   },
+   "Metadata": {
+    "aws:cdk:path": "ReconcileaiNoSapCdkStack/Custom::CDKBucketDeployment8693BB64968944B69AAFB0CC9EB8756C/ServiceRole/Resource"
+   }
+  },
+  "CustomCDKBucketDeployment8693BB64968944B69AAFB0CC9EB8756CServiceRoleDefaultPolicy88902FDF": {
+   "Type": "AWS::IAM::Policy",
+   "Properties": {
+    "PolicyDocument": {
+     "Statement": [
+      {
+       "Action": [
+        "s3:GetBucket*",
+        "s3:GetObject*",
+        "s3:List*"
+       ],
+       "Effect": "Allow",
+       "Resource": [
+        {
+         "Fn::Join": [
+          "",
+          [
+           "arn:",
+           {
+            "Ref": "AWS::Partition"
+           },
+           ":s3:::",
+           {
+            "Fn::Sub": "cdk-hnb659fds-assets-${AWS::AccountId}-${AWS::Region}"
+           },
+           "/*"
+          ]
+         ]
+        },
+        {
+         "Fn::Join": [
+          "",
+          [
+           "arn:",
+           {
+            "Ref": "AWS::Partition"
+           },
+           ":s3:::",
+           {
+            "Fn::Sub": "cdk-hnb659fds-assets-${AWS::AccountId}-${AWS::Region}"
+           }
+          ]
+         ]
+        }
+       ]
+      },
+      {
+       "Action": [
+        "s3:Abort*",
+        "s3:DeleteObject*",
+        "s3:GetBucket*",
+        "s3:GetObject*",
+        "s3:List*",
+        "s3:PutObject",
+        "s3:PutObjectLegalHold",
+        "s3:PutObjectRetention",
+        "s3:PutObjectTagging",
+        "s3:PutObjectVersionTagging"
+       ],
+       "Effect": "Allow",
+       "Resource": [
+        {
+         "Fn::GetAtt": [
+          "ReconcileaiAppBucketz9zd9d8sA8FFE751",
+          "Arn"
+         ]
+        },
+        {
+         "Fn::GetAtt": [
+          "ReconcileaiFrontendBucketz9zd9d8s4FB1DCA8",
+          "Arn"
+         ]
+        },
+        {
+         "Fn::Join": [
+          "",
+          [
+           {
+            "Fn::GetAtt": [
+             "ReconcileaiAppBucketz9zd9d8sA8FFE751",
+             "Arn"
+            ]
+           },
+           "/*"
+          ]
+         ]
+        },
+        {
+         "Fn::Join": [
+          "",
+          [
+           {
+            "Fn::GetAtt": [
+             "ReconcileaiFrontendBucketz9zd9d8s4FB1DCA8",
+             "Arn"
+            ]
+           },
+           "/*"
+          ]
+         ]
+        }
+       ]
+      }
+     ],
+     "Version": "2012-10-17"
+    },
+    "PolicyName": "CustomCDKBucketDeployment8693BB64968944B69AAFB0CC9EB8756CServiceRoleDefaultPolicy88902FDF",
+    "Roles": [
+     {
+      "Ref": "CustomCDKBucketDeployment8693BB64968944B69AAFB0CC9EB8756CServiceRole89A01265"
+     }
+    ]
+   },
+   "Metadata": {
+    "aws:cdk:path": "ReconcileaiNoSapCdkStack/Custom::CDKBucketDeployment8693BB64968944B69AAFB0CC9EB8756C/ServiceRole/DefaultPolicy/Resource"
+   }
+  },
+  "CustomCDKBucketDeployment8693BB64968944B69AAFB0CC9EB8756C81C01536": {
+   "Type": "AWS::Lambda::Function",
+   "Properties": {
+    "Code": {
+     "S3Bucket": {
+      "Fn::Sub": "cdk-hnb659fds-assets-${AWS::AccountId}-${AWS::Region}"
+     },
+     "S3Key": "3423a042b818e31c1e34a19d6689ab2e5f9b70fcbe9e71df66f241b20a200bd9.zip"
+    },
+    "Environment": {
+     "Variables": {
+      "AWS_CA_BUNDLE": "/etc/pki/ca-trust/extracted/pem/tls-ca-bundle.pem"
+     }
+    },
+    "Handler": "index.handler",
+    "Layers": [
+     {
+      "Ref": "ReconcileaiDeployFrontendFolderz9zd9d8sAwsCliLayerF1E800E7"
+     }
+    ],
+    "Role": {
+     "Fn::GetAtt": [
+      "CustomCDKBucketDeployment8693BB64968944B69AAFB0CC9EB8756CServiceRole89A01265",
+      "Arn"
+     ]
+    },
+    "Runtime": "python3.13",
+    "Timeout": 900
+   },
+   "DependsOn": [
+    "CustomCDKBucketDeployment8693BB64968944B69AAFB0CC9EB8756CServiceRoleDefaultPolicy88902FDF",
+    "CustomCDKBucketDeployment8693BB64968944B69AAFB0CC9EB8756CServiceRole89A01265"
+   ],
+   "Metadata": {
+    "aws:cdk:path": "ReconcileaiNoSapCdkStack/Custom::CDKBucketDeployment8693BB64968944B69AAFB0CC9EB8756C/Resource",
+    "aws:asset:path": "asset.3423a042b818e31c1e34a19d6689ab2e5f9b70fcbe9e71df66f241b20a200bd9",
+    "aws:asset:is-bundled": false,
+    "aws:asset:property": "Code"
+   }
+  },
+  "CustomCDKBucketDeployment8693BB64968944B69AAFB0CC9EB8756CLogGroup817B64E9": {
+   "Type": "AWS::Logs::LogGroup",
+   "Properties": {
+    "LogGroupName": {
+     "Fn::Join": [
+      "",
+      [
+       "/aws/lambda/",
+       {
+        "Ref": "CustomCDKBucketDeployment8693BB64968944B69AAFB0CC9EB8756C81C01536"
+       }
+      ]
+     ]
+    },
+    "RetentionInDays": 731
+   },
+   "UpdateReplacePolicy": "Retain",
+   "DeletionPolicy": "Retain",
+   "Metadata": {
+    "aws:cdk:path": "ReconcileaiNoSapCdkStack/Custom::CDKBucketDeployment8693BB64968944B69AAFB0CC9EB8756C/LogGroup/Resource"
+   }
+  },
+  "ReconcileaiAppBucketz9zd9d8sA8FFE751": {
+   "Type": "AWS::S3::Bucket",
+   "Properties": {
+    "BucketName": "reconcileaiz9zd9d8s",
+    "CorsConfiguration": {
+     "CorsRules": [
+      {
+       "AllowedHeaders": [
+        "*"
+       ],
+       "AllowedMethods": [
+        "GET",
+        "PUT",
+        "POST"
+       ],
+       "AllowedOrigins": [
+        "*"
+       ]
+      }
+     ]
+    },
+    "Tags": [
+     {
+      "Key": "aws-cdk:auto-delete-objects",
+      "Value": "true"
+     },
+     {
+      "Key": "aws-cdk:cr-owned:db_init:fb67303a",
+      "Value": "true"
+     }
+    ],
+    "VersioningConfiguration": {
+     "Status": "Enabled"
+    }
+   },
+   "UpdateReplacePolicy": "Delete",
+   "DeletionPolicy": "Delete",
+   "Metadata": {
+    "aws:cdk:path": "ReconcileaiNoSapCdkStack/ReconcileaiAppBucketz9zd9d8s/Resource"
+   }
+  },
+  "ReconcileaiAppBucketz9zd9d8sPolicy0C5182BA": {
+   "Type": "AWS::S3::BucketPolicy",
+   "Properties": {
+    "Bucket": {
+     "Ref": "ReconcileaiAppBucketz9zd9d8sA8FFE751"
+    },
+    "PolicyDocument": {
+     "Statement": [
+      {
+       "Action": [
+        "s3:DeleteObject*",
+        "s3:GetBucket*",
+        "s3:List*",
+        "s3:PutBucketPolicy"
+       ],
+       "Effect": "Allow",
+       "Principal": {
+        "AWS": {
+         "Fn::GetAtt": [
+          "CustomS3AutoDeleteObjectsCustomResourceProviderRole3B1BD092",
+          "Arn"
+         ]
+        }
+       },
+       "Resource": [
+        {
+         "Fn::GetAtt": [
+          "ReconcileaiAppBucketz9zd9d8sA8FFE751",
+          "Arn"
+         ]
+        },
+        {
+         "Fn::Join": [
+          "",
+          [
+           {
+            "Fn::GetAtt": [
+             "ReconcileaiAppBucketz9zd9d8sA8FFE751",
+             "Arn"
+            ]
+           },
+           "/*"
+          ]
+         ]
+        }
+       ]
+      }
+     ],
+     "Version": "2012-10-17"
+    }
+   },
+   "Metadata": {
+    "aws:cdk:path": "ReconcileaiNoSapCdkStack/ReconcileaiAppBucketz9zd9d8s/Policy/Resource"
+   }
+  },
+  "ReconcileaiAppBucketz9zd9d8sAutoDeleteObjectsCustomResource226A9618": {
+   "Type": "Custom::S3AutoDeleteObjects",
+   "Properties": {
+    "ServiceToken": {
+     "Fn::GetAtt": [
+      "CustomS3AutoDeleteObjectsCustomResourceProviderHandler9D90184F",
+      "Arn"
+     ]
+    },
+    "BucketName": {
+     "Ref": "ReconcileaiAppBucketz9zd9d8sA8FFE751"
+    }
+   },
+   "DependsOn": [
+    "ReconcileaiAppBucketz9zd9d8sPolicy0C5182BA"
+   ],
+   "UpdateReplacePolicy": "Delete",
+   "DeletionPolicy": "Delete",
+   "Metadata": {
+    "aws:cdk:path": "ReconcileaiNoSapCdkStack/ReconcileaiAppBucketz9zd9d8s/AutoDeleteObjectsCustomResource/Default"
+   }
+  },
+  "CreateErademoFolderz9zd9d8s2FED9910": {
+   "Type": "Custom::AWS",
+   "Properties": {
+    "ServiceToken": {
+     "Fn::GetAtt": [
+      "AWS679f53fac002430cb0da5b7982bd22872D164C4C",
+      "Arn"
+     ]
+    },
+    "Create": {
+     "Fn::Join": [
+      "",
+      [
+       "{\"action\":\"putObject\",\"service\":\"S3\",\"parameters\":{\"Bucket\":\"",
+       {
+        "Ref": "ReconcileaiAppBucketz9zd9d8sA8FFE751"
+       },
+       "\",\"Key\":\"era_demo/\",\"Body\":\"\"},\"physicalResourceId\":{\"id\":\"",
+       {
+        "Ref": "ReconcileaiAppBucketz9zd9d8sA8FFE751"
+       },
+       "/era_demo/\"}}"
+      ]
+     ]
+    },
+    "InstallLatestAwsSdk": false
+   },
+   "DependsOn": [
+    "CreateErademoFolderz9zd9d8sCustomResourcePolicy2AA12007"
+   ],
+   "UpdateReplacePolicy": "Delete",
+   "DeletionPolicy": "Delete",
+   "Metadata": {
+    "aws:cdk:path": "ReconcileaiNoSapCdkStack/CreateErademoFolderz9zd9d8s/Resource/Default"
+   }
+  },
+  "CreateErademoFolderz9zd9d8sCustomResourcePolicy2AA12007": {
+   "Type": "AWS::IAM::Policy",
+   "Properties": {
+    "PolicyDocument": {
+     "Statement": [
+      {
+       "Action": "s3:PutObject",
+       "Effect": "Allow",
+       "Resource": {
+        "Fn::Join": [
+         "",
+         [
+          {
+           "Fn::GetAtt": [
+            "ReconcileaiAppBucketz9zd9d8sA8FFE751",
+            "Arn"
+           ]
+          },
+          "/*"
+         ]
+        ]
+       }
+      }
+     ],
+     "Version": "2012-10-17"
+    },
+    "PolicyName": "CreateErademoFolderz9zd9d8sCustomResourcePolicy2AA12007",
+    "Roles": [
+     {
+      "Ref": "AWS679f53fac002430cb0da5b7982bd2287ServiceRoleC1EA0FF2"
+     }
+    ]
+   },
+   "Metadata": {
+    "aws:cdk:path": "ReconcileaiNoSapCdkStack/CreateErademoFolderz9zd9d8s/CustomResourcePolicy/Resource"
+   }
+  },
+  "AWS679f53fac002430cb0da5b7982bd2287ServiceRoleC1EA0FF2": {
+   "Type": "AWS::IAM::Role",
+   "Properties": {
+    "AssumeRolePolicyDocument": {
+     "Statement": [
+      {
+       "Action": "sts:AssumeRole",
+       "Effect": "Allow",
+       "Principal": {
+        "Service": "lambda.amazonaws.com"
+       }
+      }
+     ],
+     "Version": "2012-10-17"
+    },
+    "ManagedPolicyArns": [
+     {
+      "Fn::Join": [
+       "",
+       [
+        "arn:",
+        {
+         "Ref": "AWS::Partition"
+        },
+        ":iam::aws:policy/service-role/AWSLambdaBasicExecutionRole"
+       ]
+      ]
+     }
+    ]
+   },
+   "Metadata": {
+    "aws:cdk:path": "ReconcileaiNoSapCdkStack/AWS679f53fac002430cb0da5b7982bd2287/ServiceRole/Resource"
+   }
+  },
+  "AWS679f53fac002430cb0da5b7982bd22872D164C4C": {
+   "Type": "AWS::Lambda::Function",
+   "Properties": {
+    "Code": {
+     "S3Bucket": {
+      "Fn::Sub": "cdk-hnb659fds-assets-${AWS::AccountId}-${AWS::Region}"
+     },
+     "S3Key": "56f7467bbde8a5efebcf57ae9e460027607099bab9f844669dcf5d800172ee5a.zip"
+    },
+    "Handler": "index.handler",
+    "Role": {
+     "Fn::GetAtt": [
+      "AWS679f53fac002430cb0da5b7982bd2287ServiceRoleC1EA0FF2",
+      "Arn"
+     ]
+    },
+    "Runtime": "nodejs22.x",
+    "Timeout": 120
+   },
+   "DependsOn": [
+    "AWS679f53fac002430cb0da5b7982bd2287ServiceRoleC1EA0FF2"
+   ],
+   "Metadata": {
+    "aws:cdk:path": "ReconcileaiNoSapCdkStack/AWS679f53fac002430cb0da5b7982bd2287/Resource",
+    "aws:asset:path": "asset.56f7467bbde8a5efebcf57ae9e460027607099bab9f844669dcf5d800172ee5a",
+    "aws:asset:is-bundled": false,
+    "aws:asset:property": "Code"
+   }
+  },
+  "AWS679f53fac002430cb0da5b7982bd2287LogGroup449FB7C2": {
+   "Type": "AWS::Logs::LogGroup",
+   "Properties": {
+    "LogGroupName": {
+     "Fn::Join": [
+      "",
+      [
+       "/aws/lambda/",
+       {
+        "Ref": "AWS679f53fac002430cb0da5b7982bd22872D164C4C"
+       }
+      ]
+     ]
+    },
+    "RetentionInDays": 731
+   },
+   "UpdateReplacePolicy": "Retain",
+   "DeletionPolicy": "Retain",
+   "Metadata": {
+    "aws:cdk:path": "ReconcileaiNoSapCdkStack/AWS679f53fac002430cb0da5b7982bd2287/LogGroup/Resource"
+   }
+  },
+  "CreateReconcileagentFolderz9zd9d8sE1697F21": {
+   "Type": "Custom::AWS",
+   "Properties": {
+    "ServiceToken": {
+     "Fn::GetAtt": [
+      "AWS679f53fac002430cb0da5b7982bd22872D164C4C",
+      "Arn"
+     ]
+    },
+    "Create": {
+     "Fn::Join": [
+      "",
+      [
+       "{\"action\":\"putObject\",\"service\":\"S3\",\"parameters\":{\"Bucket\":\"",
+       {
+        "Ref": "ReconcileaiAppBucketz9zd9d8sA8FFE751"
+       },
+       "\",\"Key\":\"reconcile_agent/\",\"Body\":\"\"},\"physicalResourceId\":{\"id\":\"",
+       {
+        "Ref": "ReconcileaiAppBucketz9zd9d8sA8FFE751"
+       },
+       "/reconcile_agent/\"}}"
+      ]
+     ]
+    },
+    "InstallLatestAwsSdk": false
+   },
+   "DependsOn": [
+    "CreateReconcileagentFolderz9zd9d8sCustomResourcePolicy59491E10"
+   ],
+   "UpdateReplacePolicy": "Delete",
+   "DeletionPolicy": "Delete",
+   "Metadata": {
+    "aws:cdk:path": "ReconcileaiNoSapCdkStack/CreateReconcileagentFolderz9zd9d8s/Resource/Default"
+   }
+  },
+  "CreateReconcileagentFolderz9zd9d8sCustomResourcePolicy59491E10": {
+   "Type": "AWS::IAM::Policy",
+   "Properties": {
+    "PolicyDocument": {
+     "Statement": [
+      {
+       "Action": "s3:PutObject",
+       "Effect": "Allow",
+       "Resource": {
+        "Fn::Join": [
+         "",
+         [
+          {
+           "Fn::GetAtt": [
+            "ReconcileaiAppBucketz9zd9d8sA8FFE751",
+            "Arn"
+           ]
+          },
+          "/*"
+         ]
+        ]
+       }
+      }
+     ],
+     "Version": "2012-10-17"
+    },
+    "PolicyName": "CreateReconcileagentFolderz9zd9d8sCustomResourcePolicy59491E10",
+    "Roles": [
+     {
+      "Ref": "AWS679f53fac002430cb0da5b7982bd2287ServiceRoleC1EA0FF2"
+     }
+    ]
+   },
+   "Metadata": {
+    "aws:cdk:path": "ReconcileaiNoSapCdkStack/CreateReconcileagentFolderz9zd9d8s/CustomResourcePolicy/Resource"
+   }
+  },
+  "CreateSopdocumentsFolderz9zd9d8s0419D1D3": {
+   "Type": "Custom::AWS",
+   "Properties": {
+    "ServiceToken": {
+     "Fn::GetAtt": [
+      "AWS679f53fac002430cb0da5b7982bd22872D164C4C",
+      "Arn"
+     ]
+    },
+    "Create": {
+     "Fn::Join": [
+      "",
+      [
+       "{\"action\":\"putObject\",\"service\":\"S3\",\"parameters\":{\"Bucket\":\"",
+       {
+        "Ref": "ReconcileaiAppBucketz9zd9d8sA8FFE751"
+       },
+       "\",\"Key\":\"sop_documents/\",\"Body\":\"\"},\"physicalResourceId\":{\"id\":\"",
+       {
+        "Ref": "ReconcileaiAppBucketz9zd9d8sA8FFE751"
+       },
+       "/sop_documents/\"}}"
+      ]
+     ]
+    },
+    "InstallLatestAwsSdk": false
+   },
+   "DependsOn": [
+    "CreateSopdocumentsFolderz9zd9d8sCustomResourcePolicyA041363E"
+   ],
+   "UpdateReplacePolicy": "Delete",
+   "DeletionPolicy": "Delete",
+   "Metadata": {
+    "aws:cdk:path": "ReconcileaiNoSapCdkStack/CreateSopdocumentsFolderz9zd9d8s/Resource/Default"
+   }
+  },
+  "CreateSopdocumentsFolderz9zd9d8sCustomResourcePolicyA041363E": {
+   "Type": "AWS::IAM::Policy",
+   "Properties": {
+    "PolicyDocument": {
+     "Statement": [
+      {
+       "Action": "s3:PutObject",
+       "Effect": "Allow",
+       "Resource": {
+        "Fn::Join": [
+         "",
+         [
+          {
+           "Fn::GetAtt": [
+            "ReconcileaiAppBucketz9zd9d8sA8FFE751",
+            "Arn"
+           ]
+          },
+          "/*"
+         ]
+        ]
+       }
+      }
+     ],
+     "Version": "2012-10-17"
+    },
+    "PolicyName": "CreateSopdocumentsFolderz9zd9d8sCustomResourcePolicyA041363E",
+    "Roles": [
+     {
+      "Ref": "AWS679f53fac002430cb0da5b7982bd2287ServiceRoleC1EA0FF2"
+     }
+    ]
+   },
+   "Metadata": {
+    "aws:cdk:path": "ReconcileaiNoSapCdkStack/CreateSopdocumentsFolderz9zd9d8s/CustomResourcePolicy/Resource"
+   }
+  },
+  "CreateSoptestFolderz9zd9d8s9D286A99": {
+   "Type": "Custom::AWS",
+   "Properties": {
+    "ServiceToken": {
+     "Fn::GetAtt": [
+      "AWS679f53fac002430cb0da5b7982bd22872D164C4C",
+      "Arn"
+     ]
+    },
+    "Create": {
+     "Fn::Join": [
+      "",
+      [
+       "{\"action\":\"putObject\",\"service\":\"S3\",\"parameters\":{\"Bucket\":\"",
+       {
+        "Ref": "ReconcileaiAppBucketz9zd9d8sA8FFE751"
+       },
+       "\",\"Key\":\"sop_test/\",\"Body\":\"\"},\"physicalResourceId\":{\"id\":\"",
+       {
+        "Ref": "ReconcileaiAppBucketz9zd9d8sA8FFE751"
+       },
+       "/sop_test/\"}}"
+      ]
+     ]
+    },
+    "InstallLatestAwsSdk": false
+   },
+   "DependsOn": [
+    "CreateSoptestFolderz9zd9d8sCustomResourcePolicy5DEBC887"
+   ],
+   "UpdateReplacePolicy": "Delete",
+   "DeletionPolicy": "Delete",
+   "Metadata": {
+    "aws:cdk:path": "ReconcileaiNoSapCdkStack/CreateSoptestFolderz9zd9d8s/Resource/Default"
+   }
+  },
+  "CreateSoptestFolderz9zd9d8sCustomResourcePolicy5DEBC887": {
+   "Type": "AWS::IAM::Policy",
+   "Properties": {
+    "PolicyDocument": {
+     "Statement": [
+      {
+       "Action": "s3:PutObject",
+       "Effect": "Allow",
+       "Resource": {
+        "Fn::Join": [
+         "",
+         [
+          {
+           "Fn::GetAtt": [
+            "ReconcileaiAppBucketz9zd9d8sA8FFE751",
+            "Arn"
+           ]
+          },
+          "/*"
+         ]
+        ]
+       }
+      }
+     ],
+     "Version": "2012-10-17"
+    },
+    "PolicyName": "CreateSoptestFolderz9zd9d8sCustomResourcePolicy5DEBC887",
+    "Roles": [
+     {
+      "Ref": "AWS679f53fac002430cb0da5b7982bd2287ServiceRoleC1EA0FF2"
+     }
+    ]
+   },
+   "Metadata": {
+    "aws:cdk:path": "ReconcileaiNoSapCdkStack/CreateSoptestFolderz9zd9d8s/CustomResourcePolicy/Resource"
+   }
+  },
+  "reconcileainosapSqlDeployz9zd9d8sAwsCliLayerDB384F56": {
+   "Type": "AWS::Lambda::LayerVersion",
+   "Properties": {
+    "Content": {
+     "S3Bucket": {
+      "Fn::Sub": "cdk-hnb659fds-assets-${AWS::AccountId}-${AWS::Region}"
+     },
+     "S3Key": "e2659170a0721541efa761a8d5d04d5e36cbbf691c4b15a9053002b7c825055d.zip"
+    },
+    "Description": "/opt/awscli/aws"
+   },
+   "Metadata": {
+    "aws:cdk:path": "ReconcileaiNoSapCdkStack/reconcileai_no_sapSqlDeployz9zd9d8s/AwsCliLayer/Resource",
+    "aws:asset:path": "asset.e2659170a0721541efa761a8d5d04d5e36cbbf691c4b15a9053002b7c825055d.zip",
+    "aws:asset:is-bundled": false,
+    "aws:asset:property": "Content"
+   }
+  },
+  "reconcileainosapSqlDeployz9zd9d8sCustomResource95CA9E9D": {
+   "Type": "Custom::CDKBucketDeployment",
+   "Properties": {
+    "ServiceToken": {
+     "Fn::GetAtt": [
+      "CustomCDKBucketDeployment8693BB64968944B69AAFB0CC9EB8756C81C01536",
+      "Arn"
+     ]
+    },
+    "SourceBucketNames": [
+     {
+      "Fn::Sub": "cdk-hnb659fds-assets-${AWS::AccountId}-${AWS::Region}"
+     }
+    ],
+    "SourceObjectKeys": [
+     "6908cd7011e4741c385c1c2a3fb737d329e697c3f0cafe8b2e17498280b6f1c2.zip"
+    ],
+    "DestinationBucketName": {
+     "Ref": "ReconcileaiAppBucketz9zd9d8sA8FFE751"
+    },
+    "DestinationBucketKeyPrefix": "db_init",
+    "WaitForDistributionInvalidation": true,
+    "Prune": true,
+    "OutputObjectKeys": true
+   },
+   "UpdateReplacePolicy": "Delete",
+   "DeletionPolicy": "Delete",
+   "Metadata": {
+    "aws:cdk:path": "ReconcileaiNoSapCdkStack/reconcileai_no_sapSqlDeployz9zd9d8s/CustomResource/Default"
+   }
+  },
+  "ReconcileaiAgentLambdaRolez9zd9d8s4FAC1A36": {
+   "Type": "AWS::IAM::Role",
+   "Properties": {
+    "AssumeRolePolicyDocument": {
+     "Statement": [
+      {
+       "Action": "sts:AssumeRole",
+       "Effect": "Allow",
+       "Principal": {
+        "Service": "lambda.amazonaws.com"
+       }
+      }
+     ],
+     "Version": "2012-10-17"
+    },
+    "Description": "IAM role for the Reconcile Agent Lambda",
+    "ManagedPolicyArns": [
+     {
+      "Fn::Join": [
+       "",
+       [
+        "arn:",
+        {
+         "Ref": "AWS::Partition"
+        },
+        ":iam::aws:policy/AmazonAPIGatewayAdministrator"
+       ]
+      ]
+     },
+     {
+      "Fn::Join": [
+       "",
+       [
+        "arn:",
+        {
+         "Ref": "AWS::Partition"
+        },
+        ":iam::aws:policy/AmazonAPIGatewayInvokeFullAccess"
+       ]
+      ]
+     },
+     {
+      "Fn::Join": [
+       "",
+       [
+        "arn:",
+        {
+         "Ref": "AWS::Partition"
+        },
+        ":iam::aws:policy/AmazonBedrockFullAccess"
+       ]
+      ]
+     },
+     {
+      "Fn::Join": [
+       "",
+       [
+        "arn:",
+        {
+         "Ref": "AWS::Partition"
+        },
+        ":iam::aws:policy/AmazonCognitoPowerUser"
+       ]
+      ]
+     },
+     {
+      "Fn::Join": [
+       "",
+       [
+        "arn:",
+        {
+         "Ref": "AWS::Partition"
+        },
+        ":iam::aws:policy/AmazonRDSFullAccess"
+       ]
+      ]
+     },
+     {
+      "Fn::Join": [
+       "",
+       [
+        "arn:",
+        {
+         "Ref": "AWS::Partition"
+        },
+        ":iam::aws:policy/AmazonS3FullAccess"
+       ]
+      ]
+     },
+     {
+      "Fn::Join": [
+       "",
+       [
+        "arn:",
+        {
+         "Ref": "AWS::Partition"
+        },
+        ":iam::aws:policy/AmazonTextractFullAccess"
+       ]
+      ]
+     },
+     {
+      "Fn::Join": [
+       "",
+       [
+        "arn:",
+        {
+         "Ref": "AWS::Partition"
+        },
+        ":iam::aws:policy/service-role/AWSLambdaBasicExecutionRole"
+       ]
+      ]
+     },
+     {
+      "Fn::Join": [
+       "",
+       [
+        "arn:",
+        {
+         "Ref": "AWS::Partition"
+        },
+        ":iam::aws:policy/service-role/AWSLambdaVPCAccessExecutionRole"
+       ]
+      ]
+     }
+    ]
+   },
+   "Metadata": {
+    "aws:cdk:path": "ReconcileaiNoSapCdkStack/ReconcileaiAgentLambdaRolez9zd9d8s/Resource"
+   }
+  },
+  "ReconcileaiAgentLambdaRolez9zd9d8sDefaultPolicy7EE1EC78": {
+   "Type": "AWS::IAM::Policy",
+   "Properties": {
+    "PolicyDocument": {
+     "Statement": [
+      {
+       "Action": [
+        "secretsmanager:DescribeSecret",
+        "secretsmanager:GetSecretValue"
+       ],
+       "Effect": "Allow",
+       "Resource": {
+        "Ref": "reconcileainosapLambdaSecretz9zd9d8s6B788324"
+       }
+      }
+     ],
+     "Version": "2012-10-17"
+    },
+    "PolicyName": "ReconcileaiAgentLambdaRolez9zd9d8sDefaultPolicy7EE1EC78",
+    "Roles": [
+     {
+      "Ref": "ReconcileaiAgentLambdaRolez9zd9d8s4FAC1A36"
+     }
+    ]
+   },
+   "Metadata": {
+    "aws:cdk:path": "ReconcileaiNoSapCdkStack/ReconcileaiAgentLambdaRolez9zd9d8s/DefaultPolicy/Resource"
+   }
+  },
+  "ReconcileaiConfigLambdaRolez9zd9d8sC1606338": {
+   "Type": "AWS::IAM::Role",
+   "Properties": {
+    "AssumeRolePolicyDocument": {
+     "Statement": [
+      {
+       "Action": "sts:AssumeRole",
+       "Effect": "Allow",
+       "Principal": {
+        "Service": "lambda.amazonaws.com"
+       }
+      }
+     ],
+     "Version": "2012-10-17"
+    },
+    "Description": "IAM role for the Reconcile Config Lambda",
+    "ManagedPolicyArns": [
+     {
+      "Fn::Join": [
+       "",
+       [
+        "arn:",
+        {
+         "Ref": "AWS::Partition"
+        },
+        ":iam::aws:policy/AmazonBedrockFullAccess"
+       ]
+      ]
+     },
+     {
+      "Fn::Join": [
+       "",
+       [
+        "arn:",
+        {
+         "Ref": "AWS::Partition"
+        },
+        ":iam::aws:policy/AmazonCognitoPowerUser"
+       ]
+      ]
+     },
+     {
+      "Fn::Join": [
+       "",
+       [
+        "arn:",
+        {
+         "Ref": "AWS::Partition"
+        },
+        ":iam::aws:policy/AmazonS3FullAccess"
+       ]
+      ]
+     },
+     {
+      "Fn::Join": [
+       "",
+       [
+        "arn:",
+        {
+         "Ref": "AWS::Partition"
+        },
+        ":iam::aws:policy/AmazonTextractFullAccess"
+       ]
+      ]
+     },
+     {
+      "Fn::Join": [
+       "",
+       [
+        "arn:",
+        {
+         "Ref": "AWS::Partition"
+        },
+        ":iam::aws:policy/service-role/AWSLambdaBasicExecutionRole"
+       ]
+      ]
+     },
+     {
+      "Fn::Join": [
+       "",
+       [
+        "arn:",
+        {
+         "Ref": "AWS::Partition"
+        },
+        ":iam::aws:policy/service-role/AWSLambdaVPCAccessExecutionRole"
+       ]
+      ]
+     },
+     {
+      "Fn::Join": [
+       "",
+       [
+        "arn:",
+        {
+         "Ref": "AWS::Partition"
+        },
+        ":iam::aws:policy/SecretsManagerReadWrite"
+       ]
+      ]
+     }
+    ]
+   },
+   "Metadata": {
+    "aws:cdk:path": "ReconcileaiNoSapCdkStack/ReconcileaiConfigLambdaRolez9zd9d8s/Resource"
+   }
+  },
+  "ReconcileaiConfigLambdaRolez9zd9d8sDefaultPolicy565B18F1": {
+   "Type": "AWS::IAM::Policy",
+   "Properties": {
+    "PolicyDocument": {
+     "Statement": [
+      {
+       "Action": [
+        "secretsmanager:DescribeSecret",
+        "secretsmanager:GetSecretValue"
+       ],
+       "Effect": "Allow",
+       "Resource": {
+        "Ref": "reconcileainosapLambdaSecretz9zd9d8s6B788324"
+       }
+      }
+     ],
+     "Version": "2012-10-17"
+    },
+    "PolicyName": "ReconcileaiConfigLambdaRolez9zd9d8sDefaultPolicy565B18F1",
+    "Roles": [
+     {
+      "Ref": "ReconcileaiConfigLambdaRolez9zd9d8sC1606338"
+     }
+    ]
+   },
+   "Metadata": {
+    "aws:cdk:path": "ReconcileaiNoSapCdkStack/ReconcileaiConfigLambdaRolez9zd9d8s/DefaultPolicy/Resource"
+   }
+  },
+  "UserPool6BA7E5F2": {
+   "Type": "AWS::Cognito::UserPool",
+   "Properties": {
+    "AccountRecoverySetting": {
+     "RecoveryMechanisms": [
+      {
+       "Name": "verified_email",
+       "Priority": 1
+      }
+     ]
+    },
+    "AdminCreateUserConfig": {
+     "AllowAdminCreateUserOnly": true
+    },
+    "AutoVerifiedAttributes": [
+     "email"
+    ],
+    "EmailVerificationMessage": "The verification code to your new account is {####}",
+    "EmailVerificationSubject": "Verify your new account",
+    "Policies": {
+     "PasswordPolicy": {
+      "MinimumLength": 12,
+      "RequireLowercase": true,
+      "RequireNumbers": true,
+      "RequireSymbols": true,
+      "RequireUppercase": true
+     }
+    },
+    "SmsVerificationMessage": "The verification code to your new account is {####}",
+    "UsernameAttributes": [
+     "email"
+    ],
+    "VerificationMessageTemplate": {
+     "DefaultEmailOption": "CONFIRM_WITH_CODE",
+     "EmailMessage": "The verification code to your new account is {####}",
+     "EmailSubject": "Verify your new account",
+     "SmsMessage": "The verification code to your new account is {####}"
+    }
+   },
+   "UpdateReplacePolicy": "Retain",
+   "DeletionPolicy": "Retain",
+   "Metadata": {
+    "aws:cdk:path": "ReconcileaiNoSapCdkStack/UserPool/Resource"
+   }
+  },
+  "CreateCognitoUser34F168BF": {
+   "Type": "Custom::AWS",
+   "Properties": {
+    "ServiceToken": {
+     "Fn::GetAtt": [
+      "AWS679f53fac002430cb0da5b7982bd22872D164C4C",
+      "Arn"
+     ]
+    },
+    "Create": {
+     "Fn::Join": [
+      "",
+      [
+       "{\"action\":\"adminCreateUser\",\"service\":\"CognitoIdentityServiceProvider\",\"parameters\":{\"UserPoolId\":\"",
+       {
+        "Ref": "UserPool6BA7E5F2"
+       },
+       "\",\"Username\":\"user@reconcileai.com\",\"UserAttributes\":[{\"Name\":\"email\",\"Value\":\"user@reconcileai.com\"},{\"Name\":\"email_verified\",\"Value\":\"true\"}],\"MessageAction\":\"SUPPRESS\"},\"physicalResourceId\":{\"id\":\"user@reconcileai.com-user\"}}"
+      ]
+     ]
+    },
+    "InstallLatestAwsSdk": false
+   },
+   "DependsOn": [
+    "CreateCognitoUserCustomResourcePolicy03F9F9F7"
+   ],
+   "UpdateReplacePolicy": "Delete",
+   "DeletionPolicy": "Delete",
+   "Metadata": {
+    "aws:cdk:path": "ReconcileaiNoSapCdkStack/CreateCognitoUser/Resource/Default"
+   }
+  },
+  "CreateCognitoUserCustomResourcePolicy03F9F9F7": {
+   "Type": "AWS::IAM::Policy",
+   "Properties": {
+    "PolicyDocument": {
+     "Statement": [
+      {
+       "Action": "cognito-idp:AdminCreateUser",
+       "Effect": "Allow",
+       "Resource": {
+        "Fn::GetAtt": [
+         "UserPool6BA7E5F2",
+         "Arn"
+        ]
+       }
+      }
+     ],
+     "Version": "2012-10-17"
+    },
+    "PolicyName": "CreateCognitoUserCustomResourcePolicy03F9F9F7",
+    "Roles": [
+     {
+      "Ref": "AWS679f53fac002430cb0da5b7982bd2287ServiceRoleC1EA0FF2"
+     }
+    ]
+   },
+   "Metadata": {
+    "aws:cdk:path": "ReconcileaiNoSapCdkStack/CreateCognitoUser/CustomResourcePolicy/Resource"
+   }
+  },
+  "SetPermanentPassword8E735DB2": {
+   "Type": "Custom::AWS",
+   "Properties": {
+    "ServiceToken": {
+     "Fn::GetAtt": [
+      "AWS679f53fac002430cb0da5b7982bd22872D164C4C",
+      "Arn"
+     ]
+    },
+    "Create": {
+     "Fn::Join": [
+      "",
+      [
+       "{\"action\":\"adminSetUserPassword\",\"service\":\"CognitoIdentityServiceProvider\",\"parameters\":{\"UserPoolId\":\"",
+       {
+        "Ref": "UserPool6BA7E5F2"
+       },
+       "\",\"Username\":\"user@reconcileai.com\",\"Password\":\"BiFY@q<R%xV9J62J\",\"Permanent\":true},\"physicalResourceId\":{\"id\":\"user@reconcileai.com-password\"}}"
+      ]
+     ]
+    },
+    "InstallLatestAwsSdk": false
+   },
+   "DependsOn": [
+    "CreateCognitoUserCustomResourcePolicy03F9F9F7",
+    "CreateCognitoUser34F168BF",
+    "SetPermanentPasswordCustomResourcePolicy94E5FDED"
+   ],
+   "UpdateReplacePolicy": "Delete",
+   "DeletionPolicy": "Delete",
+   "Metadata": {
+    "aws:cdk:path": "ReconcileaiNoSapCdkStack/SetPermanentPassword/Resource/Default"
+   }
+  },
+  "SetPermanentPasswordCustomResourcePolicy94E5FDED": {
+   "Type": "AWS::IAM::Policy",
+   "Properties": {
+    "PolicyDocument": {
+     "Statement": [
+      {
+       "Action": "cognito-idp:AdminSetUserPassword",
+       "Effect": "Allow",
+       "Resource": {
+        "Fn::GetAtt": [
+         "UserPool6BA7E5F2",
+         "Arn"
+        ]
+       }
+      }
+     ],
+     "Version": "2012-10-17"
+    },
+    "PolicyName": "SetPermanentPasswordCustomResourcePolicy94E5FDED",
+    "Roles": [
+     {
+      "Ref": "AWS679f53fac002430cb0da5b7982bd2287ServiceRoleC1EA0FF2"
+     }
+    ]
+   },
+   "DependsOn": [
+    "CreateCognitoUserCustomResourcePolicy03F9F9F7",
+    "CreateCognitoUser34F168BF"
+   ],
+   "Metadata": {
+    "aws:cdk:path": "ReconcileaiNoSapCdkStack/SetPermanentPassword/CustomResourcePolicy/Resource"
+   }
+  },
+  "reconcileainosapUserPoolClientz9zd9d8s1C30553C": {
+   "Type": "AWS::Cognito::UserPoolClient",
+   "Properties": {
+    "AllowedOAuthFlows": [
+     "implicit",
+     "code"
+    ],
+    "AllowedOAuthFlowsUserPoolClient": true,
+    "AllowedOAuthScopes": [
+     "profile",
+     "phone",
+     "email",
+     "openid",
+     "aws.cognito.signin.user.admin"
+    ],
+    "CallbackURLs": [
+     "https://example.com"
+    ],
+    "ClientName": "reconcileai_no_sap-client-z9zd9d8s",
+    "ExplicitAuthFlows": [
+     "ALLOW_USER_PASSWORD_AUTH",
+     "ALLOW_ADMIN_USER_PASSWORD_AUTH",
+     "ALLOW_USER_SRP_AUTH",
+     "ALLOW_REFRESH_TOKEN_AUTH"
+    ],
+    "GenerateSecret": false,
+    "SupportedIdentityProviders": [
+     "COGNITO"
+    ],
+    "UserPoolId": {
+     "Ref": "UserPool6BA7E5F2"
+    }
+   },
+   "Metadata": {
+    "aws:cdk:path": "ReconcileaiNoSapCdkStack/reconcileai_no_sapUserPoolClientz9zd9d8s/Resource"
+   }
+  },
+  "reconcileainosapRDSInstanceqank52068u3xf37502732": {
+   "Type": "AWS::RDS::DBInstance",
+   "Properties": {
+    "AllocatedStorage": "20",
+    "CopyTagsToSnapshot": true,
+    "DBInstanceClass": "db.t3.micro",
+    "DBInstanceIdentifier": "reconcileai-no-sap-db-z9zd9d8s",
+    "DBName": "postgres",
+    "DBSubnetGroupName": {
+     "Ref": "ReconcileaiDBSubnetGroupz9zd9d8s"
+    },
+    "DeletionProtection": false,
+    "Engine": "postgres",
+    "EngineVersion": "15",
+    "MasterUserPassword": "postgres123",
+    "MasterUsername": "postgres",
+    "MultiAZ": false,
+    "Port": "5432",
+    "PubliclyAccessible": false,
+    "StorageEncrypted": true,
+    "StorageType": "gp2",
+    "VPCSecurityGroups": [
+     {
+      "Fn::GetAtt": [
+       "RDSSecurityGroup6BF2CF10",
+       "GroupId"
+      ]
+     }
+    ]
+   },
+   "UpdateReplacePolicy": "Delete",
+   "DeletionPolicy": "Delete",
+   "Metadata": {
+    "aws:cdk:path": "ReconcileaiNoSapCdkStack/reconcileai_no_sapRDSInstanceqank52068u3xf/Resource"
+   }
+  },
+  "reconcileainosapLambdaSecretz9zd9d8s6B788324": {
+   "Type": "AWS::SecretsManager::Secret",
+   "Properties": {
+    "Description": "All config and credentials for ReconcileAI Lambda functions",
+    "Name": "reconcileai/dev/lambda-secretsz9zd9d8s",
+    "SecretString": {
+     "Fn::Join": [
+      "",
+      [
+       "{\"BEDROCK_MODEL_ID\":\"us.anthropic.claude-sonnet-4-20250514-v1:0\",\"REGION_AWS\":\"us-west-2\",\"db_host\":\"",
+       {
+        "Fn::GetAtt": [
+         "reconcileainosapRDSInstanceqank52068u3xf37502732",
+         "Endpoint.Address"
+        ]
+       },
+       "\",\"db_port\":\"5432\",\"db_user\":\"postgres\",\"db_password\":\"postgres123\",\"db_database\":\"postgres\",\"bucket_name_no_sap\":\"reconcileaiz9zd9d8s\",\"sop_table\":\"sop_table\",\"Textops_schema\":\"erp_no_sap\",\"erp_no_sap_schema\":\"erp_no_sap\",\"document_type_table\":\"document_table\",\"document_table\":\"document_table\",\"job_table\":\"job_table\",\"document_processing_table\":\"document_processing_table\",\"prompt_metadata_table\":\"prompt_metadata_table\",\"ai_suggestion_table\":\"ai_suggestion_table\",\"temp_document_processing_table\":\"temp_document_processing_table\",\"cexp_ocr_ai_key_extraction_details_table\":\"cexp_ocr_ai_key_extraction_details_table\",\"COGNITO_USER_POOL_ID_NO_SAP\":\"",
+       {
+        "Ref": "UserPool6BA7E5F2"
+       },
+       "\",\"COGNITO_CLIENT_ID_NO_SAP\":\"",
+       {
+        "Ref": "reconcileainosapUserPoolClientz9zd9d8s1C30553C"
+       },
+       "\"}"
+      ]
+     ]
+    }
+   },
+   "UpdateReplacePolicy": "Delete",
+   "DeletionPolicy": "Delete",
+   "Metadata": {
+    "aws:cdk:path": "ReconcileaiNoSapCdkStack/reconcileai_no_sapLambdaSecretz9zd9d8s/Resource"
+   }
+  },
+  "reconcileainosapDbInitRolez9zd9d8s184058ED": {
+   "Type": "AWS::IAM::Role",
+   "Properties": {
+    "AssumeRolePolicyDocument": {
+     "Statement": [
+      {
+       "Action": "sts:AssumeRole",
+       "Effect": "Allow",
+       "Principal": {
+        "Service": "lambda.amazonaws.com"
+       }
+      }
+     ],
+     "Version": "2012-10-17"
+    },
+    "ManagedPolicyArns": [
+     {
+      "Fn::Join": [
+       "",
+       [
+        "arn:",
+        {
+         "Ref": "AWS::Partition"
+        },
+        ":iam::aws:policy/service-role/AWSLambdaVPCAccessExecutionRole"
+       ]
+      ]
+     },
+     {
+      "Fn::Join": [
+       "",
+       [
+        "arn:",
+        {
+         "Ref": "AWS::Partition"
+        },
+        ":iam::aws:policy/service-role/AWSLambdaBasicExecutionRole"
+       ]
+      ]
+     }
+    ]
+   },
+   "Metadata": {
+    "aws:cdk:path": "ReconcileaiNoSapCdkStack/reconcileai_no_sapDbInitRolez9zd9d8s/Resource"
+   }
+  },
+  "reconcileainosapDbInitRolez9zd9d8sDefaultPolicy13124D75": {
+   "Type": "AWS::IAM::Policy",
+   "Properties": {
+    "PolicyDocument": {
+     "Statement": [
+      {
+       "Action": [
+        "s3:GetBucket*",
+        "s3:GetObject*",
+        "s3:List*"
+       ],
+       "Effect": "Allow",
+       "Resource": [
+        {
+         "Fn::GetAtt": [
+          "ReconcileaiAppBucketz9zd9d8sA8FFE751",
+          "Arn"
+         ]
+        },
+        {
+         "Fn::Join": [
+          "",
+          [
+           {
+            "Fn::GetAtt": [
+             "ReconcileaiAppBucketz9zd9d8sA8FFE751",
+             "Arn"
+            ]
+           },
+           "/*"
+          ]
+         ]
+        }
+       ]
+      }
+     ],
+     "Version": "2012-10-17"
+    },
+    "PolicyName": "reconcileainosapDbInitRolez9zd9d8sDefaultPolicy13124D75",
+    "Roles": [
+     {
+      "Ref": "reconcileainosapDbInitRolez9zd9d8s184058ED"
+     }
+    ]
+   },
+   "Metadata": {
+    "aws:cdk:path": "ReconcileaiNoSapCdkStack/reconcileai_no_sapDbInitRolez9zd9d8s/DefaultPolicy/Resource"
+   }
+  },
+  "TextractLayer362B2707": {
+   "Type": "AWS::Lambda::LayerVersion",
+   "Properties": {
+    "CompatibleRuntimes": [
+     "python3.11"
+    ],
+    "Content": {
+     "S3Bucket": {
+      "Fn::Sub": "cdk-hnb659fds-assets-${AWS::AccountId}-${AWS::Region}"
+     },
+     "S3Key": "7c10021c330438c6111e2ac0699816e7e3df199e595872ba1a701e1c5d3ba0d8.zip"
+    },
+    "Description": "Textract processing layer"
+   },
+   "Metadata": {
+    "aws:cdk:path": "ReconcileaiNoSapCdkStack/TextractLayer/Resource",
+    "aws:asset:path": "asset.7c10021c330438c6111e2ac0699816e7e3df199e595872ba1a701e1c5d3ba0d8.zip",
+    "aws:asset:is-bundled": false,
+    "aws:asset:property": "Content"
+   }
+  },
+  "reconcileainosapDbInitLambdaz9zd9d8s0EB8F1F2": {
+   "Type": "AWS::Lambda::Function",
+   "Properties": {
+    "Code": {
+     "S3Bucket": {
+      "Fn::Sub": "cdk-hnb659fds-assets-${AWS::AccountId}-${AWS::Region}"
+     },
+     "S3Key": "cff307be35c2f111abf4f7795d4e749b5148de41e7fbf403f12cdcc6665ff9b9.zip"
+    },
+    "Environment": {
+     "Variables": {
+      "DB_HOST": {
+       "Fn::GetAtt": [
+        "reconcileainosapRDSInstanceqank52068u3xf37502732",
+        "Endpoint.Address"
+       ]
+      },
+      "DB_PORT": "5432",
+      "DB_NAME": "postgres",
+      "DB_USER": "postgres",
+      "DB_PASSWORD": "postgres123",
+      "SQL_BUCKET": "reconcileaiz9zd9d8s",
+      "SQL_KEY": "db_init/init_schema.sql"
+     }
+    },
+    "FunctionName": "reconcileai_no_sap-db-init-z9zd9d8s",
+    "Handler": "index.handler",
+    "Layers": [
+     {
+      "Ref": "TextractLayer362B2707"
+     }
+    ],
+    "MemorySize": 256,
+    "Role": {
+     "Fn::GetAtt": [
+      "reconcileainosapDbInitRolez9zd9d8s184058ED",
+      "Arn"
+     ]
+    },
+    "Runtime": "python3.11",
+    "Timeout": 300,
+    "VpcConfig": {
+     "SecurityGroupIds": [
+      {
+       "Fn::GetAtt": [
+        "LambdaSecurityGroup0BD9FC99",
+        "GroupId"
+       ]
+      }
+     ],
+     "SubnetIds": [
+      {
+       "Ref": "reconcileainosapVPCz9zd9d8sPrivateSubnetSubnet1Subnet4F95860D"
+      },
+      {
+       "Ref": "reconcileainosapVPCz9zd9d8sPrivateSubnetSubnet2Subnet816954AA"
+      }
+     ]
+    }
+   },
+   "DependsOn": [
+    "reconcileainosapDbInitRolez9zd9d8sDefaultPolicy13124D75",
+    "reconcileainosapDbInitRolez9zd9d8s184058ED",
+    "reconcileainosapRDSInstanceqank52068u3xf37502732",
+    "reconcileainosapSqlDeployz9zd9d8sAwsCliLayerDB384F56",
+    "reconcileainosapSqlDeployz9zd9d8sCustomResource95CA9E9D",
+    "reconcileainosapVPCz9zd9d8sPrivateSubnetSubnet1DefaultRoute4090A112",
+    "reconcileainosapVPCz9zd9d8sPrivateSubnetSubnet1RouteTableAssociation3D68CE12",
+    "reconcileainosapVPCz9zd9d8sPrivateSubnetSubnet2DefaultRoute09AD70AB",
+    "reconcileainosapVPCz9zd9d8sPrivateSubnetSubnet2RouteTableAssociation2F32D6EE"
+   ],
+   "Metadata": {
+    "aws:cdk:path": "ReconcileaiNoSapCdkStack/reconcileai_no_sapDbInitLambdaz9zd9d8s/Resource",
+    "aws:asset:path": "asset.cff307be35c2f111abf4f7795d4e749b5148de41e7fbf403f12cdcc6665ff9b9",
+    "aws:asset:is-bundled": false,
+    "aws:asset:property": "Code"
+   }
+  },
+  "reconcileainosapDbInitLambdaz9zd9d8sLogGroup0CFCAD24": {
+   "Type": "AWS::Logs::LogGroup",
+   "Properties": {
+    "LogGroupName": {
+     "Fn::Join": [
+      "",
+      [
+       "/aws/lambda/",
+       {
+        "Ref": "reconcileainosapDbInitLambdaz9zd9d8s0EB8F1F2"
+       }
+      ]
+     ]
+    },
+    "RetentionInDays": 731
+   },
+   "DependsOn": [
+    "reconcileainosapRDSInstanceqank52068u3xf37502732",
+    "reconcileainosapSqlDeployz9zd9d8sAwsCliLayerDB384F56",
+    "reconcileainosapSqlDeployz9zd9d8sCustomResource95CA9E9D",
+    "reconcileainosapVPCz9zd9d8sPrivateSubnetSubnet1DefaultRoute4090A112",
+    "reconcileainosapVPCz9zd9d8sPrivateSubnetSubnet1RouteTableAssociation3D68CE12",
+    "reconcileainosapVPCz9zd9d8sPrivateSubnetSubnet2DefaultRoute09AD70AB",
+    "reconcileainosapVPCz9zd9d8sPrivateSubnetSubnet2RouteTableAssociation2F32D6EE"
+   ],
+   "UpdateReplacePolicy": "Retain",
+   "DeletionPolicy": "Retain",
+   "Metadata": {
+    "aws:cdk:path": "ReconcileaiNoSapCdkStack/reconcileai_no_sapDbInitLambdaz9zd9d8s/LogGroup/Resource"
+   }
+  },
+  "reconcileainosapDbSchemaInitz9zd9d8s8C8C12BE": {
+   "Type": "Custom::AWS",
+   "Properties": {
+    "ServiceToken": {
+     "Fn::GetAtt": [
+      "AWS679f53fac002430cb0da5b7982bd22872D164C4C",
+      "Arn"
+     ]
+    },
+    "Create": {
+     "Fn::Join": [
+      "",
+      [
+       "{\"action\":\"invoke\",\"service\":\"Lambda\",\"parameters\":{\"FunctionName\":\"",
+       {
+        "Ref": "reconcileainosapDbInitLambdaz9zd9d8s0EB8F1F2"
+       },
+       "\",\"InvocationType\":\"RequestResponse\",\"Payload\":\"{\\\"RequestType\\\": \\\"Create\\\", \\\"StackId\\\": \\\"schema-init\\\", \\\"RequestId\\\": \\\"schema-init-001\\\", \\\"LogicalResourceId\\\": \\\"DbSchemaInit\\\", \\\"ResponseURL\\\": \\\"https://httpbin.org/put\\\"}\"},\"physicalResourceId\":{\"id\":\"reconcileai_no_sap-db-schema-init-z9zd9d8s\"}}"
+      ]
+     ]
+    },
+    "InstallLatestAwsSdk": false
+   },
+   "DependsOn": [
+    "reconcileainosapDbInitLambdaz9zd9d8sLogGroup0CFCAD24",
+    "reconcileainosapDbInitLambdaz9zd9d8s0EB8F1F2",
+    "reconcileainosapDbSchemaInitz9zd9d8sCustomResourcePolicy9D00E765",
+    "reconcileainosapSqlDeployz9zd9d8sAwsCliLayerDB384F56",
+    "reconcileainosapSqlDeployz9zd9d8sCustomResource95CA9E9D"
+   ],
+   "UpdateReplacePolicy": "Delete",
+   "DeletionPolicy": "Delete",
+   "Metadata": {
+    "aws:cdk:path": "ReconcileaiNoSapCdkStack/reconcileai_no_sapDbSchemaInitz9zd9d8s/Resource/Default"
+   }
+  },
+  "reconcileainosapDbSchemaInitz9zd9d8sCustomResourcePolicy9D00E765": {
+   "Type": "AWS::IAM::Policy",
+   "Properties": {
+    "PolicyDocument": {
+     "Statement": [
+      {
+       "Action": "lambda:InvokeFunction",
+       "Effect": "Allow",
+       "Resource": {
+        "Fn::GetAtt": [
+         "reconcileainosapDbInitLambdaz9zd9d8s0EB8F1F2",
+         "Arn"
+        ]
+       }
+      }
+     ],
+     "Version": "2012-10-17"
+    },
+    "PolicyName": "reconcileainosapDbSchemaInitz9zd9d8sCustomResourcePolicy9D00E765",
+    "Roles": [
+     {
+      "Ref": "AWS679f53fac002430cb0da5b7982bd2287ServiceRoleC1EA0FF2"
+     }
+    ]
+   },
+   "DependsOn": [
+    "reconcileainosapDbInitLambdaz9zd9d8sLogGroup0CFCAD24",
+    "reconcileainosapDbInitLambdaz9zd9d8s0EB8F1F2",
+    "reconcileainosapSqlDeployz9zd9d8sAwsCliLayerDB384F56",
+    "reconcileainosapSqlDeployz9zd9d8sCustomResource95CA9E9D"
+   ],
+   "Metadata": {
+    "aws:cdk:path": "ReconcileaiNoSapCdkStack/reconcileai_no_sapDbSchemaInitz9zd9d8s/CustomResourcePolicy/Resource"
+   }
+  },
+  "Boto3Layer463A0AEA": {
+   "Type": "AWS::Lambda::LayerVersion",
+   "Properties": {
+    "CompatibleRuntimes": [
+     "python3.11"
+    ],
+    "Content": {
+     "S3Bucket": {
+      "Fn::Sub": "cdk-hnb659fds-assets-${AWS::AccountId}-${AWS::Region}"
+     },
+     "S3Key": "335a20db7ebd7cbb6496d3bcb28f06de74a9d45d8f5f89fb1fb8eae5e1496890.zip"
+    },
+    "Description": "Custom boto3 layer"
+   },
+   "Metadata": {
+    "aws:cdk:path": "ReconcileaiNoSapCdkStack/Boto3Layer/Resource",
+    "aws:asset:path": "asset.335a20db7ebd7cbb6496d3bcb28f06de74a9d45d8f5f89fb1fb8eae5e1496890.zip",
+    "aws:asset:is-bundled": false,
+    "aws:asset:property": "Content"
+   }
+  },
+  "McpLayerCAB4E446": {
+   "Type": "AWS::Lambda::LayerVersion",
+   "Properties": {
+    "CompatibleRuntimes": [
+     "python3.11"
+    ],
+    "Content": {
+     "S3Bucket": {
+      "Fn::Sub": "cdk-hnb659fds-assets-${AWS::AccountId}-${AWS::Region}"
+     },
+     "S3Key": "47c4aefd96d526dcc25dce0c0d0390a7584591fe10cf3a086dd37435bbf308d1.zip"
+    },
+    "Description": "MCP v2 layer"
+   },
+   "Metadata": {
+    "aws:cdk:path": "ReconcileaiNoSapCdkStack/McpLayer/Resource",
+    "aws:asset:path": "asset.47c4aefd96d526dcc25dce0c0d0390a7584591fe10cf3a086dd37435bbf308d1.zip",
+    "aws:asset:is-bundled": false,
+    "aws:asset:property": "Content"
+   }
+  },
+  "reconcileainosapConfigLambdaqkra9hl35w19cBE24D7EF": {
+   "Type": "AWS::Lambda::Function",
+   "Properties": {
+    "Code": {
+     "S3Bucket": {
+      "Fn::Sub": "cdk-hnb659fds-assets-${AWS::AccountId}-${AWS::Region}"
+     },
+     "S3Key": "afa54b86ffe85a974942f473487ddb4f079f72d36fdeb9a9dfc063ab26d472af.zip"
+    },
+    "Environment": {
+     "Variables": {
+      "SECRET_NAME": {
+       "Fn::Join": [
+        "-",
+        [
+         {
+          "Fn::Select": [
+           0,
+           {
+            "Fn::Split": [
+             "-",
+             {
+              "Fn::Select": [
+               6,
+               {
+                "Fn::Split": [
+                 ":",
+                 {
+                  "Ref": "reconcileainosapLambdaSecretz9zd9d8s6B788324"
+                 }
+                ]
+               }
+              ]
+             }
+            ]
+           }
+          ]
+         },
+         {
+          "Fn::Select": [
+           1,
+           {
+            "Fn::Split": [
+             "-",
+             {
+              "Fn::Select": [
+               6,
+               {
+                "Fn::Split": [
+                 ":",
+                 {
+                  "Ref": "reconcileainosapLambdaSecretz9zd9d8s6B788324"
+                 }
+                ]
+               }
+              ]
+             }
+            ]
+           }
+          ]
+         }
+        ]
+       ]
+      },
+      "AWS_REGION_NAME": {
+       "Ref": "AWS::Region"
+      }
+     }
+    },
+    "FunctionName": "reconcileai_no_sap-config-z9zd9d8s",
+    "Handler": "lambda_function.lambda_handler",
+    "Layers": [
+     {
+      "Ref": "Boto3Layer463A0AEA"
+     },
+     {
+      "Ref": "TextractLayer362B2707"
+     }
+    ],
+    "MemorySize": 1024,
+    "Role": {
+     "Fn::GetAtt": [
+      "ReconcileaiConfigLambdaRolez9zd9d8sC1606338",
+      "Arn"
+     ]
+    },
+    "Runtime": "python3.11",
+    "Timeout": 900,
+    "VpcConfig": {
+     "SecurityGroupIds": [
+      {
+       "Fn::GetAtt": [
+        "LambdaSecurityGroup0BD9FC99",
+        "GroupId"
+       ]
+      }
+     ],
+     "SubnetIds": [
+      {
+       "Ref": "reconcileainosapVPCz9zd9d8sPrivateSubnetSubnet1Subnet4F95860D"
+      },
+      {
+       "Ref": "reconcileainosapVPCz9zd9d8sPrivateSubnetSubnet2Subnet816954AA"
+      }
+     ]
+    }
+   },
+   "DependsOn": [
+    "reconcileainosapVPCz9zd9d8sPrivateSubnetSubnet1DefaultRoute4090A112",
+    "reconcileainosapVPCz9zd9d8sPrivateSubnetSubnet1RouteTableAssociation3D68CE12",
+    "reconcileainosapVPCz9zd9d8sPrivateSubnetSubnet2DefaultRoute09AD70AB",
+    "reconcileainosapVPCz9zd9d8sPrivateSubnetSubnet2RouteTableAssociation2F32D6EE",
+    "ReconcileaiConfigLambdaRolez9zd9d8sDefaultPolicy565B18F1",
+    "ReconcileaiConfigLambdaRolez9zd9d8sC1606338"
+   ],
+   "Metadata": {
+    "aws:cdk:path": "ReconcileaiNoSapCdkStack/reconcileai_no_sapConfigLambdaqkra9hl35w19c/Resource",
+    "aws:asset:path": "asset.afa54b86ffe85a974942f473487ddb4f079f72d36fdeb9a9dfc063ab26d472af",
+    "aws:asset:is-bundled": false,
+    "aws:asset:property": "Code"
+   }
+  },
+  "reconcileainosapConfigLambdaqkra9hl35w19cLogGroup961E29C4": {
+   "Type": "AWS::Logs::LogGroup",
+   "Properties": {
+    "LogGroupName": {
+     "Fn::Join": [
+      "",
+      [
+       "/aws/lambda/",
+       {
+        "Ref": "reconcileainosapConfigLambdaqkra9hl35w19cBE24D7EF"
+       }
+      ]
+     ]
+    },
+    "RetentionInDays": 731
+   },
+   "DependsOn": [
+    "reconcileainosapVPCz9zd9d8sPrivateSubnetSubnet1DefaultRoute4090A112",
+    "reconcileainosapVPCz9zd9d8sPrivateSubnetSubnet1RouteTableAssociation3D68CE12",
+    "reconcileainosapVPCz9zd9d8sPrivateSubnetSubnet2DefaultRoute09AD70AB",
+    "reconcileainosapVPCz9zd9d8sPrivateSubnetSubnet2RouteTableAssociation2F32D6EE"
+   ],
+   "UpdateReplacePolicy": "Retain",
+   "DeletionPolicy": "Retain",
+   "Metadata": {
+    "aws:cdk:path": "ReconcileaiNoSapCdkStack/reconcileai_no_sapConfigLambdaqkra9hl35w19c/LogGroup/Resource"
+   }
+  },
+  "reconcileainosapConfigLambdaqkra9hl35w19cApiGatewayInvokeConfigLambda8B08CADB": {
+   "Type": "AWS::Lambda::Permission",
+   "Properties": {
+    "Action": "lambda:InvokeFunction",
+    "FunctionName": {
+     "Fn::GetAtt": [
+      "reconcileainosapConfigLambdaqkra9hl35w19cBE24D7EF",
+      "Arn"
+     ]
+    },
+    "Principal": "apigateway.amazonaws.com",
+    "SourceArn": {
+     "Fn::Join": [
+      "",
+      [
+       "arn:",
+       {
+        "Ref": "AWS::Partition"
+       },
+       ":execute-api:",
+       {
+        "Ref": "AWS::Region"
+       },
+       ":",
+       {
+        "Ref": "AWS::AccountId"
+       },
+       ":",
+       {
+        "Ref": "reconcileainosapApiGatewayz9zd9d8s0077059F"
+       },
+       "/*/*/*"
+      ]
+     ]
+    }
+   },
+   "DependsOn": [
+    "reconcileainosapVPCz9zd9d8sPrivateSubnetSubnet1DefaultRoute4090A112",
+    "reconcileainosapVPCz9zd9d8sPrivateSubnetSubnet1RouteTableAssociation3D68CE12",
+    "reconcileainosapVPCz9zd9d8sPrivateSubnetSubnet2DefaultRoute09AD70AB",
+    "reconcileainosapVPCz9zd9d8sPrivateSubnetSubnet2RouteTableAssociation2F32D6EE"
+   ],
+   "Metadata": {
+    "aws:cdk:path": "ReconcileaiNoSapCdkStack/reconcileai_no_sapConfigLambdaqkra9hl35w19c/ApiGatewayInvokeConfigLambda"
+   }
+  },
+  "reconcileainosapAgentLambdaqkra9hl35w19c4248294C": {
+   "Type": "AWS::Lambda::Function",
+   "Properties": {
+    "Code": {
+     "S3Bucket": {
+      "Fn::Sub": "cdk-hnb659fds-assets-${AWS::AccountId}-${AWS::Region}"
+     },
+     "S3Key": "79b689f91ca44eab98a637da4a0bad15b665f495c01d38a83d26c30f6bc5844b.zip"
+    },
+    "Environment": {
+     "Variables": {
+      "SECRET_NAME": {
+       "Fn::Join": [
+        "-",
+        [
+         {
+          "Fn::Select": [
+           0,
+           {
+            "Fn::Split": [
+             "-",
+             {
+              "Fn::Select": [
+               6,
+               {
+                "Fn::Split": [
+                 ":",
+                 {
+                  "Ref": "reconcileainosapLambdaSecretz9zd9d8s6B788324"
+                 }
+                ]
+               }
+              ]
+             }
+            ]
+           }
+          ]
+         },
+         {
+          "Fn::Select": [
+           1,
+           {
+            "Fn::Split": [
+             "-",
+             {
+              "Fn::Select": [
+               6,
+               {
+                "Fn::Split": [
+                 ":",
+                 {
+                  "Ref": "reconcileainosapLambdaSecretz9zd9d8s6B788324"
+                 }
+                ]
+               }
+              ]
+             }
+            ]
+           }
+          ]
+         }
+        ]
+       ]
+      },
+      "AWS_REGION_NAME": {
+       "Ref": "AWS::Region"
+      },
+      "db_host": {
+       "Fn::GetAtt": [
+        "reconcileainosapRDSInstanceqank52068u3xf37502732",
+        "Endpoint.Address"
+       ]
+      },
+      "db_port": "5432",
+      "db_database": "postgres",
+      "db_user": "postgres"
+     }
+    },
+    "FunctionName": "reconcileai_no_sap-agent-z9zd9d8s",
+    "Handler": "lambda_function.lambda_handler",
+    "Layers": [
+     {
+      "Ref": "Boto3Layer463A0AEA"
+     },
+     {
+      "Ref": "McpLayerCAB4E446"
+     }
+    ],
+    "MemorySize": 2048,
+    "Role": {
+     "Fn::GetAtt": [
+      "ReconcileaiAgentLambdaRolez9zd9d8s4FAC1A36",
+      "Arn"
+     ]
+    },
+    "Runtime": "python3.11",
+    "Timeout": 900,
+    "VpcConfig": {
+     "SecurityGroupIds": [
+      {
+       "Fn::GetAtt": [
+        "LambdaSecurityGroup0BD9FC99",
+        "GroupId"
+       ]
+      }
+     ],
+     "SubnetIds": [
+      {
+       "Ref": "reconcileainosapVPCz9zd9d8sPrivateSubnetSubnet1Subnet4F95860D"
+      },
+      {
+       "Ref": "reconcileainosapVPCz9zd9d8sPrivateSubnetSubnet2Subnet816954AA"
+      }
+     ]
+    }
+   },
+   "DependsOn": [
+    "reconcileainosapVPCz9zd9d8sPrivateSubnetSubnet1DefaultRoute4090A112",
+    "reconcileainosapVPCz9zd9d8sPrivateSubnetSubnet1RouteTableAssociation3D68CE12",
+    "reconcileainosapVPCz9zd9d8sPrivateSubnetSubnet2DefaultRoute09AD70AB",
+    "reconcileainosapVPCz9zd9d8sPrivateSubnetSubnet2RouteTableAssociation2F32D6EE",
+    "ReconcileaiAgentLambdaRolez9zd9d8sDefaultPolicy7EE1EC78",
+    "ReconcileaiAgentLambdaRolez9zd9d8s4FAC1A36"
+   ],
+   "Metadata": {
+    "aws:cdk:path": "ReconcileaiNoSapCdkStack/reconcileai_no_sapAgentLambdaqkra9hl35w19c/Resource",
+    "aws:asset:path": "asset.79b689f91ca44eab98a637da4a0bad15b665f495c01d38a83d26c30f6bc5844b",
+    "aws:asset:is-bundled": false,
+    "aws:asset:property": "Code"
+   }
+  },
+  "reconcileainosapAgentLambdaqkra9hl35w19cLogGroup030DB260": {
+   "Type": "AWS::Logs::LogGroup",
+   "Properties": {
+    "LogGroupName": {
+     "Fn::Join": [
+      "",
+      [
+       "/aws/lambda/",
+       {
+        "Ref": "reconcileainosapAgentLambdaqkra9hl35w19c4248294C"
+       }
+      ]
+     ]
+    },
+    "RetentionInDays": 731
+   },
+   "DependsOn": [
+    "reconcileainosapVPCz9zd9d8sPrivateSubnetSubnet1DefaultRoute4090A112",
+    "reconcileainosapVPCz9zd9d8sPrivateSubnetSubnet1RouteTableAssociation3D68CE12",
+    "reconcileainosapVPCz9zd9d8sPrivateSubnetSubnet2DefaultRoute09AD70AB",
+    "reconcileainosapVPCz9zd9d8sPrivateSubnetSubnet2RouteTableAssociation2F32D6EE"
+   ],
+   "UpdateReplacePolicy": "Retain",
+   "DeletionPolicy": "Retain",
+   "Metadata": {
+    "aws:cdk:path": "ReconcileaiNoSapCdkStack/reconcileai_no_sapAgentLambdaqkra9hl35w19c/LogGroup/Resource"
+   }
+  },
+  "reconcileainosapAgentLambdaqkra9hl35w19cApiGatewayInvokeAgentLambdaBE84D42B": {
+   "Type": "AWS::Lambda::Permission",
+   "Properties": {
+    "Action": "lambda:InvokeFunction",
+    "FunctionName": {
+     "Fn::GetAtt": [
+      "reconcileainosapAgentLambdaqkra9hl35w19c4248294C",
+      "Arn"
+     ]
+    },
+    "Principal": "apigateway.amazonaws.com",
+    "SourceArn": {
+     "Fn::Join": [
+      "",
+      [
+       "arn:",
+       {
+        "Ref": "AWS::Partition"
+       },
+       ":execute-api:",
+       {
+        "Ref": "AWS::Region"
+       },
+       ":",
+       {
+        "Ref": "AWS::AccountId"
+       },
+       ":",
+       {
+        "Ref": "reconcileainosapApiGatewayz9zd9d8s0077059F"
+       },
+       "/*/*/*"
+      ]
+     ]
+    }
+   },
+   "DependsOn": [
+    "reconcileainosapVPCz9zd9d8sPrivateSubnetSubnet1DefaultRoute4090A112",
+    "reconcileainosapVPCz9zd9d8sPrivateSubnetSubnet1RouteTableAssociation3D68CE12",
+    "reconcileainosapVPCz9zd9d8sPrivateSubnetSubnet2DefaultRoute09AD70AB",
+    "reconcileainosapVPCz9zd9d8sPrivateSubnetSubnet2RouteTableAssociation2F32D6EE"
+   ],
+   "Metadata": {
+    "aws:cdk:path": "ReconcileaiNoSapCdkStack/reconcileai_no_sapAgentLambdaqkra9hl35w19c/ApiGatewayInvokeAgentLambda"
+   }
+  },
+  "reconcileainosapApiGatewayz9zd9d8s0077059F": {
+   "Type": "AWS::ApiGateway::RestApi",
+   "Properties": {
+    "Description": "ReconcileAI No-SAP API Gateway",
+    "Name": "reconcileai_no_sap-api-z9zd9d8s"
+   },
+   "Metadata": {
+    "aws:cdk:path": "ReconcileaiNoSapCdkStack/reconcileai_no_sapApiGatewayz9zd9d8s/Resource"
+   }
+  },
+  "reconcileainosapApiGatewayz9zd9d8sDeployment48D7C75C75c5d9f1286d7aaf33ffe07cb4955655": {
+   "Type": "AWS::ApiGateway::Deployment",
+   "Properties": {
+    "Description": "ReconcileAI No-SAP API Gateway",
+    "RestApiId": {
+     "Ref": "reconcileainosapApiGatewayz9zd9d8s0077059F"
+    }
+   },
+   "DependsOn": [
+    "reconcileainosapApiGatewayz9zd9d8sconfigOPTIONS8E7B43E5",
+    "reconcileainosapApiGatewayz9zd9d8sconfigPOSTDDC0E3A0",
+    "reconcileainosapApiGatewayz9zd9d8sconfigPUT5A5AD0E3",
+    "reconcileainosapApiGatewayz9zd9d8sconfigD0FD9B37",
+    "reconcileainosapApiGatewayz9zd9d8sOPTIONS008A94F6",
+    "reconcileainosapApiGatewayz9zd9d8sreconcileaiOPTIONS52ED9D63",
+    "reconcileainosapApiGatewayz9zd9d8sreconcileaiPOSTC9751BA5",
+    "reconcileainosapApiGatewayz9zd9d8sreconcileai2492D71C"
+   ],
+   "Metadata": {
+    "aws:cdk:path": "ReconcileaiNoSapCdkStack/reconcileai_no_sapApiGatewayz9zd9d8s/Deployment/Resource",
+    "aws:cdk:do-not-refactor": true
+   }
+  },
+  "reconcileainosapApiGatewayz9zd9d8sDeploymentStagedevD7A60340": {
+   "Type": "AWS::ApiGateway::Stage",
+   "Properties": {
+    "DeploymentId": {
+     "Ref": "reconcileainosapApiGatewayz9zd9d8sDeployment48D7C75C75c5d9f1286d7aaf33ffe07cb4955655"
+    },
+    "RestApiId": {
+     "Ref": "reconcileainosapApiGatewayz9zd9d8s0077059F"
+    },
+    "StageName": "dev"
+   },
+   "Metadata": {
+    "aws:cdk:path": "ReconcileaiNoSapCdkStack/reconcileai_no_sapApiGatewayz9zd9d8s/DeploymentStage.dev/Resource"
+   }
+  },
+  "reconcileainosapApiGatewayz9zd9d8sOPTIONS008A94F6": {
+   "Type": "AWS::ApiGateway::Method",
+   "Properties": {
+    "ApiKeyRequired": false,
+    "AuthorizationType": "NONE",
+    "HttpMethod": "OPTIONS",
+    "Integration": {
+     "IntegrationResponses": [
+      {
+       "ResponseParameters": {
+        "method.response.header.Access-Control-Allow-Headers": "'Content-Type,X-Amz-Date,Authorization,X-Api-Key,X-Amz-Security-Token'",
+        "method.response.header.Access-Control-Allow-Origin": "'*'",
+        "method.response.header.Access-Control-Allow-Methods": "'OPTIONS,GET,PUT,POST,DELETE,PATCH,HEAD'"
+       },
+       "StatusCode": "204"
+      }
+     ],
+     "RequestTemplates": {
+      "application/json": "{ statusCode: 200 }"
+     },
+     "Type": "MOCK"
+    },
+    "MethodResponses": [
+     {
+      "ResponseParameters": {
+       "method.response.header.Access-Control-Allow-Headers": true,
+       "method.response.header.Access-Control-Allow-Origin": true,
+       "method.response.header.Access-Control-Allow-Methods": true
+      },
+      "StatusCode": "204"
+     }
+    ],
+    "ResourceId": {
+     "Fn::GetAtt": [
+      "reconcileainosapApiGatewayz9zd9d8s0077059F",
+      "RootResourceId"
+     ]
+    },
+    "RestApiId": {
+     "Ref": "reconcileainosapApiGatewayz9zd9d8s0077059F"
+    }
+   },
+   "Metadata": {
+    "aws:cdk:path": "ReconcileaiNoSapCdkStack/reconcileai_no_sapApiGatewayz9zd9d8s/Default/OPTIONS/Resource"
+   }
+  },
+  "reconcileainosapApiGatewayz9zd9d8sconfigD0FD9B37": {
+   "Type": "AWS::ApiGateway::Resource",
+   "Properties": {
+    "ParentId": {
+     "Fn::GetAtt": [
+      "reconcileainosapApiGatewayz9zd9d8s0077059F",
+      "RootResourceId"
+     ]
+    },
+    "PathPart": "config",
+    "RestApiId": {
+     "Ref": "reconcileainosapApiGatewayz9zd9d8s0077059F"
+    }
+   },
+   "Metadata": {
+    "aws:cdk:path": "ReconcileaiNoSapCdkStack/reconcileai_no_sapApiGatewayz9zd9d8s/Default/config/Resource"
+   }
+  },
+  "reconcileainosapApiGatewayz9zd9d8sconfigOPTIONS8E7B43E5": {
+   "Type": "AWS::ApiGateway::Method",
+   "Properties": {
+    "ApiKeyRequired": false,
+    "AuthorizationType": "NONE",
+    "HttpMethod": "OPTIONS",
+    "Integration": {
+     "IntegrationResponses": [
+      {
+       "ResponseParameters": {
+        "method.response.header.Access-Control-Allow-Headers": "'Content-Type,X-Amz-Date,Authorization,X-Api-Key,X-Amz-Security-Token'",
+        "method.response.header.Access-Control-Allow-Origin": "'*'",
+        "method.response.header.Access-Control-Allow-Methods": "'OPTIONS,GET,PUT,POST,DELETE,PATCH,HEAD'"
+       },
+       "StatusCode": "204"
+      }
+     ],
+     "RequestTemplates": {
+      "application/json": "{ statusCode: 200 }"
+     },
+     "Type": "MOCK"
+    },
+    "MethodResponses": [
+     {
+      "ResponseParameters": {
+       "method.response.header.Access-Control-Allow-Headers": true,
+       "method.response.header.Access-Control-Allow-Origin": true,
+       "method.response.header.Access-Control-Allow-Methods": true
+      },
+      "StatusCode": "204"
+     }
+    ],
+    "ResourceId": {
+     "Ref": "reconcileainosapApiGatewayz9zd9d8sconfigD0FD9B37"
+    },
+    "RestApiId": {
+     "Ref": "reconcileainosapApiGatewayz9zd9d8s0077059F"
+    }
+   },
+   "Metadata": {
+    "aws:cdk:path": "ReconcileaiNoSapCdkStack/reconcileai_no_sapApiGatewayz9zd9d8s/Default/config/OPTIONS/Resource"
+   }
+  },
+  "reconcileainosapApiGatewayz9zd9d8sconfigPOSTApiPermissionReconcileaiNoSapCdkStackreconcileainosapApiGatewayz9zd9d8s5DB5B1D2POSTconfigCDC136DE": {
+   "Type": "AWS::Lambda::Permission",
+   "Properties": {
+    "Action": "lambda:InvokeFunction",
+    "FunctionName": {
+     "Fn::GetAtt": [
+      "reconcileainosapConfigLambdaqkra9hl35w19cBE24D7EF",
+      "Arn"
+     ]
+    },
+    "Principal": "apigateway.amazonaws.com",
+    "SourceArn": {
+     "Fn::Join": [
+      "",
+      [
+       "arn:",
+       {
+        "Ref": "AWS::Partition"
+       },
+       ":execute-api:",
+       {
+        "Ref": "AWS::Region"
+       },
+       ":",
+       {
+        "Ref": "AWS::AccountId"
+       },
+       ":",
+       {
+        "Ref": "reconcileainosapApiGatewayz9zd9d8s0077059F"
+       },
+       "/",
+       {
+        "Ref": "reconcileainosapApiGatewayz9zd9d8sDeploymentStagedevD7A60340"
+       },
+       "/POST/config"
+      ]
+     ]
+    }
+   },
+   "Metadata": {
+    "aws:cdk:path": "ReconcileaiNoSapCdkStack/reconcileai_no_sapApiGatewayz9zd9d8s/Default/config/POST/ApiPermission.ReconcileaiNoSapCdkStackreconcileainosapApiGatewayz9zd9d8s5DB5B1D2.POST..config"
+   }
+  },
+  "reconcileainosapApiGatewayz9zd9d8sconfigPOSTApiPermissionTestReconcileaiNoSapCdkStackreconcileainosapApiGatewayz9zd9d8s5DB5B1D2POSTconfigB7E2E8EA": {
+   "Type": "AWS::Lambda::Permission",
+   "Properties": {
+    "Action": "lambda:InvokeFunction",
+    "FunctionName": {
+     "Fn::GetAtt": [
+      "reconcileainosapConfigLambdaqkra9hl35w19cBE24D7EF",
+      "Arn"
+     ]
+    },
+    "Principal": "apigateway.amazonaws.com",
+    "SourceArn": {
+     "Fn::Join": [
+      "",
+      [
+       "arn:",
+       {
+        "Ref": "AWS::Partition"
+       },
+       ":execute-api:",
+       {
+        "Ref": "AWS::Region"
+       },
+       ":",
+       {
+        "Ref": "AWS::AccountId"
+       },
+       ":",
+       {
+        "Ref": "reconcileainosapApiGatewayz9zd9d8s0077059F"
+       },
+       "/test-invoke-stage/POST/config"
+      ]
+     ]
+    }
+   },
+   "Metadata": {
+    "aws:cdk:path": "ReconcileaiNoSapCdkStack/reconcileai_no_sapApiGatewayz9zd9d8s/Default/config/POST/ApiPermission.Test.ReconcileaiNoSapCdkStackreconcileainosapApiGatewayz9zd9d8s5DB5B1D2.POST..config"
+   }
+  },
+  "reconcileainosapApiGatewayz9zd9d8sconfigPOSTDDC0E3A0": {
+   "Type": "AWS::ApiGateway::Method",
+   "Properties": {
+    "AuthorizationType": "NONE",
+    "HttpMethod": "POST",
+    "Integration": {
+     "IntegrationHttpMethod": "POST",
+     "IntegrationResponses": [
+      {
+       "ResponseParameters": {
+        "method.response.header.Access-Control-Allow-Origin": "'*'"
+       },
+       "ResponseTemplates": {
+        "application/json": "$input.json('$')"
+       },
+       "StatusCode": "200"
+      }
+     ],
+     "PassthroughBehavior": "WHEN_NO_TEMPLATES",
+     "RequestTemplates": {
+      "application/json": "$input.json('$')"
+     },
+     "Type": "AWS",
+     "Uri": {
+      "Fn::Join": [
+       "",
+       [
+        "arn:",
+        {
+         "Ref": "AWS::Partition"
+        },
+        ":apigateway:",
+        {
+         "Ref": "AWS::Region"
+        },
+        ":lambda:path/2015-03-31/functions/",
+        {
+         "Fn::GetAtt": [
+          "reconcileainosapConfigLambdaqkra9hl35w19cBE24D7EF",
+          "Arn"
+         ]
+        },
+        "/invocations"
+       ]
+      ]
+     }
+    },
+    "MethodResponses": [
+     {
+      "ResponseModels": {
+       "application/json": "Empty"
+      },
+      "ResponseParameters": {
+       "method.response.header.Access-Control-Allow-Origin": true
+      },
+      "StatusCode": "200"
+     }
+    ],
+    "ResourceId": {
+     "Ref": "reconcileainosapApiGatewayz9zd9d8sconfigD0FD9B37"
+    },
+    "RestApiId": {
+     "Ref": "reconcileainosapApiGatewayz9zd9d8s0077059F"
+    }
+   },
+   "Metadata": {
+    "aws:cdk:path": "ReconcileaiNoSapCdkStack/reconcileai_no_sapApiGatewayz9zd9d8s/Default/config/POST/Resource"
+   }
+  },
+  "reconcileainosapApiGatewayz9zd9d8sconfigPUT5A5AD0E3": {
+   "Type": "AWS::ApiGateway::Method",
+   "Properties": {
+    "AuthorizationType": "NONE",
+    "HttpMethod": "PUT",
+    "Integration": {
+     "Credentials": {
+      "Fn::GetAtt": [
+       "reconcileainosapApiGatewayS3Rolez9zd9d8s20081BA4",
+       "Arn"
+      ]
+     },
+     "IntegrationHttpMethod": "PUT",
+     "IntegrationResponses": [
+      {
+       "ResponseParameters": {
+        "method.response.header.Access-Control-Allow-Origin": "'*'"
+       },
+       "StatusCode": "200"
+      }
+     ],
+     "PassthroughBehavior": "WHEN_NO_TEMPLATES",
+     "RequestParameters": {
+      "integration.request.path.bucket": "method.request.querystring.bucket",
+      "integration.request.path.filename": "method.request.querystring.filename"
+     },
+     "Type": "AWS",
+     "Uri": {
+      "Fn::Join": [
+       "",
+       [
+        "arn:",
+        {
+         "Ref": "AWS::Partition"
+        },
+        ":apigateway:",
+        {
+         "Ref": "AWS::Region"
+        },
+        ":s3:path/reconcileaiz9zd9d8s/{filename}"
+       ]
+      ]
+     }
+    },
+    "MethodResponses": [
+     {
+      "ResponseModels": {
+       "application/json": "Empty"
+      },
+      "ResponseParameters": {
+       "method.response.header.Access-Control-Allow-Origin": true
+      },
+      "StatusCode": "200"
+     }
+    ],
+    "RequestParameters": {
+     "method.request.querystring.bucket": true,
+     "method.request.querystring.filename": true
+    },
+    "ResourceId": {
+     "Ref": "reconcileainosapApiGatewayz9zd9d8sconfigD0FD9B37"
+    },
+    "RestApiId": {
+     "Ref": "reconcileainosapApiGatewayz9zd9d8s0077059F"
+    }
+   },
+   "Metadata": {
+    "aws:cdk:path": "ReconcileaiNoSapCdkStack/reconcileai_no_sapApiGatewayz9zd9d8s/Default/config/PUT/Resource"
+   }
+  },
+  "reconcileainosapApiGatewayz9zd9d8sreconcileai2492D71C": {
+   "Type": "AWS::ApiGateway::Resource",
+   "Properties": {
+    "ParentId": {
+     "Fn::GetAtt": [
+      "reconcileainosapApiGatewayz9zd9d8s0077059F",
+      "RootResourceId"
+     ]
+    },
+    "PathPart": "reconcile-ai",
+    "RestApiId": {
+     "Ref": "reconcileainosapApiGatewayz9zd9d8s0077059F"
+    }
+   },
+   "Metadata": {
+    "aws:cdk:path": "ReconcileaiNoSapCdkStack/reconcileai_no_sapApiGatewayz9zd9d8s/Default/reconcile-ai/Resource"
+   }
+  },
+  "reconcileainosapApiGatewayz9zd9d8sreconcileaiOPTIONS52ED9D63": {
+   "Type": "AWS::ApiGateway::Method",
+   "Properties": {
+    "ApiKeyRequired": false,
+    "AuthorizationType": "NONE",
+    "HttpMethod": "OPTIONS",
+    "Integration": {
+     "IntegrationResponses": [
+      {
+       "ResponseParameters": {
+        "method.response.header.Access-Control-Allow-Headers": "'Content-Type,X-Amz-Date,Authorization,X-Api-Key,X-Amz-Security-Token'",
+        "method.response.header.Access-Control-Allow-Origin": "'*'",
+        "method.response.header.Access-Control-Allow-Methods": "'OPTIONS,GET,PUT,POST,DELETE,PATCH,HEAD'"
+       },
+       "StatusCode": "204"
+      }
+     ],
+     "RequestTemplates": {
+      "application/json": "{ statusCode: 200 }"
+     },
+     "Type": "MOCK"
+    },
+    "MethodResponses": [
+     {
+      "ResponseParameters": {
+       "method.response.header.Access-Control-Allow-Headers": true,
+       "method.response.header.Access-Control-Allow-Origin": true,
+       "method.response.header.Access-Control-Allow-Methods": true
+      },
+      "StatusCode": "204"
+     }
+    ],
+    "ResourceId": {
+     "Ref": "reconcileainosapApiGatewayz9zd9d8sreconcileai2492D71C"
+    },
+    "RestApiId": {
+     "Ref": "reconcileainosapApiGatewayz9zd9d8s0077059F"
+    }
+   },
+   "Metadata": {
+    "aws:cdk:path": "ReconcileaiNoSapCdkStack/reconcileai_no_sapApiGatewayz9zd9d8s/Default/reconcile-ai/OPTIONS/Resource"
+   }
+  },
+  "reconcileainosapApiGatewayz9zd9d8sreconcileaiPOSTApiPermissionReconcileaiNoSapCdkStackreconcileainosapApiGatewayz9zd9d8s5DB5B1D2POSTreconcileai3AC28795": {
+   "Type": "AWS::Lambda::Permission",
+   "Properties": {
+    "Action": "lambda:InvokeFunction",
+    "FunctionName": {
+     "Fn::GetAtt": [
+      "reconcileainosapAgentLambdaqkra9hl35w19c4248294C",
+      "Arn"
+     ]
+    },
+    "Principal": "apigateway.amazonaws.com",
+    "SourceArn": {
+     "Fn::Join": [
+      "",
+      [
+       "arn:",
+       {
+        "Ref": "AWS::Partition"
+       },
+       ":execute-api:",
+       {
+        "Ref": "AWS::Region"
+       },
+       ":",
+       {
+        "Ref": "AWS::AccountId"
+       },
+       ":",
+       {
+        "Ref": "reconcileainosapApiGatewayz9zd9d8s0077059F"
+       },
+       "/",
+       {
+        "Ref": "reconcileainosapApiGatewayz9zd9d8sDeploymentStagedevD7A60340"
+       },
+       "/POST/reconcile-ai"
+      ]
+     ]
+    }
+   },
+   "Metadata": {
+    "aws:cdk:path": "ReconcileaiNoSapCdkStack/reconcileai_no_sapApiGatewayz9zd9d8s/Default/reconcile-ai/POST/ApiPermission.ReconcileaiNoSapCdkStackreconcileainosapApiGatewayz9zd9d8s5DB5B1D2.POST..reconcile-ai"
+   }
+  },
+  "reconcileainosapApiGatewayz9zd9d8sreconcileaiPOSTApiPermissionTestReconcileaiNoSapCdkStackreconcileainosapApiGatewayz9zd9d8s5DB5B1D2POSTreconcileaiA410A004": {
+   "Type": "AWS::Lambda::Permission",
+   "Properties": {
+    "Action": "lambda:InvokeFunction",
+    "FunctionName": {
+     "Fn::GetAtt": [
+      "reconcileainosapAgentLambdaqkra9hl35w19c4248294C",
+      "Arn"
+     ]
+    },
+    "Principal": "apigateway.amazonaws.com",
+    "SourceArn": {
+     "Fn::Join": [
+      "",
+      [
+       "arn:",
+       {
+        "Ref": "AWS::Partition"
+       },
+       ":execute-api:",
+       {
+        "Ref": "AWS::Region"
+       },
+       ":",
+       {
+        "Ref": "AWS::AccountId"
+       },
+       ":",
+       {
+        "Ref": "reconcileainosapApiGatewayz9zd9d8s0077059F"
+       },
+       "/test-invoke-stage/POST/reconcile-ai"
+      ]
+     ]
+    }
+   },
+   "Metadata": {
+    "aws:cdk:path": "ReconcileaiNoSapCdkStack/reconcileai_no_sapApiGatewayz9zd9d8s/Default/reconcile-ai/POST/ApiPermission.Test.ReconcileaiNoSapCdkStackreconcileainosapApiGatewayz9zd9d8s5DB5B1D2.POST..reconcile-ai"
+   }
+  },
+  "reconcileainosapApiGatewayz9zd9d8sreconcileaiPOSTC9751BA5": {
+   "Type": "AWS::ApiGateway::Method",
+   "Properties": {
+    "AuthorizationType": "NONE",
+    "HttpMethod": "POST",
+    "Integration": {
+     "IntegrationHttpMethod": "POST",
+     "IntegrationResponses": [
+      {
+       "ResponseParameters": {
+        "method.response.header.Access-Control-Allow-Origin": "'*'"
+       },
+       "ResponseTemplates": {
+        "application/json": "$input.json('$')"
+       },
+       "StatusCode": "200"
+      }
+     ],
+     "PassthroughBehavior": "WHEN_NO_TEMPLATES",
+     "RequestTemplates": {
+      "application/json": "$input.json('$')"
+     },
+     "Type": "AWS",
+     "Uri": {
+      "Fn::Join": [
+       "",
+       [
+        "arn:",
+        {
+         "Ref": "AWS::Partition"
+        },
+        ":apigateway:",
+        {
+         "Ref": "AWS::Region"
+        },
+        ":lambda:path/2015-03-31/functions/",
+        {
+         "Fn::GetAtt": [
+          "reconcileainosapAgentLambdaqkra9hl35w19c4248294C",
+          "Arn"
+         ]
+        },
+        "/invocations"
+       ]
+      ]
+     }
+    },
+    "MethodResponses": [
+     {
+      "ResponseModels": {
+       "application/json": "Empty"
+      },
+      "ResponseParameters": {
+       "method.response.header.Access-Control-Allow-Origin": true
+      },
+      "StatusCode": "200"
+     }
+    ],
+    "ResourceId": {
+     "Ref": "reconcileainosapApiGatewayz9zd9d8sreconcileai2492D71C"
+    },
+    "RestApiId": {
+     "Ref": "reconcileainosapApiGatewayz9zd9d8s0077059F"
+    }
+   },
+   "Metadata": {
+    "aws:cdk:path": "ReconcileaiNoSapCdkStack/reconcileai_no_sapApiGatewayz9zd9d8s/Default/reconcile-ai/POST/Resource"
+   }
+  },
+  "reconcileainosapApiGatewayS3Rolez9zd9d8s20081BA4": {
+   "Type": "AWS::IAM::Role",
+   "Properties": {
+    "AssumeRolePolicyDocument": {
+     "Statement": [
+      {
+       "Action": "sts:AssumeRole",
+       "Effect": "Allow",
+       "Principal": {
+        "Service": "apigateway.amazonaws.com"
+       }
+      }
+     ],
+     "Version": "2012-10-17"
+    },
+    "Description": "Allows API Gateway to PUT objects into the ReconcileAI S3 bucket"
+   },
+   "Metadata": {
+    "aws:cdk:path": "ReconcileaiNoSapCdkStack/reconcileai_no_sapApiGatewayS3Rolez9zd9d8s/Resource"
+   }
+  },
+  "reconcileainosapApiGatewayS3Rolez9zd9d8sDefaultPolicyD74472A2": {
+   "Type": "AWS::IAM::Policy",
+   "Properties": {
+    "PolicyDocument": {
+     "Statement": [
+      {
+       "Action": [
+        "s3:Abort*",
+        "s3:PutObject",
+        "s3:PutObjectLegalHold",
+        "s3:PutObjectRetention",
+        "s3:PutObjectTagging",
+        "s3:PutObjectVersionTagging"
+       ],
+       "Effect": "Allow",
+       "Resource": {
+        "Fn::Join": [
+         "",
+         [
+          {
+           "Fn::GetAtt": [
+            "ReconcileaiAppBucketz9zd9d8sA8FFE751",
+            "Arn"
+           ]
+          },
+          "/*"
+         ]
+        ]
+       }
+      }
+     ],
+     "Version": "2012-10-17"
+    },
+    "PolicyName": "reconcileainosapApiGatewayS3Rolez9zd9d8sDefaultPolicyD74472A2",
+    "Roles": [
+     {
+      "Ref": "reconcileainosapApiGatewayS3Rolez9zd9d8s20081BA4"
+     }
+    ]
+   },
+   "Metadata": {
+    "aws:cdk:path": "ReconcileaiNoSapCdkStack/reconcileai_no_sapApiGatewayS3Rolez9zd9d8s/DefaultPolicy/Resource"
+   }
+  },
+  "reconcileainosapEC2Rolez9zd9d8s6E11C757": {
+   "Type": "AWS::IAM::Role",
+   "Properties": {
+    "AssumeRolePolicyDocument": {
+     "Statement": [
+      {
+       "Action": "sts:AssumeRole",
+       "Effect": "Allow",
+       "Principal": {
+        "Service": "ec2.amazonaws.com"
+       }
+      }
+     ],
+     "Version": "2012-10-17"
+    },
+    "ManagedPolicyArns": [
+     {
+      "Fn::Join": [
+       "",
+       [
+        "arn:",
+        {
+         "Ref": "AWS::Partition"
+        },
+        ":iam::aws:policy/AmazonS3FullAccess"
+       ]
+      ]
+     },
+     {
+      "Fn::Join": [
+       "",
+       [
+        "arn:",
+        {
+         "Ref": "AWS::Partition"
+        },
+        ":iam::aws:policy/AdministratorAccess"
+       ]
+      ]
+     },
+     {
+      "Fn::Join": [
+       "",
+       [
+        "arn:",
+        {
+         "Ref": "AWS::Partition"
+        },
+        ":iam::aws:policy/AmazonEC2FullAccess"
+       ]
+      ]
+     }
+    ]
+   },
+   "Metadata": {
+    "aws:cdk:path": "ReconcileaiNoSapCdkStack/reconcileai_no_sapEC2Rolez9zd9d8s/Resource"
+   }
+  },
+  "reconcileainosapEC2SecurityGroupz9zd9d8sBE3BDDE5": {
+   "Type": "AWS::EC2::SecurityGroup",
+   "Properties": {
+    "GroupDescription": "Security group for frontend build EC2",
+    "SecurityGroupEgress": [
+     {
+      "CidrIp": "0.0.0.0/0",
+      "Description": "Allow all outbound traffic by default",
+      "IpProtocol": "-1"
+     }
+    ],
+    "VpcId": {
+     "Ref": "reconcileainosapVPCz9zd9d8s8F5C2A0A"
+    }
+   },
+   "Metadata": {
+    "aws:cdk:path": "ReconcileaiNoSapCdkStack/reconcileai_no_sapEC2SecurityGroupz9zd9d8s/Resource"
+   }
+  },
+  "reconcileainosapFrontendBuildEC2z9zd9d8sInstanceProfile083BD0B6": {
+   "Type": "AWS::IAM::InstanceProfile",
+   "Properties": {
+    "Roles": [
+     {
+      "Ref": "reconcileainosapEC2Rolez9zd9d8s6E11C757"
+     }
+    ]
+   },
+   "DependsOn": [
+    "reconcileainosapApiGatewayz9zd9d8sconfigOPTIONS8E7B43E5",
+    "reconcileainosapApiGatewayz9zd9d8sconfigPOSTApiPermissionReconcileaiNoSapCdkStackreconcileainosapApiGatewayz9zd9d8s5DB5B1D2POSTconfigCDC136DE",
+    "reconcileainosapApiGatewayz9zd9d8sconfigPOSTApiPermissionTestReconcileaiNoSapCdkStackreconcileainosapApiGatewayz9zd9d8s5DB5B1D2POSTconfigB7E2E8EA",
+    "reconcileainosapApiGatewayz9zd9d8sconfigPOSTDDC0E3A0",
+    "reconcileainosapApiGatewayz9zd9d8sconfigPUT5A5AD0E3",
+    "reconcileainosapApiGatewayz9zd9d8sconfigD0FD9B37",
+    "reconcileainosapApiGatewayz9zd9d8sOPTIONS008A94F6",
+    "reconcileainosapApiGatewayz9zd9d8sreconcileaiOPTIONS52ED9D63",
+    "reconcileainosapApiGatewayz9zd9d8sreconcileaiPOSTApiPermissionReconcileaiNoSapCdkStackreconcileainosapApiGatewayz9zd9d8s5DB5B1D2POSTreconcileai3AC28795",
+    "reconcileainosapApiGatewayz9zd9d8sreconcileaiPOSTApiPermissionTestReconcileaiNoSapCdkStackreconcileainosapApiGatewayz9zd9d8s5DB5B1D2POSTreconcileaiA410A004",
+    "reconcileainosapApiGatewayz9zd9d8sreconcileaiPOSTC9751BA5",
+    "reconcileainosapApiGatewayz9zd9d8sreconcileai2492D71C",
+    "reconcileainosapApiGatewayz9zd9d8sDeployment48D7C75C75c5d9f1286d7aaf33ffe07cb4955655",
+    "reconcileainosapApiGatewayz9zd9d8sDeploymentStagedevD7A60340",
+    "reconcileainosapApiGatewayz9zd9d8s0077059F",
+    "ReconcileaiDeployFrontendFolderz9zd9d8sAwsCliLayerF1E800E7",
+    "ReconcileaiDeployFrontendFolderz9zd9d8sCustomResourceB6B6EAB6"
+   ],
+   "Metadata": {
+    "aws:cdk:path": "ReconcileaiNoSapCdkStack/reconcileai_no_sapFrontendBuildEC2z9zd9d8s/InstanceProfile"
+   }
+  },
+  "reconcileainosapFrontendBuildEC2z9zd9d8sFC52C2A4": {
+   "Type": "AWS::EC2::Instance",
+   "Properties": {
+    "AvailabilityZone": {
+     "Fn::Select": [
+      0,
+      {
+       "Fn::GetAZs": ""
+      }
+     ]
+    },
+    "BlockDeviceMappings": [
+     {
+      "DeviceName": "/dev/xvda",
+      "Ebs": {
+       "DeleteOnTermination": true,
+       "Encrypted": true,
+       "VolumeSize": 30,
+       "VolumeType": "gp3"
+      }
+     }
+    ],
+    "IamInstanceProfile": {
+     "Ref": "reconcileainosapFrontendBuildEC2z9zd9d8sInstanceProfile083BD0B6"
+    },
+    "ImageId": {
+     "Ref": "SsmParameterValueawsserviceamiamazonlinuxlatestal2023amikernel61x8664C96584B6F00A464EAD1953AFF4B05118Parameter"
+    },
+    "InstanceType": "t3.medium",
+    "SecurityGroupIds": [
+     {
+      "Fn::GetAtt": [
+       "reconcileainosapEC2SecurityGroupz9zd9d8sBE3BDDE5",
+       "GroupId"
+      ]
+     }
+    ],
+    "SubnetId": {
+     "Ref": "reconcileainosapVPCz9zd9d8sPublicSubnetSubnet1SubnetBFD77CFF"
+    },
+    "Tags": [
+     {
+      "Key": "Name",
+      "Value": "ReconcileaiNoSapCdkStack/reconcileai_no_sapFrontendBuildEC2z9zd9d8s"
+     }
+    ],
+    "UserData": {
+     "Fn::Base64": {
+      "Fn::Join": [
+       "",
+       [
+        "#!/bin/bash\n#!/bin/bash\nset -e\necho '🚀 Starting frontend build process...'\n\n# ── Install prerequisites ─────────────────────────────────────────\ncommand_exists() { command -v \"$1\" &> /dev/null; }\n\nif ! command_exists unzip; then\n    sudo yum install -y unzip --allowerasing\nfi\n\nif ! command_exists node || ! command_exists npm; then\n    curl -fsSL https://rpm.nodesource.com/setup_20.x | sudo bash -\n    sudo yum install -y nodejs --allowerasing\nfi\n\nif ! command_exists aws; then\n    curl 'https://awscli.amazonaws.com/awscli-exe-linux-x86_64.zip' -o 'awscliv2.zip'\n    unzip awscliv2.zip\n    sudo ./aws/install\n    rm -rf aws awscliv2.zip\nfi\n\n# ── Set variables ─────────────────────────────────────────────────\nBUCKET_NAME='reconcileai-frontz9zd9d8s'\nREGION='",
+        {
+         "Ref": "AWS::Region"
+        },
+        "'\nENV_VAR_NAME='VITE_RECONCILEAI_DEV_ENV_NO_SAP_BASE_URL'\nWORK_DIR=~/react-app\nZIP_FILE='build.zip'\nS3_SOURCE_PATH=\"s3://${BUCKET_NAME}/${ZIP_FILE}\"\n\n# ── Get API Gateway base URL from the CDK token resolved at deploy ─\n# api_base_url is injected by CDK as a resolved CloudFormation value\n# We write it into a temp file during CDK synth via user_data string\nAPI_URL='",
+        {
+         "Fn::Select": [
+          0,
+          {
+           "Fn::Split": [
+            "/dev/",
+            {
+             "Fn::Join": [
+              "",
+              [
+               "https://",
+               {
+                "Ref": "reconcileainosapApiGatewayz9zd9d8s0077059F"
+               },
+               ".execute-api.",
+               {
+                "Ref": "AWS::Region"
+               },
+               ".",
+               {
+                "Ref": "AWS::URLSuffix"
+               },
+               "/",
+               {
+                "Ref": "reconcileainosapApiGatewayz9zd9d8sDeploymentStagedevD7A60340"
+               },
+               "/"
+              ]
+             ]
+            }
+           ]
+          }
+         ]
+        },
+        "'\n\necho \"Using API URL: $API_URL\"\n\n# ── Download and unzip source code ───────────────────────────────\nmkdir -p \"$WORK_DIR\"\ncd \"$WORK_DIR\"\necho '📥 Downloading source zip from S3...'\naws s3 cp \"$S3_SOURCE_PATH\" . --region \"$REGION\"\necho '📂 Unzipping...'\nunzip -o \"$ZIP_FILE\"\nrm \"$ZIP_FILE\"\n\n# ── Update .env with the real API Gateway URL ─────────────────────\nENV_FILE='.env'\ntouch \"$ENV_FILE\"\necho '🛠 Updating .env...'\nif grep -q \"^$ENV_VAR_NAME=\" \"$ENV_FILE\"; then\n    sed -i \"s|^$ENV_VAR_NAME=.*|$ENV_VAR_NAME=$API_URL|\" \"$ENV_FILE\"\nelse\n    echo \"$ENV_VAR_NAME=$API_URL\" >> \"$ENV_FILE\"\nfi\n\necho '✅ .env updated:'\ncat \"$ENV_FILE\"\n\n# ── Install dependencies and build ────────────────────────────────\necho '📦 Running npm install...'\nnpm install\nnpm install react-pdf\necho '⚙️ Running npm run build...'\nnpm run build\n\n# ── Zip the dist/ output and upload back to S3 ───────────────────\necho '📦 Zipping dist/ folder...'\ncd dist\nzip -r ../build.zip .\ncd ..\necho '☁️ Uploading built zip back to S3 (overwriting source zip)...'\naws s3 cp build.zip \"$S3_SOURCE_PATH\" --region \"$REGION\"\necho '✅ Build zip uploaded to S3 successfully!'\n\n# ── Self-terminate ────────────────────────────────────────────────\nTOKEN=$(curl -s -X PUT 'http://169.254.169.254/latest/api/token' -H 'X-aws-ec2-metadata-token-ttl-seconds: 21600')\nINSTANCE_ID=$(curl -s -H \"X-aws-ec2-metadata-token: $TOKEN\" http://169.254.169.254/latest/meta-data/instance-id)\necho \"🛑 Terminating instance $INSTANCE_ID...\"\naws ec2 terminate-instances --instance-ids \"$INSTANCE_ID\" --region '",
+        {
+         "Ref": "AWS::Region"
+        },
+        "'"
+       ]
+      ]
+     }
+    }
+   },
+   "DependsOn": [
+    "reconcileainosapApiGatewayz9zd9d8sconfigOPTIONS8E7B43E5",
+    "reconcileainosapApiGatewayz9zd9d8sconfigPOSTApiPermissionReconcileaiNoSapCdkStackreconcileainosapApiGatewayz9zd9d8s5DB5B1D2POSTconfigCDC136DE",
+    "reconcileainosapApiGatewayz9zd9d8sconfigPOSTApiPermissionTestReconcileaiNoSapCdkStackreconcileainosapApiGatewayz9zd9d8s5DB5B1D2POSTconfigB7E2E8EA",
+    "reconcileainosapApiGatewayz9zd9d8sconfigPOSTDDC0E3A0",
+    "reconcileainosapApiGatewayz9zd9d8sconfigPUT5A5AD0E3",
+    "reconcileainosapApiGatewayz9zd9d8sconfigD0FD9B37",
+    "reconcileainosapApiGatewayz9zd9d8sOPTIONS008A94F6",
+    "reconcileainosapApiGatewayz9zd9d8sreconcileaiOPTIONS52ED9D63",
+    "reconcileainosapApiGatewayz9zd9d8sreconcileaiPOSTApiPermissionReconcileaiNoSapCdkStackreconcileainosapApiGatewayz9zd9d8s5DB5B1D2POSTreconcileai3AC28795",
+    "reconcileainosapApiGatewayz9zd9d8sreconcileaiPOSTApiPermissionTestReconcileaiNoSapCdkStackreconcileainosapApiGatewayz9zd9d8s5DB5B1D2POSTreconcileaiA410A004",
+    "reconcileainosapApiGatewayz9zd9d8sreconcileaiPOSTC9751BA5",
+    "reconcileainosapApiGatewayz9zd9d8sreconcileai2492D71C",
+    "reconcileainosapApiGatewayz9zd9d8sDeployment48D7C75C75c5d9f1286d7aaf33ffe07cb4955655",
+    "reconcileainosapApiGatewayz9zd9d8sDeploymentStagedevD7A60340",
+    "reconcileainosapApiGatewayz9zd9d8s0077059F",
+    "reconcileainosapEC2Rolez9zd9d8s6E11C757",
+    "ReconcileaiDeployFrontendFolderz9zd9d8sAwsCliLayerF1E800E7",
+    "ReconcileaiDeployFrontendFolderz9zd9d8sCustomResourceB6B6EAB6"
+   ],
+   "Metadata": {
+    "aws:cdk:path": "ReconcileaiNoSapCdkStack/reconcileai_no_sapFrontendBuildEC2z9zd9d8s/Resource"
+   }
+  },
+  "reconcileainosapAmplifyRolez9zd9d8s29C19CE3": {
+   "Type": "AWS::IAM::Role",
+   "Properties": {
+    "AssumeRolePolicyDocument": {
+     "Statement": [
+      {
+       "Action": "sts:AssumeRole",
+       "Effect": "Allow",
+       "Principal": {
+        "Service": "amplify.amazonaws.com"
+       }
+      }
+     ],
+     "Version": "2012-10-17"
+    },
+    "Description": "Allows Amplify to read the frontend zip from S3",
+    "ManagedPolicyArns": [
+     {
+      "Fn::Join": [
+       "",
+       [
+        "arn:",
+        {
+         "Ref": "AWS::Partition"
+        },
+        ":iam::aws:policy/AdministratorAccess-Amplify"
+       ]
+      ]
+     }
+    ]
+   },
+   "Metadata": {
+    "aws:cdk:path": "ReconcileaiNoSapCdkStack/reconcileai_no_sapAmplifyRolez9zd9d8s/Resource"
+   }
+  },
+  "reconcileainosapAmplifyRolez9zd9d8sDefaultPolicy241FF572": {
+   "Type": "AWS::IAM::Policy",
+   "Properties": {
+    "PolicyDocument": {
+     "Statement": [
+      {
+       "Action": [
+        "s3:GetBucket*",
+        "s3:GetObject*",
+        "s3:List*"
+       ],
+       "Effect": "Allow",
+       "Resource": [
+        {
+         "Fn::GetAtt": [
+          "ReconcileaiFrontendBucketz9zd9d8s4FB1DCA8",
+          "Arn"
+         ]
+        },
+        {
+         "Fn::Join": [
+          "",
+          [
+           {
+            "Fn::GetAtt": [
+             "ReconcileaiFrontendBucketz9zd9d8s4FB1DCA8",
+             "Arn"
+            ]
+           },
+           "/*"
+          ]
+         ]
+        }
+       ]
+      }
+     ],
+     "Version": "2012-10-17"
+    },
+    "PolicyName": "reconcileainosapAmplifyRolez9zd9d8sDefaultPolicy241FF572",
+    "Roles": [
+     {
+      "Ref": "reconcileainosapAmplifyRolez9zd9d8s29C19CE3"
+     }
+    ]
+   },
+   "Metadata": {
+    "aws:cdk:path": "ReconcileaiNoSapCdkStack/reconcileai_no_sapAmplifyRolez9zd9d8s/DefaultPolicy/Resource"
+   }
+  },
+  "reconcileainosapAmplifyAppz9zd9d8s3B708F1C": {
+   "Type": "AWS::Amplify::App",
+   "Properties": {
+    "BasicAuthConfig": {
+     "EnableBasicAuth": false
+    },
+    "BuildSpec": "{\n  \"version\": \"1.0\",\n  \"frontend\": {\n    \"phases\": {\n      \"build\": {\n        \"commands\": []\n      }\n    },\n    \"artifacts\": {\n      \"baseDirectory\": \"/\",\n      \"files\": [\n        \"**/*\"\n      ]\n    },\n    \"cache\": {\n      \"paths\": []\n    }\n  }\n}",
+    "CustomRules": [
+     {
+      "Source": "</^[^.]+$|\\.(?!(css|gif|ico|jpg|js|png|txt|svg|woff|woff2|ttf|map|json)$)([^.]+$)/>",
+      "Status": "200",
+      "Target": "/index.html"
+     }
+    ],
+    "EnvironmentVariables": [
+     {
+      "Name": "VITE_RECONCILEAI_DEV_ENV_NO_SAP_BASE_URL",
+      "Value": {
+       "Fn::Join": [
+        "",
+        [
+         "https://",
+         {
+          "Ref": "reconcileainosapApiGatewayz9zd9d8s0077059F"
+         },
+         ".execute-api.",
+         {
+          "Ref": "AWS::Region"
+         },
+         ".",
+         {
+          "Ref": "AWS::URLSuffix"
+         },
+         "/",
+         {
+          "Ref": "reconcileainosapApiGatewayz9zd9d8sDeploymentStagedevD7A60340"
+         },
+         "/"
+        ]
+       ]
+      }
+     }
+    ],
+    "IAMServiceRole": {
+     "Fn::GetAtt": [
+      "reconcileainosapAmplifyRolez9zd9d8s29C19CE3",
+      "Arn"
+     ]
+    },
+    "Name": "reconcileai_no_sap-frontend-z9zd9d8s",
+    "Platform": "WEB"
+   },
+   "Metadata": {
+    "aws:cdk:path": "ReconcileaiNoSapCdkStack/reconcileai_no_sapAmplifyAppz9zd9d8s/Resource"
+   }
+  },
+  "reconcileainosapAmplifyAppz9zd9d8smain9F9D1264": {
+   "Type": "AWS::Amplify::Branch",
+   "Properties": {
+    "AppId": {
+     "Fn::GetAtt": [
+      "reconcileainosapAmplifyAppz9zd9d8s3B708F1C",
+      "AppId"
+     ]
+    },
+    "BranchName": "main",
+    "EnableAutoBuild": false,
+    "EnablePullRequestPreview": true
+   },
+   "Metadata": {
+    "aws:cdk:path": "ReconcileaiNoSapCdkStack/reconcileai_no_sapAmplifyAppz9zd9d8s/main/Resource"
+   }
+  },
+  "reconcileainosapAmplifyTriggerDeployz9zd9d8sE5C99BAA": {
+   "Type": "Custom::AWS",
+   "Properties": {
+    "ServiceToken": {
+     "Fn::GetAtt": [
+      "AWS679f53fac002430cb0da5b7982bd22872D164C4C",
+      "Arn"
+     ]
+    },
+    "Create": {
+     "Fn::Join": [
+      "",
+      [
+       "{\"action\":\"startDeployment\",\"service\":\"Amplify\",\"parameters\":{\"appId\":\"",
+       {
+        "Fn::GetAtt": [
+         "reconcileainosapAmplifyAppz9zd9d8s3B708F1C",
+         "AppId"
+        ]
+       },
+       "\",\"branchName\":\"main\",\"sourceUrl\":\"s3://reconcileai-frontz9zd9d8s/build.zip\"},\"physicalResourceId\":{\"id\":\"",
+       {
+        "Fn::GetAtt": [
+         "reconcileainosapAmplifyAppz9zd9d8s3B708F1C",
+         "AppId"
+        ]
+       },
+       "-initial-deploy\"}}"
+      ]
+     ]
+    },
+    "Update": {
+     "Fn::Join": [
+      "",
+      [
+       "{\"action\":\"startDeployment\",\"service\":\"Amplify\",\"parameters\":{\"appId\":\"",
+       {
+        "Fn::GetAtt": [
+         "reconcileainosapAmplifyAppz9zd9d8s3B708F1C",
+         "AppId"
+        ]
+       },
+       "\",\"branchName\":\"main\",\"sourceUrl\":\"s3://reconcileai-frontz9zd9d8s/build.zip\"},\"physicalResourceId\":{\"id\":\"",
+       {
+        "Fn::GetAtt": [
+         "reconcileainosapAmplifyAppz9zd9d8s3B708F1C",
+         "AppId"
+        ]
+       },
+       "-initial-deploy\"}}"
+      ]
+     ]
+    },
+    "InstallLatestAwsSdk": false
+   },
+   "DependsOn": [
+    "reconcileainosapAmplifyAppz9zd9d8smain9F9D1264",
+    "reconcileainosapAmplifyTriggerDeployz9zd9d8sCustomResourcePolicy960709CC",
+    "ReconcileaiDeployFrontendFolderz9zd9d8sAwsCliLayerF1E800E7",
+    "ReconcileaiDeployFrontendFolderz9zd9d8sCustomResourceB6B6EAB6"
+   ],
+   "UpdateReplacePolicy": "Delete",
+   "DeletionPolicy": "Delete",
+   "Metadata": {
+    "aws:cdk:path": "ReconcileaiNoSapCdkStack/reconcileai_no_sapAmplifyTriggerDeployz9zd9d8s/Resource/Default"
+   }
+  },
+  "reconcileainosapAmplifyTriggerDeployz9zd9d8sCustomResourcePolicy960709CC": {
+   "Type": "AWS::IAM::Policy",
+   "Properties": {
+    "PolicyDocument": {
+     "Statement": [
+      {
+       "Action": [
+        "amplify:GetJob",
+        "amplify:StartDeployment"
+       ],
+       "Effect": "Allow",
+       "Resource": "*"
+      },
+      {
+       "Action": "s3:*",
+       "Effect": "Allow",
+       "Resource": [
+        {
+         "Fn::GetAtt": [
+          "ReconcileaiFrontendBucketz9zd9d8s4FB1DCA8",
+          "Arn"
+         ]
+        },
+        {
+         "Fn::Join": [
+          "",
+          [
+           {
+            "Fn::GetAtt": [
+             "ReconcileaiFrontendBucketz9zd9d8s4FB1DCA8",
+             "Arn"
+            ]
+           },
+           "/*"
+          ]
+         ]
+        }
+       ]
+      }
+     ],
+     "Version": "2012-10-17"
+    },
+    "PolicyName": "reconcileainosapAmplifyTriggerDeployz9zd9d8sCustomResourcePolicy960709CC",
+    "Roles": [
+     {
+      "Ref": "AWS679f53fac002430cb0da5b7982bd2287ServiceRoleC1EA0FF2"
+     }
+    ]
+   },
+   "DependsOn": [
+    "reconcileainosapAmplifyAppz9zd9d8smain9F9D1264",
+    "ReconcileaiDeployFrontendFolderz9zd9d8sAwsCliLayerF1E800E7",
+    "ReconcileaiDeployFrontendFolderz9zd9d8sCustomResourceB6B6EAB6"
+   ],
+   "Metadata": {
+    "aws:cdk:path": "ReconcileaiNoSapCdkStack/reconcileai_no_sapAmplifyTriggerDeployz9zd9d8s/CustomResourcePolicy/Resource"
+   }
+  },
+  "CDKMetadata": {
+   "Type": "AWS::CDK::Metadata",
+   "Properties": {
+    "Analytics": "v2:deflate64:H4sIAAAAAAAA/+0bXXPbuPG3hI83jC6XtDdTP1WWnVRTO9ZITh6q0XggcEUhBgEUAKUwHP73G3yR0Idd++zk5FQPtqjFYrFf2AUXq7e9t39/06vfvEJr9Rpnt68pmffqiUb4NkVrdVMDfturPws8rRNMMpmcJL8kaULESHLNMafJSTIUq7/dXDFaJWlSoK/9b8pjqXLOQA84W5C8lEgTzpKTaZ0wVMAGynUlDGBUzinBSWpXukTq1iI16T0zJFkhDTtTZs0sHSzY59EgdUQndta0TtAKEYrmhBJd/YezQHUl8DDzz4bUKeX41n8vkHBEhuKKXaCS4WVyomUJRg+r3wdb6EgpkrOhWP3ezzIJSl2xgQQvvZfnILiwjGTZR6Q/IA1rVCUn0+SXZHYwDB4GF3eqybqYcyzzNOalhms0p9DBO1hfKY6JJdwim4fz4ch8dNRT79PP7rELRNUB2OJpbBwOJwfChvPCIdMgGbQ+5GKf/9bXGuFlAUynE8ClJLr6IHkpprVhNixFKV/3Kb0q9ZyXLAubJgOFJRGbkmfZeW7YGZcU3G4wlrF0fPy4j7AX+A7KQ/YE0nfw7HZqLPsOwC+bDpnSiGGY1gnxjz7XOAPiJWEwLFAe2ds/zY3lzmBFMCib5zL7/LHLXStOS/+lmaWJ5LTNajEvHlYqkGdIo24hFxNUclLvTZyNV+GnduLUK+749+f/ZmGLOW9oUpmpXu1MEfbRtsfFbnGf3fzxpXFLnJ1GVFNjwTlSEHlkRzQDCmY1cwwD7NYNgcTjDzNgmiwIhENbUVJN+t9aRMGl9kPCOhCt+hiDUmRu/NJjSSj4CtERpwRXyYkRVUtebfus8lkxHNBiRwaWExMfa/8UbSgH+AxSWRHqZFFS2n71e+4LlzGoSROBJCpAg7TLvEcFoVXYSYTlFMwWGHNtQ2VfCEowiozjVt2cVgqjDzUGlI3BTjhF+NYK5jW+QCXVhnB7Gm1cDMJIQzbRXHZRIfPGizb/nnCCJVgjIdoemR2Vc4ZlJTT4kBbco/NB9a5Xn5b41p0QSs3PjEPA1fwLYONoLhDOLUbEw93GXDkFQxtE1zBXRMO5lFyecVya/OGp+KEhy+DrxpCNPw9mBnPp4qSN45Bdgl7yzDrSh/PrJE1Gn+z/q8m18SuPdSVJTpiKUwBk/wKUgVRdZH2onD5iDrgMGefZ2dmKI63VCvKVGIeM37zMK5d617NDqudQ+zsKNUw/YfYsdUNOO9PaW6a1YPw1YrlFf+jSbsJEIw3GQx7H9+7kwPYpUvDYvDYzO+amzkBQXhl6fpWzFpAipUCrXt98NClFxTxDvXqwYBeoghB/0omNLpqz9yWzYXdaJ2VJwoGPGtwuFAJbEclZtHUc3VEpBVdhH2hSAC8DRnQoKKDgspqQb220FEsoQCLqg000tD/f7J4tAnBBKKhKaSgCZzyPYzbmWSC9RCyjbRaRJTMMx0e2S9Ao684bZl/N9g+FM9yGynY1siP4nSra4nrhrRKfue5WzFHGo4xHGXdkPIawo1scZTzK+IJknKXReex/RrAXH63OY5E2LI2y7CIW3x65D8y8uwbZs9CWEXdkuKt21k3ZlPJx9ZhnNMfLGtxxnkcbK/2pDXaxLelRRwcxuGsXW7kIWSGNX+L31msj1WBeCKRNEXTs1KJavfzQeVaCEciCKMN2kxJU9Ooxp6YUjJQqC8hOK2NvIQnDRCDax5iXrRc6HDOhj6NrlqRADOWQ2RIL8XcVMazqy3Bx4tV7zUdhiVBTm9Z+1N4uDRklDNqx1jL3Dt5P9ymjP1A5f178lzX4BJXuev/DlZz+JAPfdycdjfMSVP0Mij1Y2e64zT84Pr+nc/+le/H7ecbMNSxRSP0VkOEsTLjmYx46NSI6u+Asiy5z4jz+dLCKYJ3r7SXwKJ6PdA342az9jG7zf6rBg2fwr5H0yQpwb1o2uMWtPiPJTdWuSSnPVa++8NUxU2L0jx9R9NL87EDLVli1STHPGdG8V5selBHn1LwGurwyBsxXIKvk5K1pjlFqzWUWori5dGcXwHK9DK/78N+SSDgjOen6Mzzwgq9BYmSKwxvwSVXMOd3G/iREjN2YwgVdTEjOPolzZhpfu4Y/28vI+pQgBbZMAQUiNBAs28Yai+5booKoaXgYUALMN70s31O+tpRQVhCH62WPqe6DTaRoOc6BgTQdt4Cl6Xvw7JYbK0aVnDAQGWmTuyZVlpRymVr2akd6b+HBoUbkHcB1a3xGtIydwdFpUiRI7po7e/UYlO4LYonbFiXTzDKSsKAkX+oru5ZTkmlO2dOvEnereFDb+xLOJaZNIiKlNMoh8t49cknH1pY3e2bTrvFir1KQIC0ZjQjr0DeiwTW/4DnBiJqO243SwKHDXUNX130yMQq1qgig4A2bmnZeYGDpGBQvJYbQDzNLndWmtdG9HQq1Pq2FG/MAwjTkMu6I45GblHrJJflmioPxt7arOYDs/LabrbFW+zdUYxcZun2/H9+UPw1LY1CCM+XPtibql2rQFcekHx6Fjr9QHAvNrpcbVB5LJD0q68cp61EyXPIM2rbIZxXsgZQPUFqXdkHp7ZHD1cJxg/y0G8TmIke3TUbT2vRmd+lLIL0cIdk1l94zGg4IllCTokJQsqhsD2Zf2F9snErE8LJp2uXSQak0L9rV/e3Po1pD41W36I0kX5EMpEmxqe0MNamXsNz3h97YS70btFaYkl5/rQaU2Jumae1+moMtuZvgFMribCxhVr8qtSjtb8haJTfpm9eIiiXqvXn1T98r+6v59Frxg3VfiO5C0anHvdI06ajSS85+fdf77bfeP159UYS89td8PX/P9Adq1oXN/TkAAA=="
+   },
+   "Metadata": {
+    "aws:cdk:path": "ReconcileaiNoSapCdkStack/CDKMetadata/Default"
+   },
+   "Condition": "CDKMetadataAvailable"
+  }
+ },
+ "Outputs": {
+  "reconcileainosapApiGatewayz9zd9d8sEndpointD8685C2D": {
+   "Value": {
+    "Fn::Join": [
+     "",
+     [
+      "https://",
+      {
+       "Ref": "reconcileainosapApiGatewayz9zd9d8s0077059F"
+      },
+      ".execute-api.",
+      {
+       "Ref": "AWS::Region"
+      },
+      ".",
+      {
+       "Ref": "AWS::URLSuffix"
+      },
+      "/",
+      {
+       "Ref": "reconcileainosapApiGatewayz9zd9d8sDeploymentStagedevD7A60340"
+      },
+      "/"
+     ]
+    ]
+   }
+  },
+  "AmplifyAppUrl": {
+   "Description": "Live frontend URL",
+   "Value": {
+    "Fn::Join": [
+     "",
+     [
+      "https://main.",
+      {
+       "Fn::GetAtt": [
+        "reconcileainosapAmplifyAppz9zd9d8s3B708F1C",
+        "DefaultDomain"
+       ]
+      }
+     ]
+    ]
+   }
+  },
+  "AmplifyAppId": {
+   "Description": "Amplify App ID",
+   "Value": {
+    "Fn::GetAtt": [
+     "reconcileainosapAmplifyAppz9zd9d8s3B708F1C",
+     "AppId"
+    ]
+   }
+  },
+  "LoginEmail": {
+   "Value": "user@reconcileai.com"
+  },
+  "LoginPassword": {
+   "Value": "BiFY@q<R%xV9J62J"
+  }
+ },
+ "Parameters": {
+  "SsmParameterValueawsserviceamiamazonlinuxlatestal2023amikernel61x8664C96584B6F00A464EAD1953AFF4B05118Parameter": {
+   "Type": "AWS::SSM::Parameter::Value<AWS::EC2::Image::Id>",
+   "Default": "/aws/service/ami-amazon-linux-latest/al2023-ami-kernel-6.1-x86_64"
+  },
+  "BootstrapVersion": {
+   "Type": "AWS::SSM::Parameter::Value<String>",
+   "Default": "/cdk-bootstrap/hnb659fds/version",
+   "Description": "Version of the CDK Bootstrap resources in this environment, automatically retrieved from SSM Parameter Store. [cdk:skip]"
+  }
+ },
+ "Conditions": {
+  "CDKMetadataAvailable": {
+   "Fn::Or": [
+    {
+     "Fn::Or": [
+      {
+       "Fn::Equals": [
+        {
+         "Ref": "AWS::Region"
+        },
+        "af-south-1"
+       ]
+      },
+      {
+       "Fn::Equals": [
+        {
+         "Ref": "AWS::Region"
+        },
+        "ap-east-1"
+       ]
+      },
+      {
+       "Fn::Equals": [
+        {
+         "Ref": "AWS::Region"
+        },
+        "ap-northeast-1"
+       ]
+      },
+      {
+       "Fn::Equals": [
+        {
+         "Ref": "AWS::Region"
+        },
+        "ap-northeast-2"
+       ]
+      },
+      {
+       "Fn::Equals": [
+        {
+         "Ref": "AWS::Region"
+        },
+        "ap-northeast-3"
+       ]
+      },
+      {
+       "Fn::Equals": [
+        {
+         "Ref": "AWS::Region"
+        },
+        "ap-south-1"
+       ]
+      },
+      {
+       "Fn::Equals": [
+        {
+         "Ref": "AWS::Region"
+        },
+        "ap-south-2"
+       ]
+      },
+      {
+       "Fn::Equals": [
+        {
+         "Ref": "AWS::Region"
+        },
+        "ap-southeast-1"
+       ]
+      },
+      {
+       "Fn::Equals": [
+        {
+         "Ref": "AWS::Region"
+        },
+        "ap-southeast-2"
+       ]
+      },
+      {
+       "Fn::Equals": [
+        {
+         "Ref": "AWS::Region"
+        },
+        "ap-southeast-3"
+       ]
+      }
+     ]
+    },
+    {
+     "Fn::Or": [
+      {
+       "Fn::Equals": [
+        {
+         "Ref": "AWS::Region"
+        },
+        "ap-southeast-4"
+       ]
+      },
+      {
+       "Fn::Equals": [
+        {
+         "Ref": "AWS::Region"
+        },
+        "ca-central-1"
+       ]
+      },
+      {
+       "Fn::Equals": [
+        {
+         "Ref": "AWS::Region"
+        },
+        "ca-west-1"
+       ]
+      },
+      {
+       "Fn::Equals": [
+        {
+         "Ref": "AWS::Region"
+        },
+        "cn-north-1"
+       ]
+      },
+      {
+       "Fn::Equals": [
+        {
+         "Ref": "AWS::Region"
+        },
+        "cn-northwest-1"
+       ]
+      },
+      {
+       "Fn::Equals": [
+        {
+         "Ref": "AWS::Region"
+        },
+        "eu-central-1"
+       ]
+      },
+      {
+       "Fn::Equals": [
+        {
+         "Ref": "AWS::Region"
+        },
+        "eu-central-2"
+       ]
+      },
+      {
+       "Fn::Equals": [
+        {
+         "Ref": "AWS::Region"
+        },
+        "eu-north-1"
+       ]
+      },
+      {
+       "Fn::Equals": [
+        {
+         "Ref": "AWS::Region"
+        },
+        "eu-south-1"
+       ]
+      },
+      {
+       "Fn::Equals": [
+        {
+         "Ref": "AWS::Region"
+        },
+        "eu-south-2"
+       ]
+      }
+     ]
+    },
+    {
+     "Fn::Or": [
+      {
+       "Fn::Equals": [
+        {
+         "Ref": "AWS::Region"
+        },
+        "eu-west-1"
+       ]
+      },
+      {
+       "Fn::Equals": [
+        {
+         "Ref": "AWS::Region"
+        },
+        "eu-west-2"
+       ]
+      },
+      {
+       "Fn::Equals": [
+        {
+         "Ref": "AWS::Region"
+        },
+        "eu-west-3"
+       ]
+      },
+      {
+       "Fn::Equals": [
+        {
+         "Ref": "AWS::Region"
+        },
+        "il-central-1"
+       ]
+      },
+      {
+       "Fn::Equals": [
+        {
+         "Ref": "AWS::Region"
+        },
+        "me-central-1"
+       ]
+      },
+      {
+       "Fn::Equals": [
+        {
+         "Ref": "AWS::Region"
+        },
+        "me-south-1"
+       ]
+      },
+      {
+       "Fn::Equals": [
+        {
+         "Ref": "AWS::Region"
+        },
+        "sa-east-1"
+       ]
+      },
+      {
+       "Fn::Equals": [
+        {
+         "Ref": "AWS::Region"
+        },
+        "us-east-1"
+       ]
+      },
+      {
+       "Fn::Equals": [
+        {
+         "Ref": "AWS::Region"
+        },
+        "us-east-2"
+       ]
+      },
+      {
+       "Fn::Equals": [
+        {
+         "Ref": "AWS::Region"
+        },
+        "us-west-1"
+       ]
+      }
+     ]
+    },
+    {
+     "Fn::Equals": [
+      {
+       "Ref": "AWS::Region"
+      },
+      "us-west-2"
+     ]
+    }
+   ]
+  }
+ },
+ "Rules": {
+  "CheckBootstrapVersion": {
+   "Assertions": [
+    {
+     "Assert": {
+      "Fn::Not": [
+       {
+        "Fn::Contains": [
+         [
+          "1",
+          "2",
+          "3",
+          "4",
+          "5"
+         ],
+         {
+          "Ref": "BootstrapVersion"
+         }
+        ]
+       }
+      ]
+     },
+     "AssertDescription": "CDK bootstrap stack version 6 required. Please run 'cdk bootstrap' with a recent version of the CDK CLI."
+    }
+   ]
+  }
+ }
+}

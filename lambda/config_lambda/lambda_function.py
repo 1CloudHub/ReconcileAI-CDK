@@ -2,7 +2,6 @@ import json
 import os
 import boto3
 import time
-import requests
 from textractor import Textractor
 from textractor.data.constants import TextractFeatures
 import base64
