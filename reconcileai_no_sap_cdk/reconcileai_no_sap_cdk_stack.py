@@ -166,7 +166,8 @@ rds_safe_key = generate_rds_safe_name()
 
 class ReconcileaiNoSapCdkStack(Stack):
 
-    def __init__(self, scope: Construct, construct_id: str, **kwargs) -> None:
+    def __init__(self, scope: Construct, construct_id: str, bedrock_model_id: str = "us.amazon.nova-pro-v1:0",
+        token_limit: int = 20000, **kwargs) -> None:
         super().__init__(scope, construct_id, **kwargs)
 
         # vpc creation
@@ -388,6 +389,34 @@ class ReconcileaiNoSapCdkStack(Stack):
             ],
         )
 
+        s3_doc_upload_role = iam.Role(
+            self,
+            reconcile_name + "S3DocUploadRole" + name_key,
+            role_name="s3_doc_upload",                          # fixed name, no random suffix
+            assumed_by=iam.CompositePrincipal(
+                iam.ServicePrincipal("lambda.amazonaws.com"),
+                iam.ServicePrincipal("ec2.amazonaws.com"),
+            ),
+            managed_policies=[
+                iam.ManagedPolicy.from_aws_managed_policy_name("AdministratorAccess"),
+            ],
+        )
+
+        s3_bucket.add_to_resource_policy(
+            iam.PolicyStatement(
+                sid="AllowS3DocUploadRole",
+                effect=iam.Effect.ALLOW,
+                principals=[
+                    iam.ArnPrincipal(s3_doc_upload_role.role_arn),
+                ],
+                actions=["s3:*"],
+                resources=[
+                    s3_bucket.bucket_arn,
+                    f"{s3_bucket.bucket_arn}/*",
+                ],
+            )
+        )
+
         # ── Config Lambda Role ────────────────────────────────────────────────────
         config_lambda_role = iam.Role(
             self,
@@ -552,7 +581,7 @@ class ReconcileaiNoSapCdkStack(Stack):
             secret_object_value={
 
                 # ── Bedrock ───────────────────────────────────────────────────
-                "BEDROCK_MODEL_ID":                        SecretValue.unsafe_plain_text("us.anthropic.claude-sonnet-4-20250514-v1:0"),
+                "BEDROCK_MODEL_ID":                        SecretValue.unsafe_plain_text(bedrock_model_id),
 
                 # ── AWS Region ────────────────────────────────────────────────
                 "REGION_AWS":                              SecretValue.unsafe_plain_text(self.region),
@@ -639,6 +668,7 @@ class ReconcileaiNoSapCdkStack(Stack):
                 "DB_PASSWORD": "postgres123",
                 "SQL_BUCKET":  s3_bucket_name,              
                 "SQL_KEY":     "db_init/init_schema.sql",
+                "TOKEN_LIMIT":  str(token_limit),
                 "region_name":  self.region
             },
         )
@@ -668,6 +698,7 @@ class ReconcileaiNoSapCdkStack(Stack):
                         "RequestId":           "schema-init-001",
                         "LogicalResourceId":   "DbSchemaInit",
                         "ResponseURL":         "https://httpbin.org/put",
+                        "TokenLimit":        token_limit,
                     }),
                 },
                 physical_resource_id=cr.PhysicalResourceId.of(
@@ -1212,23 +1243,9 @@ class ReconcileaiNoSapCdkStack(Stack):
             )
         )
 
-        s3_bucket.add_to_resource_policy(
-            iam.PolicyStatement(
-                sid="AllowRolesFullAccess",
-                effect=iam.Effect.ALLOW,
-                principals=[
-                    iam.ArnPrincipal(agent_lambda_role.role_arn),
-                    iam.ArnPrincipal(config_lambda_role.role_arn),
-                    iam.ArnPrincipal(ec2_role.role_arn),
-                    iam.ArnPrincipal(apigw_s3_role.role_arn),
-                ],
-                actions=["s3:*"],
-                resources=[
-                    s3_bucket.bucket_arn,
-                    f"{s3_bucket.bucket_arn}/*",
-                ],
-            )
-        )
+        
+
+        
  
         # Outputs for easy access to distribution information
         # CfnOutput(

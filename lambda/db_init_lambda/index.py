@@ -39,6 +39,10 @@ def handler(event, context):
         obj = s3_client.get_object(Bucket=bucket, Key=key)
         sql = obj["Body"].read().decode("utf-8")
 
+        # ── Read token limit from env (set by CDK stack from deploy.py) ───────
+        token_limit = int(os.environ.get("TOKEN_LIMIT", "20000"))
+        print(f"Token limit to insert: {token_limit}")
+
         # ── Connect to RDS ────────────────────────────────────────────────────
         conn = psycopg2.connect(
             host=os.environ["DB_HOST"],
@@ -52,6 +56,15 @@ def handler(event, context):
         cur = conn.cursor()
 
         cur.execute(sql)
+        
+        upsert_sql = """
+            INSERT INTO erp_no_sap.metadata_table (key_id, meta_key, meta_value)
+            VALUES ('application', 'total_token_limit', %s)
+            ON CONFLICT (key_id, type, meta_key)
+            DO UPDATE SET meta_value = EXCLUDED.meta_value;
+        """
+        cur.execute(upsert_sql, (str(token_limit),))
+        print(f"total_token_limit upserted into metadata_table: {token_limit}")
 
         cur.close()
         conn.close()
