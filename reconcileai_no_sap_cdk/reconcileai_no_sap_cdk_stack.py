@@ -23,8 +23,6 @@ import time
 
 from aws_cdk import custom_resources as cr
 from aws_cdk import aws_apigateway as apigw
-from aws_cdk import aws_amplify_alpha as amplify
-from aws_cdk import aws_codebuild as codebuild
 from aws_cdk import aws_cognito as cognito
 from aws_cdk import CfnOutput
 
