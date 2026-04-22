@@ -141,11 +141,17 @@ Available options include:
 - **Nova Premier**
 - **Claude Sonnet 4**
 
+<img width="1556" height="903" alt="image" src="https://github.com/user-attachments/assets/4f5f9db6-b914-4d73-bd30-dd7d731d3545" />
+
+
 Select the model based on your application's AI processing requirements.
 
 ---
 
 #### 7.2 Setting Token Limits
+
+<img width="2417" height="430" alt="image" src="https://github.com/user-attachments/assets/5de88555-2399-4465-a10b-ae55907b78b8" />
+
 
 Choose the specific token limits you want to configure for the application.
 
