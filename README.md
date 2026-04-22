@@ -72,7 +72,7 @@ Clones the ReconcileAI NoSap CDK repository into your CloudShell environment.
 ### 4. Install Python Requirements
 
 ```bash
-pip install --user -r requirements.txt
+pip install -r requirements.txt
 ```
 Installs the required Python dependencies for the CDK application.
 
