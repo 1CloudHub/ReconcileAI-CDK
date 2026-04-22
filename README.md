@@ -52,10 +52,11 @@ CloudShell provides a pre-configured environment with AWS CLI and CDK support, m
 
 <img width="1897" height="898" alt="cloudshell pic step 2" src="https://github.com/user-attachments/assets/99f3e5c7-f6d1-4cb3-9906-93aa0cf8a277" />
 
-CloudShell provides a pre-configured environment with AWS CLI and CDK support, making it ideal for deployments.
 ---
 
 ### 3. Clone the Repository
+
+In the command line now we need to run these commands.
 
 ```bash
 git clone https://github.com/1CloudHub/ReconcileAI-CDK.git
@@ -156,3 +157,205 @@ Select the model based on your application's AI processing requirements.
 Choose the specific token limits you want to configure for the application.
 
 These limits define how many tokens the selected AI model can process per request or session, helping control performance, usage, and cost.
+
+## Sample Documents for Testing
+
+To validate the application after deployment, you can upload sample business documents and run a reconciliation session.
+
+Download or view the testing documents below:
+
+Three way matching documents: 
+
+- [Goods Receipt Note — GRN 5100011111 (1).pdf](https://github.com/user-attachments/files/26970755/Goods.Receipt.Note.GRN.5100011111.1.pdf)
+- [Purchase Order — PO 4500012345.pdf](https://github.com/user-attachments/files/26970776/Purchase.Order.PO.4500012345.pdf)
+- [Tax Invoice — INV 90007777.pdf](https://github.com/user-attachments/files/26970782/Tax.Invoice.INV.90007777.pdf)
+
+SOP Documents: 
+- [SOP_MISSING_GRN_V1 (1).pdf](https://github.com/user-attachments/files/26970810/SOP_MISSING_GRN_V1.1.pdf)
+- [SOP_DUPLICATE_INVOICE_V1 (1).pdf](https://github.com/user-attachments/files/26970807/SOP_DUPLICATE_INVOICE_V1.1.pdf)
+- [SOP_UOM_ISSUE_V1 (1).pdf](https://github.com/1CloudHub/ReconcileAI-CDK/files//SOP_UOM_ISSUE_V1.1.pdf)
+- [SOP_QUANTITY_CHANGE_V1 (1).pdf](https://github.com/user-attachments/files/26970803/SOP_QUANTITY_CHANGE_V1.1.pdf)
+- [SOP_PRICE_CHANGE_V1 (2).pdf](https://github.com/user-attachments/files/26970798/SOP_PRICE_CHANGE_V1.2.pdf)
+
+# End-to-End Configuration & Testing Workflow
+
+Follow the steps below to configure document extraction, create reconciliation logic, and test a complete reconciliation workflow inside ReconcileAI.
+
+---
+
+### 1. Configure Document Types
+
+Navigate to the **Document Types** section to define the documents that the AI agent will process.
+
+For each document category:
+
+- Create a new document type
+- Define the fields you want the AI to extract
+- Upload a sample document to validate extraction accuracy
+- Save the configuration
+
+#### Recommended Document Types
+
+Create the following document types:
+
+##### Goods Receipt
+Configure fields such as:
+
+- Goods Receipt Number
+- Purchase Order Number
+- Vendor Name
+- Delivery Date
+- Quantity
+- Material Description
+
+##### Purchase Order
+Configure fields such as:
+
+- Purchase Order Number
+- Vendor Name
+- Order Date
+- Total Amount
+- Currency
+- Item Quantity
+
+##### Sales Invoice
+Configure fields such as:
+
+- Invoice Number
+- Purchase Order Reference
+- Invoice Date
+- Vendor Name
+- Total Amount
+- Tax Amount
+
+#### Validate Extraction (IDP Testing)
+
+After defining fields:
+
+1. Upload a test document.
+2. Run extraction validation.
+3. Verify that the Intelligent Document Processing (IDP) correctly detects and maps fields.
+4. Adjust field names if extraction results are inconsistent.
+
+Repeat this process for all document types.
+
+---
+
+### 2. Create a Reconciliation Job
+
+Navigate to the **Job Configuration** tab.
+
+Jobs define which document types should be processed together.
+
+#### Example: Three-Way Invoice Matching
+
+Create a job that includes:
+
+- Purchase Order
+- Goods Receipt
+- Sales Invoice
+
+#### Steps
+
+1. Create a new job.
+2. Add the required document types.
+3. Select the reference document if applicable.
+4. Save the job configuration.
+
+This job becomes the processing group used during reconciliation.
+
+---
+
+### 3. Configure SOP Rules
+
+Navigate to the **SOP Configuration** section.
+
+SOPs define the business rules and exception logic used during reconciliation.
+
+### Steps
+
+1. Create a new SOP.
+2. Select the job that the SOP will apply to.
+3. Upload an SOP document to act as the baseline logic.
+4. Optionally upload the same SOP document for testing purposes.
+5. Save the SOP configuration.
+
+#### Example SOP Logic
+
+The SOP may define rules such as:
+
+- PO Number must match across all documents
+- Quantity variance should not exceed allowed limits
+- Invoice amount must align with Purchase Order totals
+- Vendor name must remain consistent
+
+---
+
+### 4. Run the Reconciliation Agent
+
+Navigate to the **Reconcile Agent** section.
+
+#### Steps
+
+1. Select the configured job.
+2. Upload the related documents.
+3. Assign document types if required.
+4. Trigger the reconciliation process.
+
+The AI agent will:
+
+- Extract configured fields
+- Compare documents
+- Apply SOP logic
+- Detect mismatches and exceptions
+
+---
+
+### 5. Review Reconciliation Sessions
+
+Navigate to the **Reconcile Sessions** page.
+
+Here you can:
+
+- View reconciliation history
+- Inspect processed documents
+- Review field-level matching results
+- Identify exceptions
+- Analyze token consumption
+- Open detailed session records
+
+#### Session Detail View Includes
+
+- Side-by-side document comparison
+- Matching and mismatched fields
+- SOP validation outcomes
+- Processing status
+- Token usage metrics
+
+---
+
+### 6. View Dashboard Metrics
+
+Navigate to the **Dashboard** section.
+
+This dashboard gives a centralized view of overall reconciliation activity and system usage.
+
+---
+# About ReconcileAI No SAP
+
+ReconcileAI streamlines document reconciliation by enabling intelligent field extraction, configurable matching logic, and SOP-driven exception handling across multiple business documents.
+
+The platform reduces manual validation effort by automating three-way matching workflows, helping teams identify inconsistencies faster and improve operational accuracy without relying on ERP integrations.
+
+Built with an AI-first approach, ReconcileAI centralizes reconciliation, monitoring, and analytics into a single workflow-driven platform.
+
+---
+
+## Legal Notice
+
+© **1CloudHub. All rights reserved.**
+
+The materials and components contained in this project are provided for demonstration purposes only.
+
+No portion of this project may be implemented in a live or production environment without prior technical assessment, security clearance, and explicit approval from **1CloudHub**.
+
