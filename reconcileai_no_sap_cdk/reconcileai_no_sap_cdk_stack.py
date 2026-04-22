@@ -12,11 +12,14 @@ from aws_cdk import (
     aws_lambda as _lambda,
     aws_iam as iam,
     aws_secretsmanager as secretsmanager,
+    aws_cloudfront as cloudfront,
+    aws_cloudfront_origins as origins,
 )
 from constructs import Construct
 import random
 import string
 import json
+import time
 
 from aws_cdk import custom_resources as cr
 from aws_cdk import aws_apigateway as apigw
@@ -235,10 +238,24 @@ class ReconcileaiNoSapCdkStack(Stack):
             versioned=True,
             removal_policy=RemovalPolicy.DESTROY,  # For development only
             auto_delete_objects=True,  # For development only
-            # website_index_document="index.html",
-            # website_error_document="index.html",
+            website_index_document="index.html",
+            website_error_document="index.html",
             # public_read_access=True,  # Allow public read access
             # block_public_access=s3.BlockPublicAccess.BLOCK_NONE  # Disable public access blocking
+            cors=[
+                s3.CorsRule(
+                    allowed_methods=[
+                        s3.HttpMethods.GET,
+                        s3.HttpMethods.PUT,
+                        s3.HttpMethods.POST,
+                        s3.HttpMethods.HEAD,
+                    ],
+                    allowed_origins=["*"],  # ✅ safest for your setup
+                    allowed_headers=["*"],
+                    exposed_headers=["ETag"],
+                    max_age=3000,
+                )
+            ],
         )
 
         frontend_bucket.add_to_resource_policy(
@@ -288,9 +305,12 @@ class ReconcileaiNoSapCdkStack(Stack):
                         s3.HttpMethods.GET,
                         s3.HttpMethods.PUT,
                         s3.HttpMethods.POST,
+                        s3.HttpMethods.HEAD,
                     ],
-                    allowed_origins=["*"],
+                    allowed_origins=["*"],  # ✅ safest for your setup
                     allowed_headers=["*"],
+                    exposed_headers=["ETag"],
+                    max_age=3000,
                 )
             ],
         )
@@ -617,8 +637,9 @@ class ReconcileaiNoSapCdkStack(Stack):
                 "DB_NAME":     "postgres",
                 "DB_USER":     "postgres",
                 "DB_PASSWORD": "postgres123",
-                "SQL_BUCKET":  s3_bucket_name,              # ← replaces SCHEMA_SQL
-                "SQL_KEY":     "db_init/init_schema.sql",   # ← replaces SCHEMA_SQL
+                "SQL_BUCKET":  s3_bucket_name,              
+                "SQL_KEY":     "db_init/init_schema.sql",
+                "region_name":  self.region
             },
         )
 
@@ -703,6 +724,7 @@ class ReconcileaiNoSapCdkStack(Stack):
             layers=[boto3_layer, textract_layer],
             environment={
                 "SECRET_NAME": app_secret.secret_name,
+                "region_name": self.region,
                 "AWS_REGION_NAME": self.region,
             },
         )
@@ -728,6 +750,7 @@ class ReconcileaiNoSapCdkStack(Stack):
             environment={
                 "SECRET_NAME": app_secret.secret_name,
                 "AWS_REGION_NAME": self.region,
+                "region_name": self.region,
                 # reconcile_agent.py reads these directly from os.environ
                 "db_host":     db_instance.db_instance_endpoint_address,
                 "db_port":     "5432",
@@ -1020,15 +1043,12 @@ class ReconcileaiNoSapCdkStack(Stack):
             "echo '⚙️ Running npm run build...'",
             "npm run build",
             "",
-            "# ── Zip the dist/ output and upload back to S3 ───────────────────",
-            "echo '📦 Zipping dist/ folder...'",
-            "cd dist",
-            "zip -r ../build.zip .",
-            "cd ..",
-            "echo '☁️ Uploading built zip back to S3 (overwriting source zip)...'",
-            "aws s3 cp build.zip \"$S3_SOURCE_PATH\" --region \"$REGION\"",
-            "echo '✅ Build zip uploaded to S3 successfully!'",
-            "",
+            "# ☁️ Clean and upload to S3 bucket root",
+            "echo \"🧹 Clearing existing files in s3://${BUCKET_NAME}/ ...\"",
+            "aws s3 rm \"s3://${BUCKET_NAME}/\" --recursive --region \"$REGION\"",
+            "echo \"☁️ Uploading dist/ contents to s3://${BUCKET_NAME}/ ...\"",
+            "aws s3 cp dist/ \"s3://${BUCKET_NAME}/\" --recursive --region \"$REGION\"",
+            "echo \"✅ Done! React app built and uploaded to s3://${BUCKET_NAME}/\"",
             "# ── Self-terminate ────────────────────────────────────────────────",
             "TOKEN=$(curl -s -X PUT 'http://169.254.169.254/latest/api/token' -H 'X-aws-ec2-metadata-token-ttl-seconds: 21600')",
             "INSTANCE_ID=$(curl -s -H \"X-aws-ec2-metadata-token: $TOKEN\" http://169.254.169.254/latest/meta-data/instance-id)",
@@ -1042,129 +1062,196 @@ class ReconcileaiNoSapCdkStack(Stack):
         ec2_instance_front.node.add_dependency(api)
 
 
-        # ── IAM Role for Amplify to read from the frontend S3 bucket ─────────
-        amplify_role = iam.Role(
-            self,
-            reconcile_name + "AmplifyRole" + name_key,
-            assumed_by=iam.ServicePrincipal("amplify.amazonaws.com"),
-            description="Allows Amplify to read the frontend zip from S3",
-            managed_policies=[
-                iam.ManagedPolicy.from_aws_managed_policy_name("AdministratorAccess-Amplify"),
-            ],
+        # Create CloudFront Distribution for frontend S3 bucket
+        # Create S3 Origin using the new S3BucketOrigin (not deprecated)
+        s3_origin = origins.S3BucketOrigin(
+            frontend_bucket,
+            origin_path=""  # Empty path means root of bucket
         )
-        frontend_bucket.grant_read(amplify_role)
-
-        # ── Amplify App (no Git — manual zip deploy from S3) ──────────────────
-        amplify_app = amplify.App(
-            self,
-            reconcile_name + "AmplifyApp" + name_key,
-            app_name=reconcile_name + "-frontend-" + name_key,
-            role=amplify_role,
-            environment_variables={
-                "VITE_RECONCILEAI_DEV_ENV_NO_SAP_BASE_URL": api.url,
-            },
-            # Pre-built zip: no build commands needed at all
-            build_spec=codebuild.BuildSpec.from_object({
-                "version": "1.0",
-                "frontend": {
-                    "phases": {
-                        "build": {
-                            "commands": []
-                        }
-                    },
-                    "artifacts": {
-                        "baseDirectory": "/",
-                        "files": ["**/*"]
-                    },
-                    "cache": {
-                        "paths": []
-                    }
-                }
-            }),
-            # React Router SPA — rewrite all non-asset URLs to index.html
-            custom_rules=[
-                amplify.CustomRule(
-                    source="</^[^.]+$|\\.(?!(css|gif|ico|jpg|js|png|txt|svg|woff|woff2|ttf|map|json)$)([^.]+$)/>",
-                    target="/index.html",
-                    status=amplify.RedirectStatus.REWRITE,
-                )
-            ],
-        )
-
-        # ── Amplify Branch ────────────────────────────────────────────────────
-        main_branch = amplify_app.add_branch(
-            "main",
-            branch_name="main",
-            auto_build=False,
-        )
-
-        # ── Auto-deploy: trigger startDeployment pointing at the S3 zip ──────
-        # This runs during cdk deploy so you don't need to run any CLI commands.
-        # Your zip must already be at: s3://{frontend_bucket_name}/frontend-build.zip
-        # (which you said you've already uploaded)
-        amplify_deploy = cr.AwsCustomResource(
-            self,
-            reconcile_name + "AmplifyTriggerDeploy" + name_key,
-            on_create=cr.AwsSdkCall(
-                service="Amplify",
-                action="startDeployment",
-                parameters={
-                    "appId":      amplify_app.app_id,
-                    "branchName": "main",
-                    "sourceUrl":  f"s3://{frontend_bucket_name}/build.zip",
-                },
-                physical_resource_id=cr.PhysicalResourceId.of(
-                    amplify_app.app_id + "-initial-deploy"
-                ),
+ 
+        # Create CloudFront Distribution
+        distribution = cloudfront.Distribution(
+            self, "GenAIFoundryDistribution",
+            default_behavior=cloudfront.BehaviorOptions(
+                origin=s3_origin,
+                viewer_protocol_policy=cloudfront.ViewerProtocolPolicy.REDIRECT_TO_HTTPS,
+                cache_policy=cloudfront.CachePolicy.CACHING_OPTIMIZED,
+                origin_request_policy=None,
+                response_headers_policy=None
             ),
-            # Re-deploy whenever you run cdk deploy again
+            # General settings matching the console configuration
+            default_root_object="index.html",
+            price_class=cloudfront.PriceClass.PRICE_CLASS_ALL,
+            http_version=cloudfront.HttpVersion.HTTP2,  # Fixed: use HTTP2 instead of HTTP2_AND_HTTP1_1
+            enable_logging=False,  # Standard logging: Off
+            enable_ipv6=True,
+            # Error pages configuration matching the console
+            error_responses=[
+                cloudfront.ErrorResponse(
+                    http_status=403,
+                    response_http_status=200,
+                    response_page_path="/index.html",
+                    ttl=Duration.seconds(10)
+                ),
+                cloudfront.ErrorResponse(
+                    http_status=404,
+                    response_http_status=200,
+                    response_page_path="/index.html",
+                    ttl=Duration.seconds(10)
+                )
+            ]
+        )
+
+        # Switch to Origin Access Control (OAC) so S3 policy can use CloudFront service principal + AWS:SourceArn
+        oac = cloudfront.CfnOriginAccessControl(
+            self,
+            "FrontendOAC",
+            origin_access_control_config=cloudfront.CfnOriginAccessControl.OriginAccessControlConfigProperty(
+                name=f"{name_key}-frontend-oac",
+                description="OAC for frontend S3 origin",
+                origin_access_control_origin_type="s3",
+                signing_behavior="always",
+                signing_protocol="sigv4",
+            ),
+        )
+        cfn_dist = distribution.node.default_child  # type: ignore
+        # Attach OAC to first origin and remove OAI reference
+        cfn_dist.add_property_override(
+            "DistributionConfig.Origins.0.OriginAccessControlId", oac.attr_id
+        )
+        cfn_dist.add_property_deletion_override(
+            "DistributionConfig.Origins.0.S3OriginConfig.OriginAccessIdentity"
+        )
+        cfn_dist.add_dependency(oac)
+
+        # Explicit CloudFront invalidation via AWS SDK (since L1 Invalidations are not available in this CDK version)
+        invalidation = cr.AwsCustomResource(
+            self,
+            "GenAIFoundryInvalidation",
             on_update=cr.AwsSdkCall(
-                service="Amplify",
-                action="startDeployment",
+                service="CloudFront",
+                action="createInvalidation",
                 parameters={
-                    "appId":      amplify_app.app_id,
-                    "branchName": "main",
-                    "sourceUrl":  f"s3://{frontend_bucket_name}/build.zip",
+                    "DistributionId": distribution.distribution_id,
+                    "InvalidationBatch": {
+                        "CallerReference": str(int(time.time())),
+                        "Paths": {"Quantity": 1, "Items": ["/*"]},
+                    },
                 },
                 physical_resource_id=cr.PhysicalResourceId.of(
-                    amplify_app.app_id + "-initial-deploy"
+                    f"InvalidateFrontend-{int(time.time())}"
                 ),
             ),
             policy=cr.AwsCustomResourcePolicy.from_statements([
                 iam.PolicyStatement(
                     actions=[
-                        "amplify:StartDeployment",
-                        "amplify:GetJob",
+                        "cloudfront:CreateInvalidation",
+                        "cloudfront:GetInvalidation",
+                        "cloudfront:ListInvalidations",
                     ],
                     resources=["*"],
-                ),
-                iam.PolicyStatement(
-                    actions=["s3:*"],
-                    resources=[
-                        frontend_bucket.bucket_arn + "/*",
-                        frontend_bucket.bucket_arn
-                        ],
-                ),
+                )
             ]),
         )
-
-        # Ensure Amplify app + branch exist before triggering deploy
-        amplify_deploy.node.add_dependency(ec2_instance_front)
-        amplify_deploy.node.add_dependency(main_branch)
-
-        # ── Outputs ───────────────────────────────────────────────────────────
-        CfnOutput(
-            self,
-            "AmplifyAppUrl",
-            value=f"https://main.{amplify_app.default_domain}",
-            description="Live frontend URL",
+        # Ensure invalidation runs after upload and distribution exist
+        invalidation.node.add_dependency(frontend_deploy)
+        invalidation.node.add_dependency(distribution)
+        # Replace frontend bucket policy with the previously working policy
+        # 1) Grant required S3 actions to account root
+        frontend_bucket.add_to_resource_policy(
+            iam.PolicyStatement(
+                effect=iam.Effect.ALLOW,
+                principals=[
+                    # Allow the entire account (root) to perform required actions
+                    iam.ArnPrincipal(f"arn:aws:iam::{self.account}:root"),
+                ],
+                actions=[
+                    "s3:DeleteObject*",
+                    "s3:GetBucket*",
+                    "s3:GetObject",
+                    "s3:List*",
+                    "s3:PutBucketPolicy"
+                ],
+                resources=[
+                    frontend_bucket.bucket_arn,
+                    f"{frontend_bucket.bucket_arn}/*"
+                ]
+            )
         )
-        
+
+        # 2) Allow CloudFront access to objects in the frontend bucket
+        frontend_bucket.add_to_resource_policy(
+            iam.PolicyStatement(
+                sid="AllowCloudFrontAccess",
+                effect=iam.Effect.ALLOW,
+                principals=[iam.ServicePrincipal("cloudfront.amazonaws.com")],
+                actions=["s3:GetObject"],
+                resources=[f"{frontend_bucket.bucket_arn}/*"],
+                conditions={
+                    "StringEquals": {
+                        "AWS:SourceArn": distribution.distribution_arn
+                    }
+                }
+            )
+        )
+
+        # Add bucket policy to main bucket to allow CloudFront access only
+        s3_bucket.add_to_resource_policy(
+            iam.PolicyStatement(
+                sid="AllowCloudFrontAccessOnly",
+                effect=iam.Effect.ALLOW,
+                principals=[iam.ServicePrincipal("cloudfront.amazonaws.com")],
+                actions=["s3:GetObject"],
+                resources=[f"{s3_bucket.bucket_arn}/*"],
+                conditions={
+                    "StringEquals": {
+                        "AWS:SourceArn": distribution.distribution_arn
+                    }
+                }
+            )
+        )
+
+        s3_bucket.add_to_resource_policy(
+            iam.PolicyStatement(
+                sid="AllowRolesFullAccess",
+                effect=iam.Effect.ALLOW,
+                principals=[
+                    iam.ArnPrincipal(agent_lambda_role.role_arn),
+                    iam.ArnPrincipal(config_lambda_role.role_arn),
+                    iam.ArnPrincipal(ec2_role.role_arn),
+                    iam.ArnPrincipal(apigw_s3_role.role_arn),
+                ],
+                actions=["s3:*"],
+                resources=[
+                    s3_bucket.bucket_arn,
+                    f"{s3_bucket.bucket_arn}/*",
+                ],
+            )
+        )
+ 
+        # Outputs for easy access to distribution information
+        # CfnOutput(
+        #     self, "DistributionDomainName",
+        #     value=distribution.distribution_domain_name,
+        #     description="CloudFront Distribution Domain Name"
+        # )
+       
+        # CfnOutput(
+        #     self, "DistributionId",
+        #     value=distribution.distribution_id,
+        #     description="CloudFront Distribution ID"
+        # )
+       
+        # CfnOutput(
+        #     self, "DistributionArn",
+        #     value=distribution.distribution_arn,
+        #     description="CloudFront Distribution ARN"
+        # )
+
         CfnOutput(
-            self,
-            "AmplifyAppId",
-            value=amplify_app.app_id,
-            description="Amplify App ID",
+            self, "CloudFrontDistributionUrl",
+            value=f"https://{distribution.distribution_domain_name}",
+            description="CloudFront Distribution URL for the frontend application"
         )
         
         CfnOutput(self, "LoginEmail", value=USER_EMAIL)
