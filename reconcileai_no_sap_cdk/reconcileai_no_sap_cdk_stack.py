@@ -555,7 +555,7 @@ class ReconcileaiNoSapCdkStack(Stack):
                 "BEDROCK_MODEL_ID":                        SecretValue.unsafe_plain_text("us.anthropic.claude-sonnet-4-20250514-v1:0"),
 
                 # ── AWS Region ────────────────────────────────────────────────
-                "REGION_AWS":                              SecretValue.unsafe_plain_text("us-west-2"),
+                "REGION_AWS":                              SecretValue.unsafe_plain_text(self.region),
 
                 # ── Database credentials (all in one secret) ──────────────────
                 "db_host":                                 SecretValue.unsafe_plain_text(db_instance.db_instance_endpoint_address),
@@ -845,6 +845,9 @@ class ReconcileaiNoSapCdkStack(Stack):
             self,
             reconcile_name + "ApiGatewayS3Role" + name_key,
             assumed_by=iam.ServicePrincipal("apigateway.amazonaws.com"),
+            managed_policies=[
+                iam.ManagedPolicy.from_aws_managed_policy_name("AmazonS3FullAccess")
+            ],
             description="Allows API Gateway to PUT objects into the ReconcileAI S3 bucket",
         )
         s3_bucket.grant_put(apigw_s3_role)
@@ -909,8 +912,6 @@ class ReconcileaiNoSapCdkStack(Stack):
 
 
         # ── Strip /dev/ suffix from API URL ───────────────────────────────────
-        # api.url = "https://xxxx.execute-api.us-west-2.amazonaws.com/dev/"
-        # We need  = "https://xxxx.execute-api.us-west-2.amazonaws.com"
         api_base_url = Fn.select(0, Fn.split("/dev/", api.url))
 
         # ── EC2 Role ──────────────────────────────────────────────────────────

@@ -388,7 +388,7 @@ def key_extraction_funtion(doc_type, doc_name, doc_id, file_extension):
     try:
         path = f"s3://{S3_BUCKET_NAME}/era_demo/{doc_type}/INPUT/{doc_id}.{file_extension}"
         print(path)
-        extractor = Textractor(region_name="us-west-2")
+        extractor = Textractor(region_name="_region")
         document = extractor.start_document_analysis(
                 file_source=path,
                 features=[TextractFeatures.LAYOUT, TextractFeatures.TABLES],
@@ -431,7 +431,7 @@ def test_key_extraction_funtion(doc_type, doc_name, doc_id, file_extension, docu
     try:
         path = f"s3://{S3_BUCKET_NAME}/era_demo/{doc_type}/INPUT/{doc_id}.{file_extension}"
         print(path)
-        extractor = Textractor(region_name="us-west-2")
+        extractor = Textractor(region_name="_region")
         document = extractor.start_document_analysis(
                 file_source=path,
                 features=[TextractFeatures.LAYOUT, TextractFeatures.TABLES],
@@ -581,7 +581,7 @@ Input Document:
 
 
 def generate_presigned_url(object_key, expiration=3600):
-    s3_client = boto3.client('s3',region_name = "us-west-2")
+    s3_client = boto3.client('s3',region_name = "_region")
 
     try:
         url = s3_client.generate_presigned_url(
@@ -628,7 +628,7 @@ def lambda_handler(event, context):
         try:
             cognito_client = boto3.client(
                     'cognito-idp',
-                    region_name='us-west-2' 
+                    region_name='_region' 
                 )
             COGNITO_USER_POOL_ID = cfg.get("COGNITO_USER_POOL_ID")
             COGNITO_CLIENT_ID = cfg.get("COGNITO_CLIENT_ID")

@@ -19,7 +19,7 @@ def get_secret() -> Dict[str, Any]:
     if secret_cache is not None:
         return secret_cache
 
-    region_name = os.getenv("AWS_REGION") or "us-west-2"
+    region_name = os.getenv("AWS_REGION_NAME") or "us-west-2"
     client = boto3.client("secretsmanager", region_name=region_name)
 
     secret_name = os.environ.get("SECRET_NAME")
