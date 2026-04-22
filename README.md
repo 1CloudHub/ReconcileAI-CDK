@@ -58,11 +58,11 @@ CloudShell provides a pre-configured environment with AWS CLI and CDK support, m
 ### 3. Clone the Repository
 
 ```bash
-git clone cmd
+git clone https://github.com/1CloudHub/ReconcileAI-CDK.git
 ```
 
 ```bash
-cd repo name folder
+cd ReconcileAI-CDK
 ```
 
 Clones the ReconcileAI NoSap CDK repository into your CloudShell environment.
