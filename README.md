@@ -4,7 +4,7 @@
 
 ReconcileAI streamlines document reconciliation by enabling intelligent field extraction, configurable matching logic, and SOP-driven exception handling across multiple business documents.
 
-The platform reduces manual validation effort by automating three-way matching workflows, helping teams identify inconsistencies faster and improving operational accuracy.
+The platform reduces manual validation effort by automating dynamic document matching workflows, helping teams identify inconsistencies faster and improving operational accuracy.
 
 Built with an AI-first approach, ReconcileAI centralizes reconciliation, monitoring, and analytics into a single workflow-driven platform.
 
@@ -26,7 +26,7 @@ Navigate to the AWS Console region selector and ensure one of the following regi
 
 <img width="2558" height="1382" alt="aws console region step 1" src="https://github.com/user-attachments/assets/56c13415-9a1b-4700-8458-a15516fa9b99" />
 
-> **Note:** Ensure you have access to Claude models in the selected region. If access is unavailable, switch to another region where Claude or Nova models are supported for your account, or contact Amazon Web Services support for assistance.
+> **Note:** Ensure you have access to Claude models or Nova Models in the selected region. If access is unavailable, switch to another region where Claude or Nova models are supported for your account, or contact Amazon Web Services support for assistance.
 
 ---
 
@@ -150,7 +150,7 @@ Choose the specific token limits you want to configure for the application.
 
 These limits define how much tokens the selected AI model can process for the entire session, helping control performance, usage, and cost.
 
-## Sample Documents for Testing
+## Test ReconcileAI with Documents
 
 After deployment, you can validate the application by uploading your own business documents and running a reconciliation process to verify functionality and results.
 
