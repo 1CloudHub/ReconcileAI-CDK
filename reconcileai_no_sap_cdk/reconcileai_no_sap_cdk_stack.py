@@ -635,12 +635,26 @@ class ReconcileaiNoSapCdkStack(Stack):
         textract_layer = _lambda.LayerVersion(
             self,
             "TextractLayer",
-            code=_lambda.Code.from_asset("lambda_layers/textract_text_final.zip"),
+            code=_lambda.Code.from_asset("lambda_layers/textractor_no_sap.zip"),
             compatible_runtimes=[_lambda.Runtime.PYTHON_3_12],
-            description="Textract processing layer"
+            description="Textract processing layer which contains textractor"
         )
 
+        psycopg2_layer = _lambda.LayerVersion(
+            self,
+            "Psycopg2Layer",
+            code=_lambda.Code.from_asset("lambda_layers/psycopg_dateutil_only_no_sap.zip"),
+            compatible_runtimes=[_lambda.Runtime.PYTHON_3_12],
+            description="Custom psycopg2 layer"
+        )
 
+        pymupdf_layer = _lambda.LayerVersion(
+            self, 
+            "PymupdfLayer",
+            code = _lambda.Code.from_asset("lambda_layers/pymupdf_no_sap.zip"),
+            compatible_runtimes=[_lambda.Runtime.PYTHON_3_12],
+            description="Custom pymupdf layer"
+        )
 
         db_init_lambda = _lambda.Function(
             self,
@@ -656,7 +670,7 @@ class ReconcileaiNoSapCdkStack(Stack):
             security_groups=[lambda_security_group],
             timeout=Duration.seconds(300),
             memory_size=256,
-            layers = [textract_layer],
+            layers = [psycopg2_layer],
             code=_lambda.Code.from_asset("lambda/db_init_lambda"),
             environment={
                 "DB_HOST":     db_instance.db_instance_endpoint_address,
@@ -715,13 +729,7 @@ class ReconcileaiNoSapCdkStack(Stack):
         db_schema_init.node.add_dependency(sql_deploy)
 
 
-        boto3_layer = _lambda.LayerVersion(
-            self,
-            "Boto3Layer",
-            code=_lambda.Code.from_asset("lambda_layers/boto3.zip"),
-            compatible_runtimes=[_lambda.Runtime.PYTHON_3_12],
-            description="Custom boto3 layer"
-        )
+        
         # ── Config Lambda ─────────────────────────────────────────────────────
         # Points to the config_lambda/ subfolder which contains:
         # lambda_function.py, utils.py, db.py, helpers.py, job_config.py,
@@ -741,7 +749,7 @@ class ReconcileaiNoSapCdkStack(Stack):
             security_groups=[lambda_security_group],
             timeout=Duration.seconds(900),
             memory_size=1024,
-            layers=[boto3_layer, textract_layer],
+            layers=[textract_layer, pymupdf_layer, psycopg2_layer],
             environment={
                 "SECRET_NAME": app_secret.secret_name,
                 "region_name": self.region,
@@ -766,7 +774,7 @@ class ReconcileaiNoSapCdkStack(Stack):
             security_groups=[lambda_security_group],
             timeout=Duration.seconds(900),
             memory_size=2048,
-            layers=[boto3_layer,textract_layer],
+            layers=[textract_layer, psycopg2_layer, pymupdf_layer],
             environment={
                 "SECRET_NAME": app_secret.secret_name,
                 "AWS_REGION_NAME": self.region,
