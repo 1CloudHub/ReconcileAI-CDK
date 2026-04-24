@@ -402,7 +402,7 @@ class ReconcileaiNoSapCdkStack(Stack):
 
         s3_bucket.add_to_resource_policy(
             iam.PolicyStatement(
-                sid="AllowS3DocUploadRole",
+                sid="AllowS3DocUploadRole" + name_key,
                 effect=iam.Effect.ALLOW,
                 principals=[
                     iam.ArnPrincipal(s3_doc_upload_role.role_arn),
