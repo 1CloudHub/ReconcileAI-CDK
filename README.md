@@ -52,10 +52,11 @@ CloudShell provides a pre-configured environment with AWS CLI and CDK support, m
 
 <img width="1897" height="898" alt="cloudshell pic step 2" src="https://github.com/user-attachments/assets/99f3e5c7-f6d1-4cb3-9906-93aa0cf8a277" />
 
-CloudShell provides a pre-configured environment with AWS CLI and CDK support, making it ideal for deployments.
 ---
 
 ### 3. Clone the Repository
+
+In the command line now we need to run these commands.
 
 ```bash
 git clone https://github.com/1CloudHub/ReconcileAI-CDK.git
@@ -72,7 +73,7 @@ Clones the ReconcileAI NoSap CDK repository into your CloudShell environment.
 ### 4. Install Python Requirements
 
 ```bash
-pip install --user -r requirements.txt
+pip install -r requirements.txt
 ```
 Installs the required Python dependencies for the CDK application.
 
@@ -141,12 +142,55 @@ Available options include:
 - **Nova Premier**
 - **Claude Sonnet 4**
 
+<img width="1556" height="903" alt="image" src="https://github.com/user-attachments/assets/4f5f9db6-b914-4d73-bd30-dd7d731d3545" />
+
+
 Select the model based on your application's AI processing requirements.
 
 ---
 
 #### 7.2 Setting Token Limits
 
+<img width="2417" height="430" alt="image" src="https://github.com/user-attachments/assets/5de88555-2399-4465-a10b-ae55907b78b8" />
+
+
 Choose the specific token limits you want to configure for the application.
 
-These limits define how many tokens the selected AI model can process per request or session, helping control performance, usage, and cost.
+These limits define how much tokens the selected AI model can process per the entire session, helping control performance, usage, and cost.
+
+## Sample Documents for Testing
+
+To validate the application after deployment, you can upload sample business documents and run a reconciliation session.
+
+Download or view the testing documents below:
+
+Three way matching documents: 
+
+- [Goods Receipt Note — GRN 5100011111 (1).pdf](https://github.com/user-attachments/files/26970755/Goods.Receipt.Note.GRN.5100011111.1.pdf)
+- [Purchase Order — PO 4500012345.pdf](https://github.com/user-attachments/files/26970776/Purchase.Order.PO.4500012345.pdf)
+- [Tax Invoice — INV 90007777.pdf](https://github.com/user-attachments/files/26970782/Tax.Invoice.INV.90007777.pdf)
+
+SOP Documents: 
+- [SOP_UOM_ISSUE_V1 (1).pdf](https://github.com/1CloudHub/ReconcileAI-CDK/files//SOP_UOM_ISSUE_V1.1.pdf)
+- [SOP_QUANTITY_CHANGE_V1 (1).pdf](https://github.com/user-attachments/files/26970803/SOP_QUANTITY_CHANGE_V1.1.pdf)
+- [SOP_PRICE_CHANGE_V1 (2).pdf](https://github.com/user-attachments/files/26970798/SOP_PRICE_CHANGE_V1.2.pdf)
+
+---
+# About ReconcileAI No SAP
+
+ReconcileAI streamlines document reconciliation by enabling intelligent field extraction, configurable matching logic, and SOP-driven exception handling across multiple business documents.
+
+The platform reduces manual validation effort by automating three-way matching workflows, helping teams identify inconsistencies faster and improve operational accuracy without relying on ERP integrations.
+
+Built with an AI-first approach, ReconcileAI centralizes reconciliation, monitoring, and analytics into a single workflow-driven platform.
+
+---
+
+## Legal Notice
+
+© **1CloudHub. All rights reserved.**
+
+The materials and components contained in this project are provided for demonstration purposes only.
+
+No portion of this project may be implemented in a live or production environment without prior technical assessment, security clearance, and explicit approval from **1CloudHub**.
+
