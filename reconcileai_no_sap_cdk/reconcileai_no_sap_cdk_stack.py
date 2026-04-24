@@ -722,15 +722,6 @@ class ReconcileaiNoSapCdkStack(Stack):
             compatible_runtimes=[_lambda.Runtime.PYTHON_3_12],
             description="Custom boto3 layer"
         )
-
-        mcp_layer = _lambda.LayerVersion(
-            self,
-            "McpLayer",
-            code=_lambda.Code.from_asset("lambda_layers/mcp_v2.zip"),
-            compatible_runtimes=[_lambda.Runtime.PYTHON_3_12],
-            description="MCP v2 layer"
-        )
-
         # ── Config Lambda ─────────────────────────────────────────────────────
         # Points to the config_lambda/ subfolder which contains:
         # lambda_function.py, utils.py, db.py, helpers.py, job_config.py,
@@ -775,7 +766,7 @@ class ReconcileaiNoSapCdkStack(Stack):
             security_groups=[lambda_security_group],
             timeout=Duration.seconds(900),
             memory_size=2048,
-            layers=[boto3_layer, mcp_layer],
+            layers=[boto3_layer,textract_layer],
             environment={
                 "SECRET_NAME": app_secret.secret_name,
                 "AWS_REGION_NAME": self.region,
