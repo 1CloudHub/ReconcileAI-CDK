@@ -390,7 +390,7 @@ class ReconcileaiNoSapCdkStack(Stack):
         s3_doc_upload_role = iam.Role(
             self,
             reconcile_name + "S3DocUploadRole" + name_key,
-            role_name="s3_doc_upload",                          # fixed name, no random suffix
+            role_name="s3_doc_upload" + name_key,                          
             assumed_by=iam.CompositePrincipal(
                 iam.ServicePrincipal("lambda.amazonaws.com"),
                 iam.ServicePrincipal("ec2.amazonaws.com"),
