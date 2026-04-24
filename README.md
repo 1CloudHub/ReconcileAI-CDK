@@ -2,22 +2,11 @@
 
 ## Overview
 
-ReconcileAI is an AI-powered web platform that helps users manually create and configure document types, create reconciliation jobs, and compare multi-document transactions such as invoices, purchase orders, and delivery notes using agent-managed three-way matching — without requiring ERP integration.
+ReconcileAI streamlines document reconciliation by enabling intelligent field extraction, configurable matching logic, and SOP-driven exception handling across multiple business documents.
 
-It allows users to define extraction rules, create SOP-based exception handling workflows, upload documents, and run an AI agent that matches fields across documents to detect inconsistencies.
+The platform reduces manual validation effort by automating three-way matching workflows, helping teams identify inconsistencies faster and improving operational accuracy.
 
-> **Disclaimer:** This CDK setup is strictly designed and tested for the `us-east-1` region (N. Virginia) and `us-west-2` (Oregon). Please ensure that all resources are deployed only within these regions to avoid compatibility issues.
-
----
-
-## Prerequisites
-
-Before beginning the deployment process:
-
-- Ensure you have access to the correct AWS account.
-- You must be using either:
-  - `us-east-1` (US East - N. Virginia)
-  - `us-west-2` (US West - Oregon)
+Built with an AI-first approach, ReconcileAI centralizes reconciliation, monitoring, and analytics into a single workflow-driven platform.
 
 ---
 
@@ -35,12 +24,9 @@ Log in to the provided AWS account using IAM credentials or SSO access, based on
 
 Navigate to the AWS Console region selector and ensure one of the following regions is selected:
 
-- **US East (N. Virginia)** — `us-east-1`
-- **US West (Oregon)** — `us-west-2`
-
 <img width="2558" height="1382" alt="aws console region step 1" src="https://github.com/user-attachments/assets/56c13415-9a1b-4700-8458-a15516fa9b99" />
 
-This is critical, as all the CDK resources are scoped and supported only in these region
+> **Note:** Ensure you have access to Claude models in the selected region. If access is unavailable, switch to another region where Claude or Nova models are supported for your account, or contact Amazon Web Services support for assistance.
 
 ---
 
@@ -57,6 +43,10 @@ CloudShell provides a pre-configured environment with AWS CLI and CDK support, m
 ### 3. Clone the Repository
 
 In the command line now we need to run these commands.
+
+```bash
+cd \tmp
+```
 
 ```bash
 git clone https://github.com/1CloudHub/ReconcileAI-CDK.git
@@ -147,6 +137,8 @@ Available options include:
 
 Select the model based on your application's AI processing requirements.
 
+> **Note:** When selecting Claude Sonnet models, ensure you already have access to those models in the chosen region. If access is unavailable, contact Amazon Web Services support or switch to a region where the models are supported, then repeat the setup steps.
+
 ---
 
 #### 7.2 Setting Token Limits
@@ -156,13 +148,13 @@ Select the model based on your application's AI processing requirements.
 
 Choose the specific token limits you want to configure for the application.
 
-These limits define how much tokens the selected AI model can process per the entire session, helping control performance, usage, and cost.
+These limits define how much tokens the selected AI model can process for the entire session, helping control performance, usage, and cost.
 
 ## Sample Documents for Testing
 
-To validate the application after deployment, you can upload sample business documents and run a reconciliation session.
+After deployment, you can validate the application by uploading your own business documents and running a reconciliation process to verify functionality and results.
 
-Download or view the testing documents below:
+Or you can also use the sample documents from below:
 
 Three way matching documents: 
 
@@ -174,15 +166,6 @@ SOP Documents:
 - [SOP_UOM_ISSUE_V1 (1).pdf](https://github.com/1CloudHub/ReconcileAI-CDK/files//SOP_UOM_ISSUE_V1.1.pdf)
 - [SOP_QUANTITY_CHANGE_V1 (1).pdf](https://github.com/user-attachments/files/26970803/SOP_QUANTITY_CHANGE_V1.1.pdf)
 - [SOP_PRICE_CHANGE_V1 (2).pdf](https://github.com/user-attachments/files/26970798/SOP_PRICE_CHANGE_V1.2.pdf)
-
----
-# About ReconcileAI No SAP
-
-ReconcileAI streamlines document reconciliation by enabling intelligent field extraction, configurable matching logic, and SOP-driven exception handling across multiple business documents.
-
-The platform reduces manual validation effort by automating three-way matching workflows, helping teams identify inconsistencies faster and improve operational accuracy without relying on ERP integrations.
-
-Built with an AI-first approach, ReconcileAI centralizes reconciliation, monitoring, and analytics into a single workflow-driven platform.
 
 ---
 
