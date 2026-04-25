@@ -278,8 +278,8 @@ Use these when you want to validate exception handling / mismatch detection:
 >
 > ```json
 > {
->   "TOTAL": "<>",
->   "SUPPLIER": "<>"
+>   "TOTAL": "Grand total / amount payable.",
+>   "SUPPLIER": "Supplier/vendor name as printed on the document."
 > }
 > ```
 >
