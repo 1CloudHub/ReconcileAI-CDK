@@ -58,7 +58,6 @@ def get_config() -> Dict[str, Any]:
             print(f"Missing config key: {k}")
         return v
 
-    frontend_url = (val("FRONTEND_URL") or "").rstrip("/")
     aws_region = val("REGION_AWS") or val("AWS_REGION")
 
     config_cache = {
@@ -141,7 +140,7 @@ def generate_presigned_upload_url(exception_id: str,filename: str,expiry: int = 
     try:
         config = get_config()
         region = config.get("region_name", "us-west-2")
-        bucket_name = "reconcileai-no-sap-bucket"
+        bucket_name = config.get("bucket_name_no_sap")
 
         if not exception_id or not filename:
             raise ValueError("exception_id and filename are required")
