@@ -651,7 +651,7 @@ class ReconcileaiNoSapCdkStack(Stack):
         pymupdf_layer = _lambda.LayerVersion(
             self, 
             "PymupdfLayer",
-            code = _lambda.Code.from_asset("lambda_layers/pymupdf_no_sap.zip"),
+            code = _lambda.Code.from_asset("lambda_layers/PymuPDF_no_sap.zip"),
             compatible_runtimes=[_lambda.Runtime.PYTHON_3_12],
             description="Custom pymupdf layer"
         )
