@@ -165,10 +165,14 @@ SOP Documents:
 - [SOP_PRICE_CHANGE_V1 (2).pdf](https://github.com/user-attachments/files/26970798/SOP_PRICE_CHANGE_V1.2.pdf)
 - [SOP_PO_GR_SI_RECONCILIATION_V2.pdf](https://github.com/user-attachments/files/27078664/SOP_PO_GR_SI_RECONCILIATION_V2.pdf)
 
-
-
-
 ---
+
+### 8. Confirm Deployment
+
+Once the model and token limit are set, type yes and hit enter to confirm the deployment of resources into your AWS Account.
+
+<img width="1646" height="886" alt="image" src="https://github.com/user-attachments/assets/ad27dcbb-afba-45df-b3ad-ab640287e7f7" />
+
 
 ## Legal Notice
 
