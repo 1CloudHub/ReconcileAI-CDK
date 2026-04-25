@@ -37,7 +37,7 @@ Launch the AWS CloudShell service from the AWS Console.
 
 CloudShell provides a pre-configured environment with AWS CLI and CDK support, making it ideal for deployments.
 
-<img width="1897" height="898" alt="cloudshell pic step 2" src="https://github.com/user-attachments/assets/99f3e5c7-f6d1-4cb3-9906-93aa0cf8a277" />
+<img width="1897" height="898" alt="cloudshell pic step 2" src="https://github.com/user-attachments/assets/8dc0c7d5-d4cc-44b0-bdc3-9419e1faac82" />
 
 ---
 
@@ -66,7 +66,8 @@ Installs the required Python dependencies for the CDK application.
 
 > ⚠️ **Error Handling Only — Do Not Run Unless Needed**
 
-<img width="1901" height="528" alt="delete_terminal step 3" src="https://github.com/user-attachments/assets/d85daa65-4cdf-420b-b603-4944f0994580" />
+<img width="1901" height="528" alt="delete_terminal step 3" src="https://github.com/user-attachments/assets/d3822f34-f02b-486a-b84b-f487b3054462" />
+
 
 
 If you encounter memory or disk space issues in CloudShell:
@@ -129,7 +130,8 @@ Available options include:
 - **Nova Premier**
 - **Claude Sonnet 4**
 
-<img width="1556" height="903" alt="image" src="https://github.com/user-attachments/assets/4f5f9db6-b914-4d73-bd30-dd7d731d3545" />
+<img width="2535" height="1251" alt="deployment_step step 4" src="https://github.com/user-attachments/assets/626f1ae6-9a62-49cc-bd29-4cf7bfb1be44" />
+
 
 
 Pick the model that matches the permissions and features enabled in your AWS account.
