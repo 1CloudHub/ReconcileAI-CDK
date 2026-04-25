@@ -74,6 +74,9 @@ If you encounter memory or disk space issues in CloudShell:
 2. Select **Delete** to remove the current environment.
 3. Open a new CloudShell terminal.
 4. Restart from Step 1.
+   
+
+This command removes all the files present in the cloudshell temporary storage
 
 > **Important:** Only follow these steps if you receive an *insufficient space* or memory-related error during installation.
 
