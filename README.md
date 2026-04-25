@@ -130,9 +130,7 @@ Available options include:
 - **Nova Premier**
 - **Claude Sonnet 4**
 
-<img width="2535" height="1251" alt="deployment_step step 4" src="https://github.com/user-attachments/assets/626f1ae6-9a62-49cc-bd29-4cf7bfb1be44" />
-
-
+<img width="1902" height="1113" alt="Screenshot 2026-04-22 182753" src="https://github.com/user-attachments/assets/5ad3107c-f7cd-4d79-aa1e-0d52bb2c11a7" />
 
 Pick the model that matches the permissions and features enabled in your AWS account.
 
