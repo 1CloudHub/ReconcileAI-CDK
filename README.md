@@ -20,11 +20,12 @@ Log in to the provided AWS account using IAM credentials or SSO access, based on
 
 ## Deployment Steps
 
-### 1. Set AWS Region to `us-east-1` or `us-west-2`
+### 1. Set AWS Region in your aws cloud console
 
 Navigate to the AWS Console region selector and ensure one of the following regions is selected:
 
-<img width="2558" height="1382" alt="aws console region step 1" src="https://github.com/user-attachments/assets/56c13415-9a1b-4700-8458-a15516fa9b99" />
+<img width="2558" height="1382" alt="aws console region step 1" src="https://github.com/user-attachments/assets/2ac1d6de-14c8-4804-8623-17fc768931fc" />
+
 
 > **Note:** Ensure you have access to Claude models or Nova Models in the selected region. If access is unavailable, switch to another region where Claude or Nova models are supported for your account, or contact Amazon Web Services support for assistance.
 
