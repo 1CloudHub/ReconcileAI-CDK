@@ -42,14 +42,10 @@ CloudShell provides a pre-configured environment with AWS CLI and CDK support, m
 
 ### 3. Clone the Repository
 
-In the command line now we need to run these commands.
+In the terminal now we need to run these commands.
 
 ```bash
-cd \tmp
-```
-
-```bash
-git clone https://github.com/1CloudHub/ReconcileAI-CDK.git
+git clone --depth 1 https://github.com/1CloudHub/ReconcileAI-CDK.git
 ```
 
 ```bash
@@ -135,7 +131,7 @@ Available options include:
 <img width="1556" height="903" alt="image" src="https://github.com/user-attachments/assets/4f5f9db6-b914-4d73-bd30-dd7d731d3545" />
 
 
-Select the model based on your application's AI processing requirements.
+Pick the model that matches the permissions and features enabled in your AWS account.
 
 > **Note:** When selecting Claude Sonnet models, ensure you already have access to those models in the chosen region. If access is unavailable, contact Amazon Web Services support or switch to a region where the models are supported, then repeat the setup steps.
 
@@ -148,13 +144,13 @@ Select the model based on your application's AI processing requirements.
 
 Choose the specific token limits you want to configure for the application.
 
-These limits define how much tokens the selected AI model can process for the entire session, helping control performance, usage, and cost.
+These limits define how much tokens the selected AI model can process for the application, helping control performance, usage, and cost in your aws accoutn.
 
 ## Test ReconcileAI with Documents
 
-After deployment, you can validate the application by uploading your own business documents and running a reconciliation process to verify functionality and results.
+After deployment, you can validate the application by uploading your own business documents and by running a reconciliation process to verify functionality and results.
 
-Or you can also use the sample documents from below:
+Or you can also use the sample documents from below to get started quickly:
 
 Three way matching documents: 
 
@@ -166,6 +162,9 @@ SOP Documents:
 - [SOP_UOM_ISSUE_V1 (1).pdf](https://github.com/1CloudHub/ReconcileAI-CDK/files//SOP_UOM_ISSUE_V1.1.pdf)
 - [SOP_QUANTITY_CHANGE_V1 (1).pdf](https://github.com/user-attachments/files/26970803/SOP_QUANTITY_CHANGE_V1.1.pdf)
 - [SOP_PRICE_CHANGE_V1 (2).pdf](https://github.com/user-attachments/files/26970798/SOP_PRICE_CHANGE_V1.2.pdf)
+
+
+
 
 ---
 
