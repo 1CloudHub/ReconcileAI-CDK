@@ -2,11 +2,9 @@
 
 ## Overview
 
-ReconcileAI streamlines document reconciliation by enabling intelligent field extraction, configurable matching logic, and SOP-driven exception handling across multiple business documents.
+ReconcileAI is an AI-powered document reconciliation platform designed to simplify and automate the comparison of business documents across complex workflows. It enables intelligent field extraction, configurable matching rules, and SOP-driven exception handling to process and validate information across multiple document types such as invoices, statements, reports, transaction records, and operational documents.
 
-The platform reduces manual validation effort by automating dynamic document matching workflows, helping teams identify inconsistencies faster and improving operational accuracy.
-
-Built with an AI-first approach, ReconcileAI centralizes reconciliation, monitoring, and analytics into a single workflow-driven platform.
+Built with an AI-first architecture, ReconcileAI supports scalable reconciliation workflows, enabling organizations to handle increasing document volumes while maintaining transparency, traceability, and performance insights through integrated monitoring and analytics.
 
 ---
 
@@ -186,72 +184,72 @@ Deployment typically takes **20–30 minutes**. After deployment completes, allo
 Below is the list of AWS resources utilized by the ReconcileAI application.
 
 ```bash
-## 1. Networking
-- **1.1** VPC with public and private subnets  
-- **1.2** Security groups for Lambda, RDS, and EC2  
-- **1.3** RDS subnet group across private subnets  
+1. Networking
+   1.1 VPC with public and private subnets
+   1.2 Security groups for Lambda, RDS, and EC2
+   1.3 RDS subnet group across private subnets
 
-## 2. Storage
-- **2.1** Frontend S3 bucket for website hosting  
-- **2.2** Application S3 bucket for uploads and document storage  
-- **2.3** Pre-created folders for reconciliation workflows and SOPs  
+2. Storage
+   2.1 Frontend S3 bucket for website hosting
+   2.2 Application S3 bucket for uploads and document storage
+   2.3 Pre-created folders for reconciliation workflows and SOPs
 
-## 3. Database
-- **3.1** PostgreSQL RDS instance running in private subnets  
-- **3.2** Encrypted storage with restricted public access  
+3. Database
+   3.1 PostgreSQL RDS instance running in private subnets
+   3.2 Encrypted storage with restricted public access
 
-## 4. Secrets Management
-- **4.1** Centralized secret storing database credentials  
-- **4.2** Stores Bedrock model configuration and AWS region settings  
-- **4.3** Includes Cognito IDs and application configuration values  
+4. Secrets Management
+   4.1 Centralized secret storing database credentials
+   4.2 Stores Bedrock model configuration and AWS region settings
+   4.3 Includes Cognito IDs and application configuration values
 
-## 5. Authentication
-- **5.1** Cognito User Pool for login management  
-- **5.2** Email-based authentication  
-- **5.3** Auto-created default user during deployment  
+5. Authentication
+   5.1 Cognito User Pool for login management
+   5.2 Email-based authentication
+   5.3 Auto-created default user during deployment
 
-## 6. Lambda Functions
-- **6.1** Database initialization Lambda  
-- **6.2** Configuration Lambda  
-- **6.3** Agent Lambda for reconciliation processing  
-- **6.4** Shared Lambda layers for dependencies  
+6. Lambda Functions
+   6.1 Database initialization Lambda
+   6.2 Configuration Lambda
+   6.3 Agent Lambda for reconciliation processing
+   6.4 Shared Lambda layers for dependencies
 
-## 7. IAM Roles
-- **7.1** Dedicated roles for Lambda, EC2, API Gateway, and S3 access  
-- **7.2** Permissions configured for Bedrock, Cognito, Textract, RDS, and S3  
+7. IAM Roles
+   7.1 Dedicated roles for Lambda, EC2, API Gateway, and S3 access
+   7.2 Permissions configured for Bedrock, Cognito, Textract, RDS, and S3
 
-## 8. API Gateway
-- **8.1** REST API for application endpoints  
-- **8.2** Routes for configuration, uploads, and reconciliation  
-- **8.3** CORS enabled for frontend integration  
+8. API Gateway
+   8.1 REST API for application endpoints
+   8.2 Routes for configuration, uploads, and reconciliation
+   8.3 CORS enabled for frontend integration
 
-## 9. CloudFront
-- **9.1** CDN distribution for frontend delivery  
-- **9.2** HTTPS enabled for secure access  
-- **9.3** Automatic cache invalidation on deployment  
+9. CloudFront
+   9.1 CDN distribution for frontend delivery
+   9.2 HTTPS enabled for secure access
+   9.3 Automatic cache invalidation on deployment
 
-## 10. EC2
-- **10.1** Frontend build instance  
-- **10.2** Builds and uploads frontend assets automatically  
-- **10.3** Self-terminates after deployment  
+10. EC2
+    10.1 Frontend build instance
+    10.2 Builds and uploads frontend assets automatically
+    10.3 Self-terminates after deployment
 
-## 11. Custom Resources
-- **11.1** Cognito user creation  
-- **11.2** Database schema initialization  
-- **11.3** S3 folder creation  
-- **11.4** CloudFront cache invalidation  
+11. Custom Resources
+    11.1 Cognito user creation
+    11.2 Database schema initialization
+    11.3 S3 folder creation
+    11.4 CloudFront cache invalidation
 
-## 12. Outputs
-- **12.1** CloudFront frontend URL  
-- **12.2** Default login credentials  
-- **12.3** Deployment-generated access details  
+12. Outputs
+    12.1 CloudFront frontend URL
+    12.2 Default login credentials
+    12.3 Deployment-generated access details
 
 ```
 
 ---
 ## Test ReconcileAI with Documents
 
-After deployment, you can validate the application by uploading your own business documents and by running a reconciliation process to verify functionality and results.
+After deployment, you can validate the application by uploading your own business documents and by running a reconciliation process to verify functionality and results. Happy Reconciling!!
 
 Or you can also use the sample documents from below to get started quickly:
 
@@ -266,6 +264,11 @@ SOP Documents:
 - [SOP_QUANTITY_CHANGE_V1 (1).pdf](https://github.com/user-attachments/files/26970803/SOP_QUANTITY_CHANGE_V1.1.pdf)
 - [SOP_PRICE_CHANGE_V1 (2).pdf](https://github.com/user-attachments/files/26970798/SOP_PRICE_CHANGE_V1.2.pdf)
 - [SOP_PO_GR_SI_RECONCILIATION_V2.pdf](https://github.com/user-attachments/files/27078664/SOP_PO_GR_SI_RECONCILIATION_V2.pdf)
+
+---
+## About ReconcileAI
+
+ReconcileAI streamlines document reconciliation by enabling intelligent field extraction, configurable matching logic, and SOP-driven exception handling across multiple business documents. The platform reduces manual validation effort by automating dynamic document matching workflows, helping teams identify inconsistencies faster and improving operational accuracy.
 
 ---
 ## Legal Notice
