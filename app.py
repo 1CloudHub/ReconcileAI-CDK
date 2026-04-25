@@ -44,15 +44,6 @@ if TOKEN_LIMIT not in _VALID_TOKENS:
     raise ValueError(
         f"CDK_TOKEN_LIMIT must be one of {_VALID_TOKENS}; got '{TOKEN_LIMIT}'"
     )
-
-print("=" * 55)
-print("  ReconcileAI No-SAP CDK Synthesis")
-print("=" * 55)
-print(f"  Model Selection : {MODEL_SELECTION}")
-print(f"  Model ID        : {MODEL_ID}")
-print(f"  Token Limit     : {TOKEN_LIMIT:,}")
-print("=" * 55)
-
 # -----------------------------------------------------------------------
 # CDK App
 # -----------------------------------------------------------------------
