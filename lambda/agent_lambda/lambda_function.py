@@ -8,7 +8,7 @@ import time
 from typing import Any
 
 import boto3
-
+region_name = os.environ.get("AWS_REGION_NAME", "us-west-2")
 # ---------------------------------------------------------------------------
 # AWS clients
 # ---------------------------------------------------------------------------
@@ -42,7 +42,6 @@ def get_secret():
     if not secret_name:
         return os.environ # Fallback to os.environ if secret is not configured
         
-    region_name = os.environ.get("AWS_REGION_NAME", "us-west-2")
 
     try:
         client = boto3.client("secretsmanager", region_name=region_name)
