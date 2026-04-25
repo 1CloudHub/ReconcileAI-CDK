@@ -142,11 +142,113 @@ Pick the model that matches the permissions and features enabled in your AWS acc
 
 <img width="2417" height="430" alt="image" src="https://github.com/user-attachments/assets/5de88555-2399-4465-a10b-ae55907b78b8" />
 
-
 Choose the specific token limits you want to configure for the application.
+These limits define how much tokens the selected AI model can process for the application, helping control performance, usage, and cost in your aws account.
 
-These limits define how much tokens the selected AI model can process for the application, helping control performance, usage, and cost in your aws accoutn.
+---
 
+### 8. Confirm Deployment
+
+Once the model and token limit are set, type yes and hit enter to confirm the deployment of resources into your AWS Account.
+
+<img width="1646" height="886" alt="image" src="https://github.com/user-attachments/assets/ad27dcbb-afba-45df-b3ad-ab640287e7f7" />
+
+---
+### 9. Get the Application Url
+
+To access the application, navigate to the AWS CloudFormation console and make sure you are viewing the same AWS region where the CDK resources were deployed.
+
+<img width="2166" height="857" alt="CloudFormation Region Selection" src="https://github.com/user-attachments/assets/d2b6e2d0-737b-4c39-9637-8a48a2eea3a3" />
+
+Once inside CloudFormation, you should see two deployed stacks.
+
+<img width="1226" height="594" alt="CloudFormation Stacks" src="https://github.com/user-attachments/assets/cc1e8d0e-48d6-483f-a4e9-a654735c4430" />
+
+Select the `ReconcileaiNoSapCdkStack` stack and navigate to the **Outputs** tab.
+
+<img width="2640" height="1180" alt="CloudFormation Outputs Tab" src="https://github.com/user-attachments/assets/f8098b49-84b6-43c2-9e59-794c41f236ec" />
+
+The **Outputs** section contains deployment-generated values such as the frontend URL, login credentials, and other important resource details.
+
+---
+### 10. Accessing the Application
+
+Once the CloudFront distribution is active and model access has been approved, open the copied domain URL in your browser to start using the ReconcileAI application.
+
+> **Note:** Ensure the deployment has completed successfully before attempting to access the application.
+
+⚠️ **Deployment Time:**  
+Deployment typically takes **20–30 minutes**. After deployment completes, allow an additional **10 minutes** for all services to fully initialize before using the application.
+
+---
+## Used AWS Services
+
+Below is the list of AWS resources utilized by the ReconcileAI application.
+
+```bash
+## 1. Networking
+- **1.1** VPC with public and private subnets  
+- **1.2** Security groups for Lambda, RDS, and EC2  
+- **1.3** RDS subnet group across private subnets  
+
+## 2. Storage
+- **2.1** Frontend S3 bucket for website hosting  
+- **2.2** Application S3 bucket for uploads and document storage  
+- **2.3** Pre-created folders for reconciliation workflows and SOPs  
+
+## 3. Database
+- **3.1** PostgreSQL RDS instance running in private subnets  
+- **3.2** Encrypted storage with restricted public access  
+
+## 4. Secrets Management
+- **4.1** Centralized secret storing database credentials  
+- **4.2** Stores Bedrock model configuration and AWS region settings  
+- **4.3** Includes Cognito IDs and application configuration values  
+
+## 5. Authentication
+- **5.1** Cognito User Pool for login management  
+- **5.2** Email-based authentication  
+- **5.3** Auto-created default user during deployment  
+
+## 6. Lambda Functions
+- **6.1** Database initialization Lambda  
+- **6.2** Configuration Lambda  
+- **6.3** Agent Lambda for reconciliation processing  
+- **6.4** Shared Lambda layers for dependencies  
+
+## 7. IAM Roles
+- **7.1** Dedicated roles for Lambda, EC2, API Gateway, and S3 access  
+- **7.2** Permissions configured for Bedrock, Cognito, Textract, RDS, and S3  
+
+## 8. API Gateway
+- **8.1** REST API for application endpoints  
+- **8.2** Routes for configuration, uploads, and reconciliation  
+- **8.3** CORS enabled for frontend integration  
+
+## 9. CloudFront
+- **9.1** CDN distribution for frontend delivery  
+- **9.2** HTTPS enabled for secure access  
+- **9.3** Automatic cache invalidation on deployment  
+
+## 10. EC2
+- **10.1** Frontend build instance  
+- **10.2** Builds and uploads frontend assets automatically  
+- **10.3** Self-terminates after deployment  
+
+## 11. Custom Resources
+- **11.1** Cognito user creation  
+- **11.2** Database schema initialization  
+- **11.3** S3 folder creation  
+- **11.4** CloudFront cache invalidation  
+
+## 12. Outputs
+- **12.1** CloudFront frontend URL  
+- **12.2** Default login credentials  
+- **12.3** Deployment-generated access details  
+
+```
+
+---
 ## Test ReconcileAI with Documents
 
 After deployment, you can validate the application by uploading your own business documents and by running a reconciliation process to verify functionality and results.
@@ -166,14 +268,6 @@ SOP Documents:
 - [SOP_PO_GR_SI_RECONCILIATION_V2.pdf](https://github.com/user-attachments/files/27078664/SOP_PO_GR_SI_RECONCILIATION_V2.pdf)
 
 ---
-
-### 8. Confirm Deployment
-
-Once the model and token limit are set, type yes and hit enter to confirm the deployment of resources into your AWS Account.
-
-<img width="1646" height="886" alt="image" src="https://github.com/user-attachments/assets/ad27dcbb-afba-45df-b3ad-ab640287e7f7" />
-
-
 ## Legal Notice
 
 © **1CloudHub. All rights reserved.**
