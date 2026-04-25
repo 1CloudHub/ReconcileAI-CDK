@@ -18,9 +18,8 @@ Log in to the provided AWS account using IAM credentials or SSO access, based on
 
 ## Deployment Steps
 
-### 1. Set AWS Region in your aws cloud console
-
-Navigate to the AWS Console region selector and ensure one of the following regions is selected:
+### 1. Set Region to `us-east-1` or `us-west-2`
+Navigate to the region selector in the AWS Console and ensure that either **`US East (N. Virginia) - us-east-1`** or **`US WEST (Oregon) - us-west-2`** is selected.
 
 <img width="2558" height="1382" alt="aws console region step 1" src="https://github.com/user-attachments/assets/2ac1d6de-14c8-4804-8623-17fc768931fc" />
 
