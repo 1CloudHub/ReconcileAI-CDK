@@ -12,9 +12,9 @@ import boto3
 # ---------------------------------------------------------------------------
 # AWS clients
 # ---------------------------------------------------------------------------
-textract_client = boto3.client("textract", region_name="us-west-2")
-s3_client = boto3.client("s3", region_name="us-west-2")
-bedrock_runtime = boto3.client("bedrock-runtime", region_name="us-west-2")
+textract_client = boto3.client("textract", region_name=region_name)
+s3_client = boto3.client("s3", region_name=region_name)
+bedrock_runtime = boto3.client("bedrock-runtime", region_name=region_name)
 
 logger = logging.getLogger(__name__)
 
@@ -780,7 +780,7 @@ RULES:
   Keys are field names, values are objects mapping document_name to extracted value.
   Include ALL fields that were compared, whether they matched or not.
 - IMPORTANT: Each field object inside "matching" MUST include a "matched" key set to "yes" if the values across all documents are equal/consistent for that field, or "no" if there is any mismatch.
-- NUMERIC COMPARISON: When comparing numerical values, ignore trailing decimal zeros — values like 1600, 1600.0, 1600.00, and 1600.000 are considered identical. Compare only the significant numeric value.
+- NUMERIC COMPARISON: When comparing numerical values, ignore trailing decimal zeros — values like 1600, 1600.0, 1600.00, and 1600.000 are considered identical. Compare only the significant numeric value. 600 and 600.00 are the same thing zeros after a decimal point is insignificant and should not be considered. 600, 600 and 600.000 is a match all three quantites match
 
 --- EXTRACTED DOCUMENTS ---
 {json.dumps(extracted_documents, indent=2, default=str)}
@@ -790,45 +790,58 @@ RULES:
 """
         nova_prompt = f"""You are a document reconciliation specialist.
 
-Input:
-1. EXTRACTED_DOCUMENTS - extracted values by document.
-2. SOP_INSTRUCTIONS - SOP-derived field comparison rules.
+You will be given:
+1. EXTRACTED DOCUMENTS – field values already extracted from each document.
+2. SOP INSTRUCTIONS – refined rules describing what to compare and how.
 
-Task:
-- Evaluate each SOP instruction.
-- Compare required fields across listed documents.
-- Mark each SOP as pass/fail.
+Your task:
+- For each SOP instruction, compare the relevant fields across the specified documents.
+- Determine if each SOP check passes or fails based on the rule provided.
 
-Return strict JSON only with this shape:
+Return ONLY valid JSON (no markdown, no explanation) in this exact structure:
 {{
   "match_status": "yes" or "no",
   "reason_for_failure": [
     {{
-      "<exception_name>": "none" or "<reason>",
+      "<exception_name>": "none" or "<clear reason for mismatch>",
       "status": "yes" or "no",
       "matching": {{
         "<field_name>": {{
-          "<document_name>": "<value>",
+          "<document_name>": "<value_from_that_document>",
+          ...,
           "matched": "yes" or "no"
-        }}
+        }},
+        ...
       }}
-    }}
+    }},
+    ...
   ]
 }}
 
-Rules:
-- One reason_for_failure object per SOP.
-- If SOP passes: exception value = "none", status = "yes".
-- If SOP fails: exception value = reason text, status = "no".
-- match_status is "yes" only if all SOP statuses are "yes".
-- Include all compared fields in matching.
-- Numeric normalization: 1600 == 1600.0 == 1600.00 == 1600.000.
-- Valid JSON only; no markdown.
+RULES:
+- "reason_for_failure" MUST be a JSON array with one object per SOP instruction.
+- Each object has exactly three keys: the exception_name, "status", and "matching".
+- If a SOP check passes: set the exception_name value to "none" and "status" to "yes".
+- If a SOP check fails: set the exception_name value to a clear reason string and "status" to "no".
+- "match_status" should be "yes" ONLY if ALL SOP checks pass (all statuses are "yes").
+- "matching" shows the actual field values from each document that were compared.
+  Keys are field names, values are objects mapping document_name to extracted value.
+  Include ALL fields that were compared, whether they matched or not.
+- IMPORTANT: Each field object inside "matching" MUST include a "matched" key set to "yes" if the values across all documents are equal/consistent for that field, or "no" if there is any mismatch.
+- NUMERIC COMPARISON: When comparing numerical values, ignore trailing decimal zeros — values like 1600, 1600.0, 1600.00, and 1600.000 are considered identical. Compare only the significant numeric value. 600 and 600.00 are the same thing zeros after a decimal point is insignificant and should not be considered. 600, 600 and 600.000 is a match all three quantites match.
+- When comparing strings spaces between hyphens should be ignored. example SUPP - {
+str({                                "matched": "yes",
+                                "goods_receipt_proper": "SUPP - 4472",
+                                "sales_invoice_proper": "SUPP-4472",
+                                "purchase_order_proper": "SUPP - 4472"}
+   )                         } should be matches yes inspite of the spaces between the hyphens
 
-EXTRACTED_DOCUMENTS:
+Only follow rules from SOP nothing else at all. Just do what the SOP says
+
+--- EXTRACTED DOCUMENTS ---
 {json.dumps(extracted_documents, indent=2, default=str)}
 
-SOP_INSTRUCTIONS:
+--- SOP INSTRUCTIONS ---
 {json.dumps(sop_instructions, indent=2, default=str)}
 """
 
@@ -1145,6 +1158,18 @@ def lambda_handler(event: dict, context: Any = None) -> dict:
                 created_by=created_by,
                 sub_flag=sub_flag,
             )
+
+            # if reconcile_result.get("match_status", "no") == "no":
+            #     print("DID NOT MATCH TRYING AGAIN")
+            #     reconcile_result = reconcile_documents(
+            #         extracted_documents=extraction["extracted_documents"],
+            #         sop_instructions=extraction["sop_instructions"],
+            #         session_id=session_id,
+            #         job_id=job_id,
+            #         created_by=created_by,
+            #         sub_flag=sub_flag,
+            #     )
+
             print("STEP 5 - reconcile_result:", reconcile_result)
 
             re_input  = reconcile_result["input_token"]
