@@ -250,20 +250,42 @@ Below is the list of AWS resources utilized by the ReconcileAI application.
 
 After deployment, you can validate the application by uploading your own business documents and by running a reconciliation process to verify functionality and results. Happy Reconciling!!
 
-Or you can also use the sample documents from below to get started quickly:
+Or you can also use the sample documents in the `assets/` folder to get started quickly.
 
-Three way matching documents: 
+### Sample documents (Matching set)
 
-- [Goods Receipt Note — GRN 5100011111 (1).pdf](https://github.com/user-attachments/files/26970755/Goods.Receipt.Note.GRN.5100011111.1.pdf)
-- [Purchase Order — PO 4500012345.pdf](https://github.com/user-attachments/files/26970776/Purchase.Order.PO.4500012345.pdf)
-- [Tax Invoice — INV 90007777.pdf](https://github.com/user-attachments/files/26970782/Tax.Invoice.INV.90007777.pdf)
+Use these when you expect a successful 3-way match:
 
-SOP Documents: 
-- [SOP_UOM_ISSUE_V1 (1).pdf](https://github.com/1CloudHub/ReconcileAI-CDK/files//SOP_UOM_ISSUE_V1.1.pdf)
-- [SOP_QUANTITY_CHANGE_V1 (1).pdf](https://github.com/user-attachments/files/26970803/SOP_QUANTITY_CHANGE_V1.1.pdf)
-- [SOP_PRICE_CHANGE_V1 (2).pdf](https://github.com/user-attachments/files/26970798/SOP_PRICE_CHANGE_V1.2.pdf)
-  
-> **Note:** The documents you upload should not exceed **2 pages** or **4 MB** in size per file.
+- [Download: Goods Receipt](https://raw.githubusercontent.com/1CloudHub/ReconcileAI-CDK/main/assets/matching/goods_receipt.pdf)
+- [Download: Purchase Order](https://raw.githubusercontent.com/1CloudHub/ReconcileAI-CDK/main/assets/matching/purchase_order.pdf)
+- [Download: Sales Invoice](https://raw.githubusercontent.com/1CloudHub/ReconcileAI-CDK/main/assets/matching/sales_invoice.pdf)
+
+### Sample documents (Non-matching set)
+
+Use these when you want to validate exception handling / mismatch detection:
+
+- [Download: Goods Receipt](https://raw.githubusercontent.com/1CloudHub/ReconcileAI-CDK/main/assets/non_matching/Goods_receipt.pdf)
+- [Download: Purchase Order](https://raw.githubusercontent.com/1CloudHub/ReconcileAI-CDK/main/assets/non_matching/Purchase_order.pdf)
+- [Download: Invoice](https://raw.githubusercontent.com/1CloudHub/ReconcileAI-CDK/main/assets/non_matching/Invoice.pdf)
+
+### SOP document
+
+- [Download: SOP - Three Way Match](https://raw.githubusercontent.com/1CloudHub/ReconcileAI-CDK/main/assets/sop/SOP_Three_Way_Match_1CloudHub.pdf)
+
+> **Download tip:** Some browsers will open PDFs in a new tab instead of immediately saving them. If that happens, use **Save link as…** (right-click the link) or use the browser viewer’s **Download** button.
+
+> **Required extraction fields (per SOP):**
+>
+> ```json
+> {
+>   "TOTAL": "<>",
+>   "SUPPLIER": "<>"
+> }
+> ```
+>
+> **Note:** To improve efficiency, extract only the required fields above according to the SOP (and avoid extracting unnecessary fields).
+>
+> **File limits:** The documents you upload should not exceed **2 pages** or **4 MB** in size per file.
 ---
 ## About ReconcileAI
 
