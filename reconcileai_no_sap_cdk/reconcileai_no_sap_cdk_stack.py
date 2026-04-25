@@ -252,7 +252,7 @@ class ReconcileaiNoSapCdkStack(Stack):
                     allowed_origins=["*"],  # ✅ safest for your setup
                     allowed_headers=["*"],
                     exposed_headers=["ETag"],
-                    max_age=3000,
+                    max_age=60000,
                 )
             ],
         )
