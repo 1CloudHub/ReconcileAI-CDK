@@ -39,6 +39,87 @@ _region = (cfg.get("region_name") or "").strip() or "us-west-2"
 s3_client = boto3.client("s3", region_name=_region)
 bedrock_client = boto3.client("bedrock-runtime", region_name=_region)
 
+CLAUDE_MODEL_ID = "us.anthropic.claude-sonnet-4-20250514-v1:0"
+NOVA_MODEL_ID = "us.amazon.nova-pro-v1:0"
+
+
+def _resolve_model_id_from_cfg() -> str:
+    """
+    Bedrock model ID from config (Secrets-backed utils.get_config()).
+    Prefer BEDROCK_MODEL_ID; fall back to model_id. Supports friendly values claude / nova.
+    """
+    configured = str(
+        cfg.get("BEDROCK_MODEL_ID") or cfg.get("model_id") or CLAUDE_MODEL_ID
+    ).strip()
+    lowered = configured.lower()
+    if lowered == "claude":
+        return CLAUDE_MODEL_ID
+    if lowered == "nova":
+        return NOVA_MODEL_ID
+    return configured
+
+
+def _is_nova_model(model_id: str) -> bool:
+    return "nova" in model_id.lower()
+
+
+def _invoke_bedrock_text_once(
+    claude_prompt: str,
+    nova_prompt: str,
+    *,
+    max_tokens_claude: int = 3000,
+    max_tokens_nova: int = 10240,
+) -> tuple:
+    """
+    Text-only Bedrock invoke. Returns (normalized_claude_shape, input_tokens, output_tokens).
+    normalized_claude_shape is always {"content": [{"text": "..."}]} for downstream code.
+    """
+    model_id = _resolve_model_id_from_cfg()
+    use_nova = _is_nova_model(model_id)
+    prompt = nova_prompt if use_nova else claude_prompt
+    max_tokens = max_tokens_nova if use_nova else max_tokens_claude
+
+    if use_nova:
+        body = {
+            "messages": [{"role": "user", "content": [{"text": prompt}]}],
+            "inferenceConfig": {
+                "maxTokens": max_tokens,
+                "temperature": 0,
+                "topP": 0.999,
+            },
+        }
+    else:
+        body = {
+            "anthropic_version": "bedrock-2023-05-31",
+            "max_tokens": max_tokens,
+            "temperature": 0,
+            "top_p": 0.999,
+            "top_k": 250,
+            "messages": [
+                {
+                    "role": "user",
+                    "content": [{"type": "text", "text": prompt}],
+                }
+            ],
+        }
+
+    response = bedrock_client.invoke_model(
+        contentType="application/json",
+        body=json.dumps(body),
+        modelId=model_id,
+    )
+    headers = response.get("ResponseMetadata", {}).get("HTTPHeaders", {})
+    input_tokens = int(headers.get("x-amzn-bedrock-input-token-count", 0))
+    output_tokens = int(headers.get("x-amzn-bedrock-output-token-count", 0))
+    raw = json.loads(response["body"].read().decode("utf-8"))
+    if use_nova:
+        text = raw["output"]["message"]["content"][0]["text"]
+    else:
+        text = raw["content"][0]["text"]
+    normalized = {"content": [{"text": text}]}
+    return normalized, input_tokens, output_tokens
+
+
 DB_SCHEMA = "erp_no_sap"
 DOC_TABLE = "document_table"
 
@@ -47,6 +128,12 @@ TEXT_EXTRACT_PROMPT = (
     "which can be used for NLP tasks. The answer format should only be all extracted "
     "text in a neat formatted manner from the image without any other information. "
     "Ensure to double check the numbers extracted from the image."
+)
+
+TEXT_EXTRACT_PROMPT_NOVA = (
+    "Extract all visible text from the image for NLP. "
+    "Return only the extracted text, neatly formatted, with no labels or preamble. "
+    "Verify numbers carefully."
 )
 
 BASE_PROMPT = (
@@ -221,9 +308,14 @@ def key_extraction_funtion_llm(page_texts, doc_type, doc_name, doc_id, file_exte
         if isinstance(needed_fields, str):
             needed_fields = json.loads(needed_fields)
 
-        final_prompt = build_key_extraction_final_prompt(doc_type, document_description, needed_fields, page_texts)
-        print("FINAL PROMPT : ", final_prompt)
-        final, input_tokens, output_tokens = invoke_model_function(final_prompt)
+        claude_prompt = build_key_extraction_final_prompt(
+            doc_type, document_description, needed_fields, page_texts
+        )
+        nova_prompt = build_key_extraction_nova_prompt(
+            doc_type, document_description, needed_fields, page_texts
+        )
+        print("FINAL PROMPT : ", claude_prompt)
+        final, input_tokens, output_tokens = invoke_model_function(claude_prompt, nova_prompt)
 
         if 'content' in final and len(final['content']) > 0 and 'text' in final['content'][0]:
             raw_text = final['content'][0]['text']
@@ -246,43 +338,81 @@ def text_extract_llm(base_64_array, file_extension):
     """Extract text from images via LLM using hardcoded prompt.
     Returns (page_results, total_input_tokens, total_output_tokens)."""
     print("TEXT EXTRACT LLM CALLED")
-    input_prompt = TEXT_EXTRACT_PROMPT
+    claude_system = TEXT_EXTRACT_PROMPT
+    nova_user_text = TEXT_EXTRACT_PROMPT_NOVA
     page_results = []
     total_input_tokens = 0
     total_output_tokens = 0
+    model_id = _resolve_model_id_from_cfg()
+    use_nova = _is_nova_model(model_id)
+    image_format = (
+        "jpeg" if str(file_extension).lower() in ("jpg", "jpeg") else "png"
+    )
     for i in base_64_array:
-        response = bedrock_client.invoke_model(contentType='application/json', body=json.dumps({
-            "anthropic_version": "bedrock-2023-05-31",
-            "max_tokens": 3000,
-            "temperature": 0,
-            "top_p": 0.8,
-            "top_k":100,
-            "system":input_prompt,
-            "messages": [
-                {
-                    "role": "user",
-                    "content": [
-                        {
-                            "type": "image",
-                            "source": {
-                                "type": "base64",
-                                "media_type": "image/png",
-                                "data": i
-                            }
-                        },
-                    ]
-                }
-            ]
-        }), modelId=cfg["model_id"])
+        if use_nova:
+            body = {
+                "messages": [
+                    {
+                        "role": "user",
+                        "content": [
+                            {"text": nova_user_text},
+                            {
+                                "image": {
+                                    "format": image_format,
+                                    "source": {"bytes": i},
+                                }
+                            },
+                        ],
+                    }
+                ],
+                "inferenceConfig": {
+                    "maxTokens": 3000,
+                    "temperature": 0,
+                    "topP": 0.8,
+                },
+            }
+        else:
+            body = {
+                "anthropic_version": "bedrock-2023-05-31",
+                "max_tokens": 3000,
+                "temperature": 0,
+                "top_p": 0.8,
+                "top_k": 100,
+                "system": claude_system,
+                "messages": [
+                    {
+                        "role": "user",
+                        "content": [
+                            {
+                                "type": "image",
+                                "source": {
+                                    "type": "base64",
+                                    "media_type": "image/png",
+                                    "data": i,
+                                },
+                            },
+                        ],
+                    }
+                ],
+            }
+
+        response = bedrock_client.invoke_model(
+            contentType="application/json",
+            body=json.dumps(body),
+            modelId=model_id,
+        )
 
         headers = response.get("ResponseMetadata", {}).get("HTTPHeaders", {})
-        total_input_tokens  += int(headers.get("x-amzn-bedrock-input-token-count", 0))
+        total_input_tokens += int(headers.get("x-amzn-bedrock-input-token-count", 0))
         total_output_tokens += int(headers.get("x-amzn-bedrock-output-token-count", 0))
 
-        inference_result = response['body'].read().decode('utf-8')
+        inference_result = response["body"].read().decode("utf-8")
         final = json.loads(inference_result)
-        print("FINAL : ",final)
-        extracted_content = final['content'][0]['text']
+        print("FINAL : ", final)
+        if use_nova:
+            extracted_content = final["output"]["message"]["content"][0]["text"]
+        else:
+            extracted_content = final["content"][0]["text"]
         page_results.append(extracted_content)
     return page_results, total_input_tokens, total_output_tokens
 
@@ -306,6 +436,22 @@ Document Description: {document_description}
 Required Fields: {document_key_schema}
 
 Input Document:
+{page_texts}
+"""
+
+
+def build_key_extraction_nova_prompt(
+    doc_type, document_description, document_key_schema, page_texts
+):
+    """Shorter Nova-oriented prompt; same extraction goal as build_key_extraction_final_prompt."""
+    return f"""Extract structured field values as valid JSON only (double quotes, no markdown).
+Use NOT_AVAILABLE for missing values. Do not invent data.
+
+Document type: {doc_type}
+Description: {document_description}
+Required fields schema: {json.dumps(document_key_schema, default=str)}
+
+Document content:
 {page_texts}
 """
 
@@ -338,40 +484,24 @@ def parse_llm_json(text):
         return None
 
 
-def invoke_model_function(final_prompt):
-    """Invoke Bedrock model. Returns (result, input_tokens, output_tokens)."""
+def invoke_model_function(
+    claude_prompt,
+    nova_prompt,
+    *,
+    max_tokens_claude: int = 3000,
+    max_tokens_nova: int = 10240,
+):
+    """Invoke Bedrock (Claude or Nova from config). Returns (result, input_tokens, output_tokens)."""
     max_retries = 4
     retries = 1
     while retries <= max_retries:
         try:
-            response = bedrock_client.invoke_model(contentType='application/json', body=json.dumps({
-                "anthropic_version": "bedrock-2023-05-31",
-                "max_tokens": 3000,
-                "temperature": 0,
-                "top_p": 0.999,
-                "top_k":250,
-                "messages": [
-                    {
-                        "role": "user",
-                        "content": [
-                            {
-                                "type": "text",
-                                "text": final_prompt
-                            }
-                        ]
-                    }
-                ]
-            }), modelId=cfg["model_id"])
-
-            headers = response.get("ResponseMetadata", {}).get("HTTPHeaders", {})
-            input_tokens  = int(headers.get("x-amzn-bedrock-input-token-count", 0))
-            output_tokens = int(headers.get("x-amzn-bedrock-output-token-count", 0))
-
-            if 'body' in response:
-                inference_result = response['body'].read().decode('utf-8')
-                final = json.loads(inference_result)
-            else:
-                final = {}
+            final, input_tokens, output_tokens = _invoke_bedrock_text_once(
+                claude_prompt,
+                nova_prompt,
+                max_tokens_claude=max_tokens_claude,
+                max_tokens_nova=max_tokens_nova,
+            )
             return final, input_tokens, output_tokens
 
         except Exception as e:
@@ -409,9 +539,14 @@ def key_extraction_funtion(doc_type, doc_name, doc_id, file_extension):
         if isinstance(needed_fields, str):
             needed_fields = json.loads(needed_fields)
 
-        final_prompt = build_key_extraction_final_prompt(doc_type, document_description, needed_fields, page_texts)
-        print("FINAL PROMPT : ", final_prompt)
-        final, _, _ = invoke_model_function(final_prompt)
+        claude_prompt = build_key_extraction_final_prompt(
+            doc_type, document_description, needed_fields, page_texts
+        )
+        nova_prompt = build_key_extraction_nova_prompt(
+            doc_type, document_description, needed_fields, page_texts
+        )
+        print("FINAL PROMPT : ", claude_prompt)
+        final, _, _ = invoke_model_function(claude_prompt, nova_prompt)
 
         if 'content' in final and len(final['content']) > 0 and 'text' in final['content'][0]:
             raw_text = final['content'][0]['text']
@@ -447,8 +582,13 @@ def test_key_extraction_funtion(doc_type, doc_name, doc_id, file_extension, docu
         document_key_schema = json_document_details.get('fields', [])
         document_description = json_document_details.get('documentDesc', '')
 
-        final_prompt = build_key_extraction_final_prompt(doc_type, document_description, document_key_schema, page_texts)
-        final, _, _ = invoke_model_function(final_prompt)
+        claude_prompt = build_key_extraction_final_prompt(
+            doc_type, document_description, document_key_schema, page_texts
+        )
+        nova_prompt = build_key_extraction_nova_prompt(
+            doc_type, document_description, document_key_schema, page_texts
+        )
+        final, _, _ = invoke_model_function(claude_prompt, nova_prompt)
 
         if 'content' in final and len(final['content']) > 0 and 'text' in final['content'][0]:
             extracted_json = parse_llm_json(final['content'][0]['text'])
@@ -484,8 +624,13 @@ def test_key_extraction_funtion_llm(page_texts, doc_type, doc_name, doc_id, file
         document_key_schema = json_document_details.get('fields', [])
         document_description = json_document_details.get('documentDesc', '')
 
-        final_prompt = build_key_extraction_final_prompt(doc_type, document_description, document_key_schema, page_texts)
-        final, input_tokens, output_tokens = invoke_model_function(final_prompt)
+        claude_prompt = build_key_extraction_final_prompt(
+            doc_type, document_description, document_key_schema, page_texts
+        )
+        nova_prompt = build_key_extraction_nova_prompt(
+            doc_type, document_description, document_key_schema, page_texts
+        )
+        final, input_tokens, output_tokens = invoke_model_function(claude_prompt, nova_prompt)
 
         if 'content' in final and len(final['content']) > 0 and 'text' in final['content'][0]:
             extracted_json = parse_llm_json(final['content'][0]['text'])
@@ -529,7 +674,7 @@ def ai_key_extractiont_function(doc_name, doc_id, file_extension, document_type,
         field_count = result[0][0] if result else 20
         print(field_count)
 
-        final_prompt = f"""{AI_FIELD_EXTRACT_PROMPT}
+        claude_prompt = f"""{AI_FIELD_EXTRACT_PROMPT}
 
         retrun only the top {str(field_count)} fields ignore the rest. 
 
@@ -539,8 +684,19 @@ User Given Document Description: {document_description}
 Input Document:
 {page_texts}
 """
-        print("FINAL PROMPT : ", final_prompt)
-        final, extract_input_tokens, extract_output_tokens = invoke_model_function(final_prompt)
+        nova_prompt = f"""Return only valid JSON: {{"fields": [{{"name": "field_name", "description": "..."}}]}}
+Include at most {str(field_count)} fields. No biometric or sensitive fields. Preserve case. No extra text.
+
+Document type: {document_type}
+Description: {document_description}
+
+Document content:
+{page_texts}
+"""
+        print("FINAL PROMPT : ", claude_prompt)
+        final, extract_input_tokens, extract_output_tokens = invoke_model_function(
+            claude_prompt, nova_prompt
+        )
 
         total_input  = text_input_tokens  + extract_input_tokens
         total_output = text_output_tokens + extract_output_tokens
@@ -939,20 +1095,23 @@ def lambda_handler(event, context):
         try:
             document_json = event['document_json']
             user_input = event.get("user_input", "")
-            final_prompt = f"""{JSON_FORMATTING_PROMPT}
+            claude_prompt = f"""{JSON_FORMATTING_PROMPT}
 {user_input}
 Now, please generate a similar JSON with field descriptions for the document type:
 {json.dumps(document_json)}
 """
-            response = bedrock_client.invoke_model(contentType='application/json',
-                body=json.dumps({
-                    "anthropic_version": "bedrock-2023-05-31",
-                    "max_tokens": 1000,
-                    "messages": [{"role": "user", "content": [{"type": "text", "text": final_prompt}]}],
-                }), modelId=cfg["model_id"])
-
-            response_body = json.loads(response['body'].read().decode('utf-8'))
-            return {"status_code": 200, "response": response_body['content'][0]['text']}
+            nova_prompt = f"""Return only JSON with documentType, documentDesc, and fields (name, description).
+{user_input}
+Base it on this structure or example:
+{json.dumps(document_json)}
+No markdown, no explanation."""
+            response_body, _, _ = invoke_model_function(
+                claude_prompt,
+                nova_prompt,
+                max_tokens_claude=1000,
+                max_tokens_nova=10240,
+            )
+            return {"status_code": 200, "response": response_body["content"][0]["text"]}
         except Exception as e:
             print(f"Error in {event_type}: {e}")
             return {"status_code": 500, "message": "An Error Occurred While Generating Suggestion"}

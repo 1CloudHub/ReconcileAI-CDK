@@ -2,6 +2,7 @@ from __future__ import annotations
 
 import json
 import logging
+import os
 import re
 import time
 from typing import Any
@@ -24,6 +25,9 @@ db_schema = "erp_no_sap"
 # ---------------------------------------------------------------------------
 
 _SECRET_CACHE = None
+
+CLAUDE_MODEL_ID = "us.anthropic.claude-sonnet-4-20250514-v1:0"
+NOVA_MODEL_ID = "us.amazon.nova-pro-v1:0"
 
 def get_secret():
     global _SECRET_CACHE
@@ -48,6 +52,91 @@ def get_secret():
     except Exception as e:
         logger.error(f"Failed to fetch secret: {e}")
         return os.environ
+
+
+def _resolve_model_id_from_secret() -> str:
+    """
+    Resolve Bedrock model ID from secret/env.
+    Supports friendly values: "claude" and "nova".
+    """
+    secret = get_secret()
+    configured_model = str(secret.get("BEDROCK_MODEL_ID", CLAUDE_MODEL_ID)).strip()
+    lowered_model = configured_model.lower()
+
+    if lowered_model == "claude":
+        return CLAUDE_MODEL_ID
+    if lowered_model == "nova":
+        return NOVA_MODEL_ID
+    return configured_model
+
+
+def _is_nova_model(model_id: str) -> bool:
+    return "nova" in model_id.lower()
+
+
+def invoke_llm(
+    claude_prompt: str,
+    nova_prompt: str,
+    temperature: float = 0,
+) -> dict:
+    """
+    Invoke Bedrock using model from secret manager and model-specific prompt/body.
+    Returns dict with text, input_tokens, output_tokens, and model_used.
+    """
+    model_id = _resolve_model_id_from_secret()
+    print(model_id, "This is the mode getting used")
+    use_nova = _is_nova_model(model_id)
+    print(use_nova,"boolean statement")
+    selected_prompt = nova_prompt if use_nova else claude_prompt
+    max_tokens = 10240 if use_nova else 16384
+
+    if use_nova:
+        body = json.dumps(
+            {
+                "messages": [
+                    {
+                        "role": "user",
+                        "content": [{"text": selected_prompt}],
+                    }
+                ],
+                "inferenceConfig": {
+                    "maxTokens": max_tokens,
+                    "temperature": temperature,
+                },
+            }
+        )
+    else:
+        body = json.dumps(
+            {
+                "anthropic_version": "bedrock-2023-05-31",
+                "max_tokens": max_tokens,
+                "messages": [{"role": "user", "content": selected_prompt}],
+                "temperature": temperature,
+            }
+        )
+
+    response = bedrock_runtime.invoke_model(
+        modelId=model_id,
+        contentType="application/json",
+        accept="application/json",
+        body=body,
+    )
+    headers = response.get("ResponseMetadata", {}).get("HTTPHeaders", {})
+    input_tokens = int(headers.get("x-amzn-bedrock-input-token-count", 0))
+    output_tokens = int(headers.get("x-amzn-bedrock-output-token-count", 0))
+
+    resp_body = json.loads(response["body"].read())
+    if use_nova:
+        raw_text = resp_body["output"]["message"]["content"][0]["text"]
+    else:
+        raw_text = resp_body["content"][0]["text"]
+
+    return {
+        "text": raw_text,
+        "input_tokens": input_tokens,
+        "output_tokens": output_tokens,
+        "model_used": model_id,
+    }
 
 
 def _get_db_connection():
@@ -501,7 +590,7 @@ def extract_fields_from_documents(
             if isinstance(v, dict)
         ]
 
-        prompt = f"""You are a document field extraction specialist.
+        claude_prompt = f"""You are a document field extraction specialist.
 
 You will be given:
 1. NEEDED FIELDS – the specific fields that must be extracted from each document.
@@ -552,32 +641,60 @@ RULES:
 --- SOP DOCUMENTS ---
 {json.dumps(sop_textract_outputs, indent=2, default=str)}
 """
+        nova_prompt = f"""You are a document field extraction specialist.
 
-        body = json.dumps(
-            {
-                "anthropic_version": "bedrock-2023-05-31",
-                "max_tokens": 16384,
-                "messages": [{"role": "user", "content": prompt}],
-                "temperature": 0,
-            }
-        )
+You will be given:
+1. NEEDED FIELDS – fields that must be extracted from each uploaded document.
+2. DOCUMENT CONTENTS – Textract output for each uploaded document.
+3. SOP DOCUMENTS – SOP text that explains comparison checks.
 
-        response = bedrock_runtime.invoke_model(
-            modelId="us.anthropic.claude-sonnet-4-20250514-v1:0",
-            contentType="application/json",
-            accept="application/json",
-            body=body,
-        )
-        headers = response.get("ResponseMetadata", {}).get("HTTPHeaders", {})
-        input_tokens = int(headers.get("x-amzn-bedrock-input-token-count", 0))
-        output_tokens = int(headers.get("x-amzn-bedrock-output-token-count", 0))
+Your task:
+- Extract only required fields from each document.
+- Build SOP-wise comparison instructions from SOP text.
 
-        print("EXTRACTTTTT FIELDSSSSSSSS HEADERS: ", headers)
+Return only strict JSON in this exact shape:
+{{
+  "extracted_documents": {{
+    "<document_name>": {{
+      "<field_name>": "<extracted_value>"
+    }}
+  }},
+  "sop_instructions": [
+    {{
+      "exception_name": "<sop_exception_name>",
+      "fields_to_compare": ["<field1>", "<field2>"],
+      "documents_to_compare": ["<doc_name_1>", "<doc_name_2>"],
+      "rule": "<concise pass/fail logic>"
+    }}
+  ]
+}}
+
+Rules:
+- Include one key per input document in extracted_documents.
+- Extract all fields listed in needed fields and any additional SOP-required fields.
+- Use "NOT_FOUND" when a field is missing.
+- Include one sop_instructions item per SOP.
+- Use only these exception names: {json.dumps(sop_names, default=str)}
+- No markdown, no prose, valid JSON only.
+
+NEEDED_FIELDS:
+{json.dumps(needed_fields, indent=2)}
+
+DOCUMENT_CONTENTS:
+{json.dumps(document_textract_outputs, indent=2, default=str)}
+
+SOP_DOCUMENTS:
+{json.dumps(sop_textract_outputs, indent=2, default=str)}
+"""
+
+        llm_response = invoke_llm(claude_prompt=claude_prompt, nova_prompt=nova_prompt, temperature=0)
+        raw_text = llm_response["text"]
+        input_tokens = llm_response["input_tokens"]
+        output_tokens = llm_response["output_tokens"]
+
+        print("EXTRACT FIELDS MODEL USED: ", llm_response["model_used"])
         print("INPUTTTTT: ", input_tokens)
         print("OUTPUTTTT: ", output_tokens)
-
-        resp_body = json.loads(response["body"].read())
-        raw_text = resp_body["content"][0]["text"]
 
         try:
             result = json.loads(raw_text)
@@ -623,7 +740,7 @@ def reconcile_documents(
     session_table = "session_table_test" if sub_flag == "testing" else "session_table"
 
     try:
-        prompt = f"""You are a document reconciliation specialist.
+        claude_prompt = f"""You are a document reconciliation specialist.
 
 You will be given:
 1. EXTRACTED DOCUMENTS – field values already extracted from each document.
@@ -671,32 +788,58 @@ RULES:
 --- SOP INSTRUCTIONS ---
 {json.dumps(sop_instructions, indent=2, default=str)}
 """
+        nova_prompt = f"""You are a document reconciliation specialist.
 
-        body = json.dumps(
-            {
-                "anthropic_version": "bedrock-2023-05-31",
-                "max_tokens": 16384,
-                "messages": [{"role": "user", "content": prompt}],
-                "temperature": 0,
-            }
-        )
+Input:
+1. EXTRACTED_DOCUMENTS - extracted values by document.
+2. SOP_INSTRUCTIONS - SOP-derived field comparison rules.
 
-        response = bedrock_runtime.invoke_model(
-            modelId="us.anthropic.claude-sonnet-4-20250514-v1:0",
-            contentType="application/json",
-            accept="application/json",
-            body=body,
-        )
-        headers = response.get("ResponseMetadata", {}).get("HTTPHeaders", {})
-        input_tokens = int(headers.get("x-amzn-bedrock-input-token-count", 0))
-        output_tokens = int(headers.get("x-amzn-bedrock-output-token-count", 0))
+Task:
+- Evaluate each SOP instruction.
+- Compare required fields across listed documents.
+- Mark each SOP as pass/fail.
 
-        print("RECONCILEEEE HEADERS: ", headers)
+Return strict JSON only with this shape:
+{{
+  "match_status": "yes" or "no",
+  "reason_for_failure": [
+    {{
+      "<exception_name>": "none" or "<reason>",
+      "status": "yes" or "no",
+      "matching": {{
+        "<field_name>": {{
+          "<document_name>": "<value>",
+          "matched": "yes" or "no"
+        }}
+      }}
+    }}
+  ]
+}}
+
+Rules:
+- One reason_for_failure object per SOP.
+- If SOP passes: exception value = "none", status = "yes".
+- If SOP fails: exception value = reason text, status = "no".
+- match_status is "yes" only if all SOP statuses are "yes".
+- Include all compared fields in matching.
+- Numeric normalization: 1600 == 1600.0 == 1600.00 == 1600.000.
+- Valid JSON only; no markdown.
+
+EXTRACTED_DOCUMENTS:
+{json.dumps(extracted_documents, indent=2, default=str)}
+
+SOP_INSTRUCTIONS:
+{json.dumps(sop_instructions, indent=2, default=str)}
+"""
+
+        llm_response = invoke_llm(claude_prompt=claude_prompt, nova_prompt=nova_prompt, temperature=0)
+        raw_text = llm_response["text"]
+        input_tokens = llm_response["input_tokens"]
+        output_tokens = llm_response["output_tokens"]
+
+        print("RECONCILE MODEL USED: ", llm_response["model_used"])
         print("INPUTTTTT: ", input_tokens)
         print("OUTPUTTTT: ", output_tokens)
-
-        resp_body = json.loads(response["body"].read())
-        raw_text = resp_body["content"][0]["text"]
 
         try:
             result = json.loads(raw_text)

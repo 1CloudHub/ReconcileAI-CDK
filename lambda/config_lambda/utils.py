@@ -13,21 +13,18 @@ secret_cache: Optional[Dict[str, Any]] = None
 config_cache: Optional[Dict[str, Any]] = None
 SECRET_NAME = "reconcileai/dev/lambda-secrets"
 
+
 def get_secret() -> Dict[str, Any]:
     """Fetch secrets from AWS Secrets Manager. Cached after first call."""
     global secret_cache
     if secret_cache is not None:
         return secret_cache
 
-    region_name = os.getenv("AWS_REGION_NAME") or "us-west-2"
+    region_name = os.getenv("AWS_REGION") or "us-west-2"
     client = boto3.client("secretsmanager", region_name=region_name)
 
-    secret_name = os.environ.get("SECRET_NAME")
-    if not secret_name:
-        raise RuntimeError("SECRET_NAME environment variable not set")
-
     try:
-        response = client.get_secret_value(SecretId=secret_name)
+        response = client.get_secret_value(SecretId=SECRET_NAME)
         secret_string = response.get("SecretString")
         if not secret_string:
             raise RuntimeError("SecretString is empty")
