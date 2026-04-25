@@ -1277,6 +1277,62 @@ No markdown, no explanation."""
                 "error_detail": err_msg
             }
 
+    elif event_type == "upload_doc_base64":
+        """
+        Upload a file to S3 by passing base64 content via API Gateway → Lambda.
+        This avoids browser → S3 direct upload (and thus S3 CORS), but increases
+        payload size and Lambda/API cost. Enforces a strict 4MB decoded limit.
+        """
+        try:
+            s3_path = event.get("s3_path")
+            content_type = event.get("content_type", "application/pdf")
+            file_base64 = event.get("file_base64", "")
+
+            if not s3_path or not isinstance(s3_path, str):
+                return {"statusCode": 400, "message": "s3_path is required"}
+
+            if not file_base64 or not isinstance(file_base64, str):
+                return {"statusCode": 400, "message": "file_base64 is required"}
+
+            # Allow both raw base64 and data URL format: data:...;base64,<payload>
+            if "," in file_base64 and "base64" in file_base64.split(",", 1)[0].lower():
+                file_base64 = file_base64.split(",", 1)[1]
+
+            import base64
+            import binascii
+
+            try:
+                raw_bytes = base64.b64decode(file_base64, validate=True)
+            except (binascii.Error, ValueError) as e:
+                print("Invalid base64 payload:", e)
+                return {"statusCode": 400, "message": "Invalid base64 payload"}
+
+            max_bytes = 4 * 1024 * 1024
+            if len(raw_bytes) > max_bytes:
+                return {"statusCode": 413, "message": "File too large (max 4MB)"}
+
+            s3_client.put_object(
+                Bucket=S3_BUCKET_NAME,
+                Key=s3_path,
+                Body=raw_bytes,
+                ContentType=content_type,
+            )
+
+            return {
+                "statusCode": 200,
+                "body": {
+                    "message": "Uploaded successfully",
+                    "s3_path": s3_path,
+                    "s3_uri": f"s3://{S3_BUCKET_NAME}/{s3_path}",
+                    "size_bytes": len(raw_bytes),
+                    "content_type": content_type,
+                },
+            }
+
+        except Exception as e:
+            print("Failed to process upload_doc_base64 api due to : ", e)
+            return {"statusCode": 500, "message": "Failed to upload document"}
+
     elif event_type == "view_document":
         try:
             doc_id = event['doc_id']
