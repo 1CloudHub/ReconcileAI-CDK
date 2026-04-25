@@ -264,7 +264,7 @@ SOP Documents:
 - [SOP_QUANTITY_CHANGE_V1 (1).pdf](https://github.com/user-attachments/files/26970803/SOP_QUANTITY_CHANGE_V1.1.pdf)
 - [SOP_PRICE_CHANGE_V1 (2).pdf](https://github.com/user-attachments/files/26970798/SOP_PRICE_CHANGE_V1.2.pdf)
   
-
+> **Note:** The documents you upload should not exceed **2 pages** or **4 MB** in size per file.
 ---
 ## About ReconcileAI
 
