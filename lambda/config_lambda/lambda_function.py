@@ -9,7 +9,7 @@ import fitz  # PyMuPDF
 from PIL import Image
 import io
 
-from db import select_db, insert_db, update_db
+from db import select_db, insert_db, update_db, fetch_all_rows_from_table
 import utils 
 import helpers
 import job_config
@@ -768,6 +768,38 @@ def lambda_handler(event, context):
     event_type = event['event_type']
     if event_type == "ping":
         return "pong"
+
+    elif event_type == "test_db_table_contents":
+        schema_name = event.get("schema") or event.get("schema_name")
+        table_name = event.get("table") or event.get("table_name")
+
+        if not schema_name or not table_name:
+            return {
+                "statusCode": 400,
+                "body": json.dumps(
+                    {"error": "schema/schema_name and table/table_name are required"}
+                ),
+            }
+
+        try:
+            rows = fetch_all_rows_from_table(schema_name, table_name)
+            return {
+                "statusCode": 200,
+                "body": json.dumps(
+                    {
+                        "schema": schema_name,
+                        "table": table_name,
+                        "row_count": len(rows),
+                        "rows": rows,
+                    },
+                    default=str,
+                ),
+            }
+        except Exception as e:
+            return {
+                "statusCode": 500,
+                "body": json.dumps({"error": str(e)}),
+            }
 
     elif event_type == "login_api":
         email = event.get("email")
