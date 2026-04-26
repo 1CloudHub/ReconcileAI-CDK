@@ -137,9 +137,9 @@ Pick the model that matches the permissions and features enabled in your AWS acc
 
 #### 7.2 Setting Token Limits
 
-<img width="2417" height="430" alt="image" src="https://github.com/user-attachments/assets/5de88555-2399-4465-a10b-ae55907b78b8" />
+<img width="2417" height="430" alt="Token limit selection" src="assets/images/token-limit-options.png" />
 
-Choose the specific token limits you want to configure for the application.
+Choose the specific token limit you want to configure for the application (including an **Unlimited** option).
 These limits define how much tokens the selected AI model can process for the application, helping control performance, usage, and cost in your aws account.
 
 ---
