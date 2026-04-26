@@ -48,12 +48,20 @@ MODELS: Dict[str, Dict[str, str]] = {
 TOKEN_LIMITS: Dict[str, int] = {
     "20,000 tokens": 20000,
     "50,000 tokens": 50000,
+    "Unlimited": -1,
 }
 
 
 # -----------------------------------------------------------------------
 # Helpers
 # -----------------------------------------------------------------------
+
+def _format_token_limit_for_display(token_limit: int) -> str:
+    """Human-readable token limit for CLI output only (never show internal sentinel)."""
+    if token_limit == -1:
+        return "Unlimited"
+    return f"{token_limit:,}"
+
 
 def get_deployment_confirmation(model_info: Dict[str, str], token_limit: int) -> bool:
     """Print a deployment summary and ask for confirmation."""
@@ -62,7 +70,7 @@ def get_deployment_confirmation(model_info: Dict[str, str], token_limit: int) ->
     print(f"   Stack Name  : {STACK['stack_name']}")
     print(f"   Model       : {model_info['display_name']}")
     print(f"   Model ID    : {model_info['model_id']}")
-    print(f"   Token Limit : {token_limit:,}")
+    print(f"   Token Limit : {_format_token_limit_for_display(token_limit)}")
     print("\n⚠️  This will create / update AWS resources that may incur costs.")
 
     return questionary.confirm(
@@ -79,7 +87,7 @@ def deploy_stack(model_selection: str, model_id: str, token_limit: int) -> None:
 
     print(f"\n🚀 Deploying stack : {stack_name}")
     print(f"🤖 Model           : {model_id}")
-    print(f"📏 Token Limit     : {token_limit:,}")
+    print(f"📏 Token Limit     : {_format_token_limit_for_display(token_limit)}")
     print("⏳ This may take several minutes...\n")
 
     # Pass selections to app.py via environment variables
@@ -89,7 +97,7 @@ def deploy_stack(model_selection: str, model_id: str, token_limit: int) -> None:
 
     print(f"🔧 CDK_MODEL_SELECTION = {model_selection}")
     print(f"🔧 CDK_MODEL_ID        = {model_id}")
-    print(f"🔧 CDK_TOKEN_LIMIT     = {token_limit}")
+    print(f"🔧 CDK_TOKEN_LIMIT     = {_format_token_limit_for_display(token_limit)}")
     print()
 
     try:
