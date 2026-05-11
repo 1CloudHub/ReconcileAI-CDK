@@ -37,7 +37,7 @@ MODELS: Dict[str, Dict[str, str]] = {
         "display_name": "Amazon Nova Pro",
     },
     "anthropic": {
-        "model_id": "us.anthropic.claude-sonnet-4-20250514-v1:0",
+        "model_id": "global.anthropic.claude-sonnet-4-6",
         "display_name": "Anthropic Claude Sonnet 4",
     },
 }
@@ -123,7 +123,7 @@ def main() -> None:
         "Which Bedrock model do you want to use?",
         choices=[
             f"🟡 Amazon Nova Pro  (us.amazon.nova-pro-v1:0)",
-            f"🟣 Anthropic Claude (us.anthropic.claude-sonnet-4-20250514-v1:0)",
+            f"🟣 Anthropic Claude (global.anthropic.claude-sonnet-4-6)",
             "❌ Exit",
         ],
     ).ask()

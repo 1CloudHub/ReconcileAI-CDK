@@ -39,7 +39,7 @@ _region = (cfg.get("region_name") or "").strip() or "us-west-2"
 s3_client = boto3.client("s3", region_name=_region)
 bedrock_client = boto3.client("bedrock-runtime", region_name=_region)
 
-CLAUDE_MODEL_ID = "us.anthropic.claude-sonnet-4-20250514-v1:0"
+CLAUDE_MODEL_ID = "global.anthropic.claude-sonnet-4-6"
 NOVA_MODEL_ID = "us.amazon.nova-pro-v1:0"
 
 

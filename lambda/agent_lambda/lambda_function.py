@@ -26,7 +26,7 @@ db_schema = "erp_no_sap"
 
 _SECRET_CACHE = None
 
-CLAUDE_MODEL_ID = "us.anthropic.claude-sonnet-4-20250514-v1:0"
+CLAUDE_MODEL_ID = "global.anthropic.claude-sonnet-4-6"
 NOVA_MODEL_ID = "us.amazon.nova-pro-v1:0"
 
 def get_secret():
