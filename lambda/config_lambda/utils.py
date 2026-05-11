@@ -11,7 +11,6 @@ from botocore.exceptions import ClientError
 
 secret_cache: Optional[Dict[str, Any]] = None
 config_cache: Optional[Dict[str, Any]] = None
-SECRET_NAME = "reconcileai/dev/lambda-secrets"
 
 
 def get_secret() -> Dict[str, Any]:
@@ -20,11 +19,15 @@ def get_secret() -> Dict[str, Any]:
     if secret_cache is not None:
         return secret_cache
 
-    region_name = os.getenv("AWS_REGION") or "us-west-2"
+    region_name = os.getenv("AWS_REGION_NAME") or "us-west-2"
     client = boto3.client("secretsmanager", region_name=region_name)
 
+    secret_name = os.environ.get("SECRET_NAME")
+    if not secret_name:
+        raise RuntimeError("SECRET_NAME environment variable not set")
+
     try:
-        response = client.get_secret_value(SecretId=SECRET_NAME)
+        response = client.get_secret_value(SecretId=secret_name)
         secret_string = response.get("SecretString")
         if not secret_string:
             raise RuntimeError("SecretString is empty")
@@ -55,7 +58,6 @@ def get_config() -> Dict[str, Any]:
             print(f"Missing config key: {k}")
         return v
 
-    frontend_url = (val("FRONTEND_URL") or "").rstrip("/")
     aws_region = val("REGION_AWS") or val("AWS_REGION")
 
     config_cache = {
@@ -138,7 +140,7 @@ def generate_presigned_upload_url(exception_id: str,filename: str,expiry: int = 
     try:
         config = get_config()
         region = config.get("region_name", "us-west-2")
-        bucket_name = "reconcileai-no-sap-bucket"
+        bucket_name = config.get("bucket_name_no_sap")
 
         if not exception_id or not filename:
             raise ValueError("exception_id and filename are required")

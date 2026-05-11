@@ -7,7 +7,7 @@ Reads two deployment-time selections from environment variables
 
   CDK_MODEL_SELECTION  – "amazon" | "anthropic"
   CDK_MODEL_ID         – full Bedrock model ID string
-  CDK_TOKEN_LIMIT      – "20000" | "50000"
+  CDK_TOKEN_LIMIT      – "20000" | "50000" | "-1" (unlimited, stored in DB)
 
 What this app does with those values:
   1. Passes MODEL_ID and TOKEN_LIMIT as Lambda environment variables.
@@ -39,7 +39,7 @@ if MODEL_SELECTION not in _VALID_MODELS:
         f"CDK_MODEL_SELECTION must be one of {_VALID_MODELS}; got '{MODEL_SELECTION}'"
     )
 
-_VALID_TOKENS = {20000, 50000}
+_VALID_TOKENS = {20000, 50000, -1}
 if TOKEN_LIMIT not in _VALID_TOKENS:
     raise ValueError(
         f"CDK_TOKEN_LIMIT must be one of {_VALID_TOKENS}; got '{TOKEN_LIMIT}'"

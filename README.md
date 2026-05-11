@@ -18,9 +18,8 @@ Log in to the provided AWS account using IAM credentials or SSO access, based on
 
 ## Deployment Steps
 
-### 1. Set AWS Region in your aws cloud console
-
-Navigate to the AWS Console region selector and ensure one of the following regions is selected:
+### 1. Set Region to `us-east-1` or `us-west-2`
+Navigate to the region selector in the AWS Console and ensure that either **`US East (N. Virginia) - us-east-1`** or **`US WEST (Oregon) - us-west-2`** is selected.
 
 <img width="2558" height="1382" alt="aws console region step 1" src="https://github.com/user-attachments/assets/2ac1d6de-14c8-4804-8623-17fc768931fc" />
 
@@ -138,9 +137,9 @@ Pick the model that matches the permissions and features enabled in your AWS acc
 
 #### 7.2 Setting Token Limits
 
-<img width="2417" height="430" alt="image" src="https://github.com/user-attachments/assets/5de88555-2399-4465-a10b-ae55907b78b8" />
+<img width="2417" height="430" alt="Token limit selection" src="assets/images/token-limit-options.png" />
 
-Choose the specific token limits you want to configure for the application.
+Choose the specific token limit you want to configure for the application (including an **Unlimited** option).
 These limits define how much tokens the selected AI model can process for the application, helping control performance, usage, and cost in your aws account.
 
 ---
@@ -179,92 +178,46 @@ Once the CloudFront distribution is active and model access has been approved, o
 Deployment typically takes **20–30 minutes**. After deployment completes, allow an additional **10 minutes** for all services to fully initialize before using the application.
 
 ---
-## Used AWS Services
-
-Below is the list of AWS resources utilized by the ReconcileAI application.
-
-```bash
-1. Networking
-   1.1 VPC with public and private subnets
-   1.2 Security groups for Lambda, RDS, and EC2
-   1.3 RDS subnet group across private subnets
-
-2. Storage
-   2.1 Frontend S3 bucket for website hosting
-   2.2 Application S3 bucket for uploads and document storage
-   2.3 Pre-created folders for reconciliation workflows and SOPs
-
-3. Database
-   3.1 PostgreSQL RDS instance running in private subnets
-   3.2 Encrypted storage with restricted public access
-
-4. Secrets Management
-   4.1 Centralized secret storing database credentials
-   4.2 Stores Bedrock model configuration and AWS region settings
-   4.3 Includes Cognito IDs and application configuration values
-
-5. Authentication
-   5.1 Cognito User Pool for login management
-   5.2 Email-based authentication
-   5.3 Auto-created default user during deployment
-
-6. Lambda Functions
-   6.1 Database initialization Lambda
-   6.2 Configuration Lambda
-   6.3 Agent Lambda for reconciliation processing
-   6.4 Shared Lambda layers for dependencies
-
-7. IAM Roles
-   7.1 Dedicated roles for Lambda, EC2, API Gateway, and S3 access
-   7.2 Permissions configured for Bedrock, Cognito, Textract, RDS, and S3
-
-8. API Gateway
-   8.1 REST API for application endpoints
-   8.2 Routes for configuration, uploads, and reconciliation
-   8.3 CORS enabled for frontend integration
-
-9. CloudFront
-   9.1 CDN distribution for frontend delivery
-   9.2 HTTPS enabled for secure access
-   9.3 Automatic cache invalidation on deployment
-
-10. EC2
-    10.1 Frontend build instance
-    10.2 Builds and uploads frontend assets automatically
-    10.3 Self-terminates after deployment
-
-11. Custom Resources
-    11.1 Cognito user creation
-    11.2 Database schema initialization
-    11.3 S3 folder creation
-    11.4 CloudFront cache invalidation
-
-12. Outputs
-    12.1 CloudFront frontend URL
-    12.2 Default login credentials
-    12.3 Deployment-generated access details
-
-```
-
----
 ## Test ReconcileAI with Documents
 
 After deployment, you can validate the application by uploading your own business documents and by running a reconciliation process to verify functionality and results. Happy Reconciling!!
 
-Or you can also use the sample documents from below to get started quickly:
+Or you can also use the sample documents in the `assets/` folder to get started quickly.
 
-Three way matching documents: 
+### Sample documents (Matching set)
 
-- [Goods Receipt Note — GRN 5100011111 (1).pdf](https://github.com/user-attachments/files/26970755/Goods.Receipt.Note.GRN.5100011111.1.pdf)
-- [Purchase Order — PO 4500012345.pdf](https://github.com/user-attachments/files/26970776/Purchase.Order.PO.4500012345.pdf)
-- [Tax Invoice — INV 90007777.pdf](https://github.com/user-attachments/files/26970782/Tax.Invoice.INV.90007777.pdf)
+Use these when you expect a successful 3-way match:
 
-SOP Documents: 
-- [SOP_UOM_ISSUE_V1 (1).pdf](https://github.com/1CloudHub/ReconcileAI-CDK/files//SOP_UOM_ISSUE_V1.1.pdf)
-- [SOP_QUANTITY_CHANGE_V1 (1).pdf](https://github.com/user-attachments/files/26970803/SOP_QUANTITY_CHANGE_V1.1.pdf)
-- [SOP_PRICE_CHANGE_V1 (2).pdf](https://github.com/user-attachments/files/26970798/SOP_PRICE_CHANGE_V1.2.pdf)
-  
-> **Note:** The documents you upload should not exceed **2 pages** or **4 MB** in size per file.
+- [Download: Goods Receipt](https://raw.githubusercontent.com/1CloudHub/ReconcileAI-CDK/main/assets/matching/goods_receipt.pdf)
+- [Download: Purchase Order](https://raw.githubusercontent.com/1CloudHub/ReconcileAI-CDK/main/assets/matching/purchase_order.pdf)
+- [Download: Sales Invoice](https://raw.githubusercontent.com/1CloudHub/ReconcileAI-CDK/main/assets/matching/sales_invoice.pdf)
+
+### Sample documents (Non-matching set)
+
+Use these when you want to validate exception handling / mismatch detection:
+
+- [Download: Goods Receipt](https://raw.githubusercontent.com/1CloudHub/ReconcileAI-CDK/main/assets/non_matching/Goods_receipt.pdf)
+- [Download: Purchase Order](https://raw.githubusercontent.com/1CloudHub/ReconcileAI-CDK/main/assets/non_matching/Purchase_order.pdf)
+- [Download: Invoice](https://raw.githubusercontent.com/1CloudHub/ReconcileAI-CDK/main/assets/non_matching/Invoice.pdf)
+
+### SOP document
+
+- [Download: SOP - Three Way Match](https://raw.githubusercontent.com/1CloudHub/ReconcileAI-CDK/main/assets/sop/SOP_Three_Way_Match_1CloudHub.pdf)
+
+> **Download tip:** Some browsers will open PDFs in a new tab instead of immediately saving them. If that happens, use **Save link as…** (right-click the link) or use the browser viewer’s **Download** button.
+
+> **Required extraction fields (per SOP):**
+>
+> ```json
+> {
+>   "TOTAL": "Grand total / amount payable.",
+>   "SUPPLIER": "Supplier/vendor name as printed on the document."
+> }
+> ```
+>
+> **Note:** To improve efficiency, extract only the required fields above according to the SOP (and avoid extracting unnecessary fields).
+>
+> **File limits:** The documents you upload should not exceed **2 pages** or **4 MB** in size per file.
 ---
 ## About ReconcileAI
 

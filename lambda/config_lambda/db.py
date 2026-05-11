@@ -2,6 +2,9 @@
 Database connection module. All connections use credentials from utils (Secrets Manager).
 """
 import psycopg2
+from psycopg2 import sql
+from psycopg2.extras import RealDictCursor
+import re
 import utils
 
 
@@ -86,3 +89,35 @@ def update_db(query):
             connection.close()
         except Exception:
             pass
+
+
+_IDENTIFIER_RE = re.compile(r"^[A-Za-z_][A-Za-z0-9_]*$")
+
+
+def fetch_all_rows_from_table(schema_name: str, table_name: str):
+    """
+    Fetch all rows from a given schema.table and return them as a list[dict].
+
+    Uses psycopg2.sql.Identifier to avoid SQL injection via identifiers.
+    """
+    if not isinstance(schema_name, str) or not isinstance(table_name, str):
+        raise ValueError("schema_name and table_name must be strings")
+    schema_name = schema_name.strip()
+    table_name = table_name.strip()
+    if not _IDENTIFIER_RE.match(schema_name) or not _IDENTIFIER_RE.match(table_name):
+        raise ValueError("Invalid schema/table identifier")
+
+    connection = get_connection()
+    try:
+        cursor = connection.cursor(cursor_factory=RealDictCursor)
+        query = sql.SQL("SELECT * FROM {}.{}").format(
+            sql.Identifier(schema_name),
+            sql.Identifier(table_name),
+        )
+        cursor.execute(query)
+        rows = cursor.fetchall()
+        connection.commit()
+        return rows
+    finally:
+        cursor.close()
+        connection.close()

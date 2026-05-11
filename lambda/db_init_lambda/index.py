@@ -40,8 +40,12 @@ def handler(event, context):
         sql = obj["Body"].read().decode("utf-8")
 
         # ── Read token limit from env (set by CDK stack from deploy.py) ───────
+        # Numeric caps (e.g. 20000 / 50000) or unlimited sentinel -1 from deploy/CDK env.
         token_limit = int(os.environ.get("TOKEN_LIMIT", "20000"))
-        print(f"Token limit to insert: {token_limit}")
+        if token_limit == -1:
+            print("Token limit: unlimited (updating metadata_table total_token_limit)")
+        else:
+            print(f"Token limit to insert: {token_limit}")
 
         # ── Connect to RDS ────────────────────────────────────────────────────
         conn = psycopg2.connect(
